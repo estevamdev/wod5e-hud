@@ -1,0 +1,99 @@
+{
+  "WOD5E_HUD": {
+    "Toggle": "Toggle WOD5E HUD",
+    "ToggleHint": "Show or hide the WOD5E HUD.",
+    "Creature": {
+      "Vampire": "Vampire",
+      "Ghoul": "Ghoul",
+      "Mortal": "Mortal",
+      "Hunter": "Hunter",
+      "Werewolf": "Werewolf",
+      "Spc": "SPC",
+      "Group": "Group"
+    },
+    "Health": "Health",
+    "Hunger": "Hunger",
+    "XPShort": "XP",
+    "Drawer": {
+      "Attributes": "Attributes",
+      "Skills": "Skills",
+      "Powers": "Powers",
+      "Actions": "Actions",
+      "Features": "Features",
+      "Edges": "Edges",
+      "Gifts": "Gifts",
+      "Disciplines": "Disciplines"
+    },
+    "Actions": {
+      "Title": "Quick actions",
+      "Vitae": "Vitae",
+      "Rouse": "Rouse Check",
+      "ResistFrenzy": "Resist Frenzy",
+      "WillpowerGroup": "Willpower",
+      "Willpower": "Willpower Test",
+      "Humanity": "Humanity",
+      "Remorse": "Remorse Test",
+      "ConfirmRouse": "Do you want to roll the Rouse check?",
+      "ConfirmFrenzy": "Do you want to roll the test to resist Frenzy?",
+      "Roll": "Roll",
+      "Cancel": "Cancel",
+      "Failed": "The action could not be performed."
+    },
+    "SkillsFilter": {
+      "Trained": "Trained only",
+      "All": "Show all"
+    },
+    "Search": {
+      "Title": "Search",
+      "Placeholder": "Search attributes, skills, disciplines...",
+      "Empty": "Nothing found.",
+      "Hint": "Type to filter. Enter to roll or open.",
+      "Type": {
+        "Attribute": "Attribute",
+        "Skill": "Skill",
+        "Power": "Power",
+        "Gift": "Gift",
+        "Perk": "Perk",
+        "Edge": "Edge",
+        "Feature": "Feature",
+        "Action": "Action"
+      }
+    },
+    "Combat": "Combat HUD",
+    "Close": "Close",
+    "XP": {
+      "SpendTitle": "Spend Experience",
+      "Spent": "XP Spent",
+      "Add": "Add",
+      "Cancel": "Cancel"
+    },
+    "Level": "Level",
+    "NoPowers": "No powers available.",
+    "NoSkills": "No skills match the filter.",
+    "NoAttributes": "No attributes available.",
+    "OpenSheetHint": "Double-click to open the sheet",
+    "Settings": {
+      "Title": "WOD5E HUD Settings",
+      "Subtitle": "Customize the HUD for this client.",
+      "Enabled": "Character HUD (mini HUD)",
+      "EnabledHint": "Shows the avatar, vitality and hunger. The combat HUD has its own option.",
+      "CombatHud": "Combat HUD",
+      "CombatHudHint": "Show the action bar above the hotbar.",
+      "AllowHudToggle": "Allow players to toggle the character HUD",
+      "AllowHudToggleHint": "When off, players cannot show or hide the character HUD.",
+      "AllowCombatToggle": "Allow players to toggle the combat HUD",
+      "AllowCombatToggleHint": "When off, players cannot show or hide the combat bar.",
+      "Locked": "Locked by the GM.",
+      "Unavailable": "Settings are unavailable.",
+      "ResetPosition": "Reset position",
+      "TabPlayer": "Settings",
+      "TabGM": "Game Master",
+      "GMHint": "These permissions control what players can change in their HUD.",
+      "EnableHudForAll": "Enable character HUD for all players",
+      "EnableHudForAllHint": "Forces the character HUD on for every player, overriding their local option.",
+      "EnableCombatForAll": "Enable combat HUD for all players",
+      "EnableCombatForAllHint": "Forces the combat HUD on for every player, overriding their local option.",
+      "ForcedByGM": "Enabled by the Game Master."
+    }
+  }
+}

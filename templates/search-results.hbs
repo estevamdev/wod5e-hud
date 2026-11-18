@@ -1,0 +1,16 @@
+{{#if empty}}
+  <p class="wod-empty wod-search-empty">{{localize "WOD5E_HUD.Search.Empty"}}</p>
+{{else}}
+  {{#each groups}}
+    <section class="wod-search-group">
+      <h4>{{localize this.label}}</h4>
+      {{#each this.items}}
+        <button class="wod-search-result {{#if this.selected}}is-selected{{/if}}" data-action="search-result" data-index="{{this.index}}">
+          <i class="{{this.icon}}"></i>
+          <span class="wod-search-label">{{this.label}}</span>
+          <span class="wod-search-subtitle">{{this.subtitle}}</span>
+        </button>
+      {{/each}}
+    </section>
+  {{/each}}
+{{/if}}

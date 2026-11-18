@@ -1,0 +1,108 @@
+<div class="wod-settings">
+  <header class="wod-settings-header">
+    <h2>{{localize "WOD5E_HUD.Settings.Title"}}</h2>
+    <p>{{localize "WOD5E_HUD.Settings.Subtitle"}}</p>
+  </header>
+
+  <nav class="wod-settings-tabs">
+    {{#each tabs}}
+      <button type="button" class="wod-settings-tab" data-tab="{{this.id}}">
+        <i class="{{this.icon}}"></i>
+        <span>{{localize this.label}}</span>
+      </button>
+    {{/each}}
+  </nav>
+
+  <section class="wod-settings-panel" data-tab-panel="player">
+    <label class="wod-settings-row {{#unless canToggleHud}}is-locked{{/unless}}">
+      <span class="wod-settings-copy">
+        <strong>{{localize "WOD5E_HUD.Settings.Enabled"}}</strong>
+        <small>{{localize "WOD5E_HUD.Settings.EnabledHint"}}</small>
+        {{#unless canToggleHud}}
+          <small class="wod-settings-lock">{{localize "WOD5E_HUD.Settings.Locked"}}</small>
+        {{/unless}}
+      </span>
+      <input
+        type="checkbox"
+        data-setting="enabled"
+        {{#if enabled}}checked{{/if}}
+        {{#unless canToggleHud}}disabled{{/unless}}
+      >
+    </label>
+
+    <label class="wod-settings-row {{#unless canToggleCombat}}is-locked{{/unless}}">
+      <span class="wod-settings-copy">
+        <strong>{{localize "WOD5E_HUD.Settings.CombatHud"}}</strong>
+        <small>{{localize "WOD5E_HUD.Settings.CombatHudHint"}}</small>
+        {{#unless canToggleCombat}}
+          <small class="wod-settings-lock">{{localize "WOD5E_HUD.Settings.Locked"}}</small>
+        {{/unless}}
+      </span>
+      <input
+        type="checkbox"
+        data-setting="combatHud"
+        {{#if combatHud}}checked{{/if}}
+        {{#unless canToggleCombat}}disabled{{/unless}}
+      >
+    </label>
+
+    <button type="button" class="wod-settings-btn" data-action="reset-position">
+      <i class="fa-solid fa-location-crosshairs"></i>
+      {{localize "WOD5E_HUD.Settings.ResetPosition"}}
+    </button>
+  </section>
+
+  {{#if isGM}}
+    <section class="wod-settings-panel" data-tab-panel="gm">
+      <p class="wod-settings-note">{{localize "WOD5E_HUD.Settings.GMHint"}}</p>
+
+      <label class="wod-settings-row">
+        <span class="wod-settings-copy">
+          <strong>{{localize "WOD5E_HUD.Settings.EnableHudForAll"}}</strong>
+          <small>{{localize "WOD5E_HUD.Settings.EnableHudForAllHint"}}</small>
+        </span>
+        <input
+          type="checkbox"
+          data-world-setting="enablePlayerHudForAll"
+          {{#if enableHudForAll}}checked{{/if}}
+        >
+      </label>
+
+      <label class="wod-settings-row">
+        <span class="wod-settings-copy">
+          <strong>{{localize "WOD5E_HUD.Settings.EnableCombatForAll"}}</strong>
+          <small>{{localize "WOD5E_HUD.Settings.EnableCombatForAllHint"}}</small>
+        </span>
+        <input
+          type="checkbox"
+          data-world-setting="enablePlayerCombatForAll"
+          {{#if enableCombatForAll}}checked{{/if}}
+        >
+      </label>
+
+      <label class="wod-settings-row">
+        <span class="wod-settings-copy">
+          <strong>{{localize "WOD5E_HUD.Settings.AllowHudToggle"}}</strong>
+          <small>{{localize "WOD5E_HUD.Settings.AllowHudToggleHint"}}</small>
+        </span>
+        <input
+          type="checkbox"
+          data-world-setting="allowPlayerHudToggle"
+          {{#if allowHudToggle}}checked{{/if}}
+        >
+      </label>
+
+      <label class="wod-settings-row">
+        <span class="wod-settings-copy">
+          <strong>{{localize "WOD5E_HUD.Settings.AllowCombatToggle"}}</strong>
+          <small>{{localize "WOD5E_HUD.Settings.AllowCombatToggleHint"}}</small>
+        </span>
+        <input
+          type="checkbox"
+          data-world-setting="allowPlayerCombatToggle"
+          {{#if allowCombatToggle}}checked{{/if}}
+        >
+      </label>
+    </section>
+  {{/if}}
+</div>

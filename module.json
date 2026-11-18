@@ -1,0 +1,44 @@
+{
+  "id": "wod5e-hud",
+  "title": "WOD5E HUD",
+  "description": "HUD gótico de ações rápidas para o sistema World of Darkness 5e. Reage ao token selecionado, adapta-se ao tipo de criatura e oferece atributos, perícias, disciplinas e poderes em gavetas translúcidas.",
+  "version": "0.7.2",
+  "authors": [
+    {
+      "name": "VTM Compendium"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14.365"
+  },
+  "esmodules": ["scripts/module.mjs"],
+  "scripts": ["scripts/ui/three.essential.min.js"],
+  "styles": ["styles/wod5e-hud.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt-BR.json"
+    },
+    {
+      "lang": "es",
+      "name": "Español",
+      "path": "lang/es.json"
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "wod5e",
+        "type": "system"
+      }
+    ]
+  },
+  "socket": false
+}

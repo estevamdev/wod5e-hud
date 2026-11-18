@@ -1,0 +1,27 @@
+<div class="wod-drawer wod-drawer--actions">
+  <header class="wod-drawer-header">
+    <h3>{{localize "WOD5E_HUD.Actions.Title"}}</h3>
+    <button type="button" class="wod-icon-btn" data-action="close-drawer" title="{{localize 'WOD5E_HUD.Close'}}">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </header>
+
+  <div class="wod-attr-grid">
+    {{#each groups}}
+      <section class="wod-attr-group">
+        <h4>{{this.label}}</h4>
+        {{#each this.actions}}
+          <button
+            type="button"
+            class="wod-row wod-row--action"
+            data-action="quick-action"
+            data-quick="{{this.id}}"
+          >
+            <span class="wod-row-name">{{this.label}}</span>
+            <i class="{{this.icon}}"></i>
+          </button>
+        {{/each}}
+      </section>
+    {{/each}}
+  </div>
+</div>

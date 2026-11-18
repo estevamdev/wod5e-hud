@@ -1,0 +1,34 @@
+<div class="wod-drawer wod-drawer--skills">
+  <header class="wod-drawer-header">
+    <h3>{{localize "WOD5E_HUD.Drawer.Skills"}}</h3>
+    <button class="wod-filter-btn" data-action="toggle-skills-filter">
+      {{#if trainedOnly}}
+        {{localize "WOD5E_HUD.SkillsFilter.Trained"}}
+      {{else}}
+        {{localize "WOD5E_HUD.SkillsFilter.All"}}
+      {{/if}}
+    </button>
+    <button class="wod-icon-btn" data-action="close-drawer">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </header>
+
+  <div class="wod-skill-groups">
+    {{#each groups}}
+      <section class="wod-skill-group">
+        <h4>{{this.label}}</h4>
+        {{#each this.items}}
+          <button class="wod-row wod-row--skill" data-action="roll-skill" data-key="{{this.key}}">
+            <span class="wod-row-name">{{this.label}}</span>
+            <span class="wod-row-value">{{this.value}}</span>
+            <span class="wod-dots">
+              {{#each this.dots}}<i class="{{#if this}}is-filled{{/if}}"></i>{{/each}}
+            </span>
+          </button>
+        {{/each}}
+      </section>
+    {{else}}
+      <p class="wod-empty">{{localize "WOD5E_HUD.NoSkills"}}</p>
+    {{/each}}
+  </div>
+</div>

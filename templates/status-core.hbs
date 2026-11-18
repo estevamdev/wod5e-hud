@@ -1,0 +1,31 @@
+<div class="wod-hero">
+  <div class="wod-hero-portrait">
+    <div
+      class="wod-health-ring"
+      style="--wod-health-ratio: {{health.percent}}%;"
+      data-tooltip="{{localize 'WOD5E_HUD.Health'}}"
+      aria-label="{{localize 'WOD5E_HUD.Health'}}"
+    ></div>
+    <img
+      class="wod-portrait"
+      src="{{portrait}}"
+      alt="{{name}}"
+      draggable="false"
+      data-action="open-sheet"
+      data-tooltip="{{localize 'WOD5E_HUD.OpenSheetHint'}}"
+    >
+  </div>
+</div>
+
+{{#if resource}}
+  <div class="wod-resource wod-resource--{{resource.kind}}" style="--wod-fill: {{resource.fill}}%;">
+    <div
+      class="wod-gauge {{#if resource.pulse}}is-pulsing{{/if}}"
+      data-tooltip="{{resource.label}} {{resource.value}}/{{resource.max}}"
+    >
+      <span class="wod-gauge-base"></span>
+      <span class="wod-gauge-fill"></span>
+      <span class="wod-resource-count">{{resource.value}}</span>
+    </div>
+  </div>
+{{/if}}

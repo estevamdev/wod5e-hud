@@ -1,0 +1,21 @@
+<div class="wod-search-overlay">
+  <div class="wod-search-backdrop" data-action="close-search"></div>
+  <div class="wod-search-panel">
+    <header class="wod-search-header">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input
+        class="wod-search-input"
+        type="text"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="{{placeholder}}"
+        aria-label="{{title}}"
+      >
+      <button class="wod-icon-btn" data-action="close-search" title="{{localize 'WOD5E_HUD.Close'}}">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </header>
+    <div class="wod-search-results"></div>
+    <footer class="wod-search-footer">{{hint}}</footer>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="wod-drawer wod-drawer--powers">
+  <header class="wod-drawer-header">
+    <h3>{{localize title}}</h3>
+    <button class="wod-icon-btn" data-action="close-drawer">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </header>
+
+  <div class="wod-power-groups">
+    {{#each groups}}
+      <section class="wod-power-group {{#if this.open}}is-open{{/if}}">
+        <button class="wod-power-header" data-action="toggle-power-group" data-group="{{this.id}}">
+          <span class="wod-power-title">{{this.label}}</span>
+          <span class="wod-dots">
+            {{#each this.dots}}<i class="{{#if this}}is-filled{{/if}}"></i>{{/each}}
+          </span>
+          <i class="fa-solid fa-chevron-down wod-chevron"></i>
+        </button>
+
+        <div class="wod-power-body">
+          {{#each this.items}}
+            <button class="wod-power-row" data-action="use-item" data-item-id="{{this.id}}">
+              <img class="wod-power-icon" src="{{this.img}}" alt="">
+              <span class="wod-power-name">{{this.name}}</span>
+              <span class="wod-power-meta">
+                {{#if this.level}}<span class="wod-badge">{{localize "WOD5E_HUD.Level"}} {{this.level}}</span>{{/if}}
+                {{#if this.cost}}<span class="wod-badge wod-badge--blood"><i class="{{this.costIcon}}"></i>{{this.cost}}</span>{{/if}}
+                {{#if this.willpowercost}}<span class="wod-badge wod-badge--willpower"><i class="fa-solid fa-brain"></i>{{this.willpowercost}}</span>{{/if}}
+              </span>
+            </button>
+          {{else}}
+            <p class="wod-empty">{{localize "WOD5E_HUD.NoPowers"}}</p>
+          {{/each}}
+        </div>
+      </section>
+    {{else}}
+      <p class="wod-empty">{{localize "WOD5E_HUD.NoPowers"}}</p>
+    {{/each}}
+  </div>
+</div>
