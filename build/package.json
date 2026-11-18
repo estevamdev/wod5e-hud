@@ -1,0 +1,13 @@
+{
+  "name": "wod5e-hud-build",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "tailwindcss -c tailwind.config.mjs -i src/input.css -o ../styles/wod5e-hud.css --minify",
+    "watch": "tailwindcss -c tailwind.config.mjs -i src/input.css -o ../styles/wod5e-hud.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

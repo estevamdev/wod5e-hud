@@ -1,0 +1,90 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: build/package-lock.json
+
+      - name: Install build dependencies
+        run: npm ci --prefix build
+
+      - name: Build CSS
+        run: npm run build --prefix build
+
+      - name: Verify committed CSS is up to date
+        run: |
+          if ! git diff --quiet -- styles/wod5e-hud.css; then
+            echo "::error::Compiled CSS is out of date. Run 'npm run build' in build/ and commit styles/wod5e-hud.css."
+            git diff --stat -- styles/wod5e-hud.css
+            exit 1
+          fi
+
+      - name: Validate version and tag
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          VERSION=$(node -p "require('./module.json').version")
+          if [ "$TAG" != "$VERSION" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match module.json version $VERSION"
+            exit 1
+          fi
+
+      - name: Syntax and formatting checks
+        run: |
+          node --check scripts/module.mjs
+          find scripts -name '*.mjs' -print0 | xargs -0 -n1 node --check
+          npx --yes prettier@3.3.3 --check \
+            "scripts/**/*.mjs" \
+            "lang/*.json" \
+            "module.json" \
+            "README.md" \
+            "build/src/input.css" \
+            "build/tailwind.config.mjs" \
+            "build/package.json"
+
+      - name: Generate release manifest
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs')
+          const manifest = JSON.parse(fs.readFileSync('module.json', 'utf8'))
+          const repo = process.env.GITHUB_REPOSITORY
+          const tag = process.env.GITHUB_REF_NAME
+          manifest.url = `https://github.com/${repo}`
+          manifest.manifest = `https://github.com/${repo}/releases/latest/download/module.json`
+          manifest.download = `https://github.com/${repo}/releases/download/${tag}/module.zip`
+          fs.writeFileSync('module.json', `${JSON.stringify(manifest, null, 2)}\n`)
+          NODE
+
+      - name: Package module
+        run: |
+          zip -r module.zip \
+            module.json \
+            scripts \
+            styles \
+            templates \
+            lang \
+            assets \
+            README.md
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            module.json
+            module.zip
+          generate_release_notes: true
