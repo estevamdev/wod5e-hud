@@ -138,22 +138,6 @@ Tailwind configuration: `prefix: "wod-"`, `important: "#wod5e-hud-root"`,
 
 The compiled `styles/wod5e-hud.css` is **committed** and required by Foundry.
 
-### Source layout
-
-```text
-.
-├── assets/svg/              # hunger icon masks
-├── build/                   # Tailwind toolchain (not shipped in the module zip)
-├── lang/                    # en, pt-BR, es
-├── scripts/
-│   ├── core/                # adapters, settings, docking, helpers
-│   ├── ui/                  # HUD, settings window
-│   └── module.mjs           # Foundry entry point
-├── styles/wod5e-hud.css     # compiled CSS
-├── templates/               # Handlebars templates
-└── module.json
-```
-
 ### Branch model
 
 - **`main`**: production. Only release-ready code and tags. The compiled CSS is
