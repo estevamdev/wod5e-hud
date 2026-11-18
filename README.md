@@ -52,7 +52,6 @@ use the native `wod5e` system flows (dialogs, rolls and actor updates).
 - Global palette (`Alt+F`).
 - Includes quick actions, attributes, skills, disciplines/powers, gifts, edges
   and features.
-- Accent-insensitive (e.g. “frenesi”, “vontade”, “remorso”).
 - Keyboard navigation with `ArrowUp`, `ArrowDown`, `Enter` and `Escape`.
 - Selecting a quick action runs the same flow as the Actions drawer.
 
