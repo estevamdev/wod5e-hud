@@ -1,0 +1,99 @@
+{
+  "WOD5E_HUD": {
+    "Toggle": "Alternar WOD5E HUD",
+    "ToggleHint": "Mostrar u ocultar el WOD5E HUD.",
+    "Creature": {
+      "Vampire": "Vampiro",
+      "Ghoul": "Ghoul",
+      "Mortal": "Mortal",
+      "Hunter": "Cazador",
+      "Werewolf": "Hombre Lobo",
+      "Spc": "SPC",
+      "Group": "Grupo"
+    },
+    "Health": "Salud",
+    "Hunger": "Ansia",
+    "XPShort": "XP",
+    "Drawer": {
+      "Attributes": "Atributos",
+      "Skills": "Habilidades",
+      "Powers": "Poderes",
+      "Actions": "Acciones",
+      "Features": "Rasgos",
+      "Edges": "Facultades",
+      "Gifts": "Dones",
+      "Disciplines": "Disciplinas"
+    },
+    "Actions": {
+      "Title": "Acciones rápidas",
+      "Vitae": "Vitae",
+      "Rouse": "Control de Enardecimiento",
+      "ResistFrenzy": "Resistir Frenesí",
+      "WillpowerGroup": "Fuerza de Voluntad",
+      "Willpower": "Control de Fuerza de Voluntad",
+      "Humanity": "Humanidad",
+      "Remorse": "Control de Remordimiento",
+      "ConfirmRouse": "¿Quieres tirar el Control de Enardecimiento?",
+      "ConfirmFrenzy": "¿Quieres tirar el control para Resistir Frenesí?",
+      "Roll": "Tirar",
+      "Cancel": "Cancelar",
+      "Failed": "No se pudo ejecutar la acción."
+    },
+    "SkillsFilter": {
+      "Trained": "Solo entrenadas",
+      "All": "Mostrar todas"
+    },
+    "Search": {
+      "Title": "Buscar",
+      "Placeholder": "Buscar atributos, habilidades, disciplinas...",
+      "Empty": "Nada encontrado.",
+      "Hint": "Escribe para filtrar. Enter para tirar o abrir.",
+      "Type": {
+        "Attribute": "Atributo",
+        "Skill": "Habilidad",
+        "Power": "Poder",
+        "Gift": "Don",
+        "Perk": "Beneficio",
+        "Edge": "Facultad",
+        "Feature": "Rasgo",
+        "Action": "Acción"
+      }
+    },
+    "Combat": "HUD de combate",
+    "Close": "Cerrar",
+    "XP": {
+      "SpendTitle": "Gastar Experiencia",
+      "Spent": "XP Gastada",
+      "Add": "Añadir",
+      "Cancel": "Cancelar"
+    },
+    "Level": "Nivel",
+    "NoPowers": "No hay poderes disponibles.",
+    "NoSkills": "Ninguna habilidad coincide con el filtro.",
+    "NoAttributes": "No hay atributos disponibles.",
+    "OpenSheetHint": "Doble clic para abrir la ficha",
+    "Settings": {
+      "Title": "Configuración de WOD5E HUD",
+      "Subtitle": "Personaliza el HUD en este cliente.",
+      "Enabled": "HUD del personaje (mini HUD)",
+      "EnabledHint": "Muestra el avatar, la salud y el ansia. El HUD de combate tiene su propia opción.",
+      "CombatHud": "HUD de combate",
+      "CombatHudHint": "Muestra la barra de acciones sobre la barra de macros.",
+      "AllowHudToggle": "Permitir que los jugadores activen/desactiven el HUD del personaje",
+      "AllowHudToggleHint": "Si se desactiva, los jugadores no pueden mostrar u ocultar el HUD del personaje.",
+      "AllowCombatToggle": "Permitir que los jugadores activen/desactiven el HUD de combate",
+      "AllowCombatToggleHint": "Si se desactiva, los jugadores no pueden mostrar u ocultar la barra de combate.",
+      "Locked": "Bloqueado por el Director de Juego.",
+      "Unavailable": "La configuración no está disponible.",
+      "ResetPosition": "Restablecer posición",
+      "TabPlayer": "Configuración",
+      "TabGM": "Director de Juego",
+      "GMHint": "Estos permisos controlan lo que los jugadores pueden cambiar en el HUD.",
+      "EnableHudForAll": "Habilitar HUD del personaje para todos",
+      "EnableHudForAllHint": "Fuerza el HUD del personaje activado para todos los jugadores, anulando su opción local.",
+      "EnableCombatForAll": "Habilitar HUD de combate para todos",
+      "EnableCombatForAllHint": "Fuerza el HUD de combate activado para todos los jugadores, anulando su opción local.",
+      "ForcedByGM": "Activado por el Director de Juego."
+    }
+  }
+}

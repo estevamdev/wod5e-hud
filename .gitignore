@@ -1,0 +1,28 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*~
+
+# Logs / temporary files
+*.log
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# Node (when the build toolchain is included in this repository)
+node_modules/
+npm-debug.log*
+
+# Python helper scripts
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local environment / generated maps
+.env
+*.map

@@ -1,0 +1,39 @@
+<div class="wod-combat-bar">
+  <button type="button" class="wod-combat-btn wod-combat-btn--icon" data-action="search" title="{{localize 'WOD5E_HUD.Search.Title'}}" aria-label="{{localize 'WOD5E_HUD.Search.Title'}}">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+  <button type="button" class="wod-combat-btn" data-action="drawer" data-drawer="actions">
+    <i class="fa-solid fa-bolt"></i>
+    <span>{{localize "WOD5E_HUD.Drawer.Actions"}}</span>
+  </button>
+  <button type="button" class="wod-combat-btn" data-action="drawer" data-drawer="attributes">
+    <i class="fa-solid fa-hand-fist"></i>
+    <span>{{localize "WOD5E_HUD.Drawer.Attributes"}}</span>
+  </button>
+  <button type="button" class="wod-combat-btn" data-action="drawer" data-drawer="skills">
+    <i class="fa-solid fa-dice-d20"></i>
+    <span>{{localize "WOD5E_HUD.Drawer.Skills"}}</span>
+  </button>
+  <button type="button" class="wod-combat-btn" data-action="drawer" data-drawer="powers">
+    <i class="fa-solid fa-wand-sparkles"></i>
+    <span>{{localize "WOD5E_HUD.Drawer.Powers"}}</span>
+  </button>
+
+  {{#if xp.show}}
+    <button type="button" class="wod-combat-xp" data-action="xp" title="{{localize 'WOD5E_HUD.XPShort'}}">
+      {{xp.remaining}} XP
+    </button>
+  {{/if}}
+
+  <button
+    type="button"
+    class="wod-combat-btn wod-combat-btn--icon wod-combat-settings"
+    data-action="settings"
+    title="{{localize 'WOD5E_HUD.Settings.Title'}}"
+    aria-label="{{localize 'WOD5E_HUD.Settings.Title'}}"
+  >
+    <i class="fa-solid fa-gear"></i>
+  </button>
+
+  <div class="wod-drawer-slot"></div>
+</div>
