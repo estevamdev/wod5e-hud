@@ -6,6 +6,12 @@ used rolls and information into a small floating interface.
 
 ## Features
 
+The stable manifest URL is:
+
+```text
+https://github.com/estevamdev/wod5e-hud/releases/latest/download/module.json
+```
+
 ### Character HUD
 
 - **Single compact row**: circular portrait, segmented vitality ring, hunger
@@ -157,17 +163,3 @@ The compiled `styles/wod5e-hud.css` is **committed** and required by Foundry.
      repository files);
    - generates the release `module.json` with `url`, `manifest` and `download`;
    - publishes the GitHub Release with `module.json` and `module.zip`.
-
-The stable manifest URL is:
-
-```text
-https://github.com/estevamdev/wod5e-hud/releases/latest/download/module.json
-```
-
-The `download` field in the release manifest points to the versioned zip:
-
-```text
-https://github.com/estevamdev/wod5e-hud/releases/download/vX.Y.Z/module.zip
-```
-
-No pre-release channel is used: every published release is production.
