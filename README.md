@@ -55,7 +55,6 @@ native `wod5e` system flows (dialogs, rolls and actor updates).
 - Global palette (`Alt+F`).
 - Includes quick actions, attributes, skills, disciplines/powers, gifts, edges
   and features.
-- Accent-insensitive (e.g. “frenesi”, “vontade”, “remorso”).
 - Keyboard navigation with `ArrowUp`, `ArrowDown`, `Enter` and `Escape`.
 - Selecting a quick action runs the same flow as the Actions drawer.
 
@@ -137,22 +136,6 @@ Tailwind configuration: `prefix: "wod-"`, `important: "#wod5e-hud-root"`,
 `preflight: false`.
 
 The compiled `styles/wod5e-hud.css` is **committed** and required by Foundry.
-
-### Source layout
-
-```text
-.
-├── assets/svg/              # hunger icon masks
-├── build/                   # Tailwind toolchain (not shipped in the module zip)
-├── lang/                    # en, pt-BR, es
-├── scripts/
-│   ├── core/                # adapters, settings, docking, helpers
-│   ├── ui/                  # HUD, settings window
-│   └── module.mjs           # Foundry entry point
-├── styles/wod5e-hud.css     # compiled CSS
-├── templates/               # Handlebars templates
-└── module.json
-```
 
 ### Branch model
 
