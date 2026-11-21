@@ -27,16 +27,18 @@
     "Actions": {
       "Title": "Ações rápidas",
       "Vitae": "Vitae",
-      "Rouse": "Inflamar o Sangue",
+      "Rouse": "Checagem de Sangue",
+      "Feeding": "Alimentação",
       "ResistFrenzy": "Resistir ao Frenesi",
       "WillpowerGroup": "Força de Vontade",
       "Willpower": "Teste de Força de Vontade",
       "Humanity": "Humanidade",
       "Remorse": "Teste de Remorso",
-      "ConfirmRouse": "Deseja rolar o teste de Inflamar o Sangue?",
+      "ConfirmRouse": "Deseja rolar a Checagem de Sangue?",
       "ConfirmFrenzy": "Deseja rolar o teste para Resistir ao Frenesi?",
       "Roll": "Rolar",
       "Cancel": "Cancelar",
+      "NoPredator": "Nenhum tipo de predador encontrado para este ator.",
       "Failed": "Não foi possível executar a ação."
     },
     "SkillsFilter": {

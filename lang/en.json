@@ -28,6 +28,7 @@
       "Title": "Quick actions",
       "Vitae": "Vitae",
       "Rouse": "Rouse Check",
+      "Feeding": "Feeding",
       "ResistFrenzy": "Resist Frenzy",
       "WillpowerGroup": "Willpower",
       "Willpower": "Willpower Test",
@@ -37,6 +38,7 @@
       "ConfirmFrenzy": "Do you want to roll the test to resist Frenzy?",
       "Roll": "Roll",
       "Cancel": "Cancel",
+      "NoPredator": "No predator type found for this actor.",
       "Failed": "The action could not be performed."
     },
     "SkillsFilter": {

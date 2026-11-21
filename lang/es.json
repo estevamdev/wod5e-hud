@@ -27,16 +27,18 @@
     "Actions": {
       "Title": "Acciones rápidas",
       "Vitae": "Vitae",
-      "Rouse": "Control de Enardecimiento",
+      "Rouse": "Chequeo de Sangre",
+      "Feeding": "Alimentación",
       "ResistFrenzy": "Resistir Frenesí",
       "WillpowerGroup": "Fuerza de Voluntad",
       "Willpower": "Control de Fuerza de Voluntad",
       "Humanity": "Humanidad",
       "Remorse": "Control de Remordimiento",
-      "ConfirmRouse": "¿Quieres tirar el Control de Enardecimiento?",
+      "ConfirmRouse": "¿Quieres tirar el Chequeo de Sangre?",
       "ConfirmFrenzy": "¿Quieres tirar el control para Resistir Frenesí?",
       "Roll": "Tirar",
       "Cancel": "Cancelar",
+      "NoPredator": "No se encontró ningún tipo de depredador para este actor.",
       "Failed": "No se pudo ejecutar la acción."
     },
     "SkillsFilter": {

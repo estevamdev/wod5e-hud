@@ -32,20 +32,25 @@ used rolls and information into a small floating interface.
 
 - Optional bar positioned **5 px above the macro hotbar**.
 - Contents: search (icon only), quick actions, attributes, skills (three
-  columns), disciplines/powers and XP (when greater than zero).
+  columns) and disciplines/powers.
+- The **XP shortcut is currently hidden** while the experience flow is still
+  being worked on. Set `SHOW_XP` to `true` in `scripts/core/constants.mjs` to
+  re-enable it.
 - The **settings gear** lives at the end of the combat bar. When the combat HUD
   is hidden, the gear moves to the character HUD, so settings remain accessible.
 
 ### Quick actions
 
-| Category      | Actions                                    |
-| ------------- | ------------------------------------------ |
-| **Vitae**     | Rouse Check (Blush of Life); Resist Frenzy |
-| **Willpower** | Willpower Test                             |
-| **Humanity**  | Remorse Test                               |
+| Category      | Actions                                                      |
+| ------------- | ------------------------------------------------------------ |
+| **Vitae**     | Rouse Check (Blood Check); Feeding (predator); Resist Frenzy |
+| **Willpower** | Willpower Test                                               |
+| **Humanity**  | Remorse Test                                                 |
 
-Rouse and Frenzy open a confirmation prompt before rolling. The quick actions
-use the native `wod5e` system flows (dialogs, rolls and actor updates).
+Rouse and Frenzy open a confirmation prompt before rolling. Feeding rolls the
+actor's predator type through the system roller, so it appears only for
+vampires that have a predator type with a dicepool. The quick actions use the
+native `wod5e` system flows (dialogs, rolls and actor updates).
 
 ### Search
 

@@ -17,7 +17,7 @@ import {
   resolveActor,
   setSetting
 } from '../core/utils.mjs'
-import { rollAttribute, rollSkill, spendXP, useItem } from '../core/roll-helpers.mjs'
+import { rollAttribute, rollItem, rollSkill, spendXP, useItem } from '../core/roll-helpers.mjs'
 
 const TEMPLATES = {
   hud: 'modules/wod5e-hud/templates/hud.hbs',
@@ -475,6 +475,17 @@ export class Wod5eHud {
             name: localize('WOD5E_HUD.Actions.Rouse', 'Rouse Check'),
             system: { level: 1, cost: 1, discipline: '' }
           })
+          break
+        }
+        case 'feeding': {
+          const predator = actor.items?.find?.((item) => item.type === 'predatorType')
+          if (!predator) {
+            ui.notifications?.warn?.(
+              localize('WOD5E_HUD.Actions.NoPredator', 'No predator type found for this actor.')
+            )
+            return
+          }
+          await rollItem(actor, predator)
           break
         }
         case 'frenzy': {
