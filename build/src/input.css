@@ -445,8 +445,7 @@ body.wod-hide-hotbar #hotbar {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  -webkit-mask-image:
-    radial-gradient(
+  -webkit-mask-image: radial-gradient(
       circle var(--wod-end-radius) at var(--wod-end-radius) 50%,
       #000 98%,
       transparent 100%
@@ -457,14 +456,16 @@ body.wod-hide-hotbar #hotbar {
       transparent 100%
     ),
     linear-gradient(#000, #000);
-  -webkit-mask-size: 100% 100%, 100% 100%, 100% var(--wod-band);
+  -webkit-mask-size:
+    100% 100%,
+    100% 100%,
+    100% var(--wod-band);
   -webkit-mask-position:
     0 0,
     0 0,
     50% 50%;
   -webkit-mask-repeat: no-repeat;
-  mask-image:
-    radial-gradient(
+  mask-image: radial-gradient(
       circle var(--wod-end-radius) at var(--wod-end-radius) 50%,
       #000 98%,
       transparent 100%
@@ -475,7 +476,10 @@ body.wod-hide-hotbar #hotbar {
       transparent 100%
     ),
     linear-gradient(#000, #000);
-  mask-size: 100% 100%, 100% 100%, 100% var(--wod-band);
+  mask-size:
+    100% 100%,
+    100% 100%,
+    100% var(--wod-band);
   mask-position:
     0 0,
     0 0,
@@ -489,8 +493,7 @@ body.wod-hide-hotbar #hotbar {
 
 .wod-combat-bar::after {
   background: linear-gradient(180deg, rgba(24, 24, 31, 0.94), rgba(9, 9, 11, 0.95));
-  -webkit-mask-image:
-    radial-gradient(
+  -webkit-mask-image: radial-gradient(
       circle calc(var(--wod-end-radius) - 1px) at var(--wod-end-radius) 50%,
       #000 98%,
       transparent 100%
@@ -501,9 +504,11 @@ body.wod-hide-hotbar #hotbar {
       transparent 100%
     ),
     linear-gradient(#000, #000);
-  -webkit-mask-size: 100% 100%, 100% 100%, 100% calc(var(--wod-band) - 2px);
-  mask-image:
-    radial-gradient(
+  -webkit-mask-size:
+    100% 100%,
+    100% 100%,
+    100% calc(var(--wod-band) - 2px);
+  mask-image: radial-gradient(
       circle calc(var(--wod-end-radius) - 1px) at var(--wod-end-radius) 50%,
       #000 98%,
       transparent 100%
@@ -514,7 +519,10 @@ body.wod-hide-hotbar #hotbar {
       transparent 100%
     ),
     linear-gradient(#000, #000);
-  mask-size: 100% 100%, 100% 100%, 100% calc(var(--wod-band) - 2px);
+  mask-size:
+    100% 100%,
+    100% 100%,
+    100% calc(var(--wod-band) - 2px);
 }
 
 .wod-combat-btn,
