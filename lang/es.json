@@ -9,7 +9,6 @@
       "Spc": "SPC",
       "Group": "Grupo"
     },
-    "Health": "Salud",
     "Hunger": "Ansia",
     "XPShort": "XP",
     "Drawer": {
@@ -72,6 +71,7 @@
     "NoSkills": "Ninguna habilidad coincide con el filtro.",
     "NoAttributes": "No hay atributos disponibles.",
     "OpenSheetHint": "Doble clic para abrir la ficha",
+    "DoubleClickBloodCheck": "Haz doble clic para tirar el Chequeo de Sangre",
     "Settings": {
       "Title": "Configuración de WOD5E HUD",
       "Subtitle": "Personaliza el HUD en este cliente.",

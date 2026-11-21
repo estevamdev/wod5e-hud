@@ -9,7 +9,6 @@
       "Spc": "SPC",
       "Group": "Group"
     },
-    "Health": "Health",
     "Hunger": "Hunger",
     "XPShort": "XP",
     "Drawer": {
@@ -72,6 +71,7 @@
     "NoSkills": "No skills match the filter.",
     "NoAttributes": "No attributes available.",
     "OpenSheetHint": "Double-click to open the sheet",
+    "DoubleClickBloodCheck": "Double-click to roll a Blood Check",
     "Settings": {
       "Title": "WOD5E HUD Settings",
       "Subtitle": "Customize the HUD for this client.",

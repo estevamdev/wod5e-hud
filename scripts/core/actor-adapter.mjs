@@ -48,31 +48,6 @@ function getCreature(actor) {
   }
 }
 
-function buildHealth(actor) {
-  const isCrinos =
-    actor?.type === 'werewolf' &&
-    actor?.system?.activeForm === 'crinos' &&
-    actor?.system?.crinosHealth
-  const data = isCrinos ? actor.system.crinosHealth : (actor?.system?.health ?? {})
-  const max = Math.max(0, Number(data.max) || 0)
-  const superficial = clamp(Number(data.superficial) || 0, 0, max)
-  const aggravated = clamp(Number(data.aggravated) || 0, 0, max)
-  // Same rule as the system: superficial damage counts as half a health level.
-  const value = Math.max(0, max - aggravated - superficial / 2)
-  const ratio = max > 0 ? clamp(value / max, 0, 1) : 0
-
-  return {
-    field: isCrinos ? 'system.crinosHealth' : 'system.health',
-    isCrinos,
-    max,
-    superficial,
-    aggravated,
-    value,
-    ratio,
-    percent: Math.round(ratio * 1000) / 10
-  }
-}
-
 function buildResource(actor, creature) {
   // Only vampires have a resource indicator (Hunger).
   if (creature.resource !== 'hunger') return null
@@ -395,7 +370,6 @@ export function buildStatus(actor, token) {
     accent: creature.accent,
     creature,
     creatureLabel: creature.labelText,
-    health: buildHealth(actor),
     resource: buildResource(actor, creature),
     xp: buildXP(actor),
     canEdit: isOwner(actor)

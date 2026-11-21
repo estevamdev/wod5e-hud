@@ -50,6 +50,8 @@ export class Wod5eHud {
     this._hotbarEl = null
     this._hotbarObserver = null
     this._hotbarMetrics = null
+    this._pendingRoll = false
+    this._statusQueued = false
   }
 
   async init() {
@@ -263,9 +265,6 @@ export class Wod5eHud {
       portrait.alt = context.name
     }
 
-    const ring = root.querySelector('.wod-health-ring')
-    ring?.style.setProperty('--wod-health-ratio', `${context.health.percent}%`)
-
     const resource = root.querySelector('.wod-combat-resource')
     if (Boolean(context.resource) !== Boolean(resource)) {
       this.renderCombat().catch((error) =>
@@ -378,6 +377,7 @@ export class Wod5eHud {
         this.#executeSearchResult(Number(element.dataset.index))
         break
       case 'open-sheet':
+      case 'blood-check':
         break
       case 'drawer':
         await this.openDrawer(element.dataset.drawer)
@@ -464,10 +464,18 @@ export class Wod5eHud {
           )
           if (!confirmed) return
           const { _onRouseCheck } = await this.#systemModule('actor/vtm/scripts/rouse.js')
-          await _onRouseCheck(actor, {
-            name: localize('WOD5E_HUD.Actions.Rouse', 'Rouse Check'),
-            system: { level: 1, cost: 1, discipline: '' }
-          })
+          this._pendingRoll = true
+          try {
+            const presented = this.#waitForRollPresentation(actor)
+            await _onRouseCheck(actor, {
+              name: localize('WOD5E_HUD.Actions.Rouse', 'Rouse Check'),
+              system: { level: 1, cost: 1, discipline: '' }
+            })
+            await presented
+          } finally {
+            this._pendingRoll = false
+            this._statusQueued = false
+          }
           break
         }
         case 'feeding': {
@@ -534,6 +542,9 @@ export class Wod5eHud {
       if (element.dataset.action === 'open-sheet') {
         element.addEventListener('dblclick', this.#onSheetDoubleClick)
       }
+      if (element.dataset.action === 'blood-check') {
+        element.addEventListener('dblclick', this.#onBloodCheckDoubleClick)
+      }
     })
   }
 
@@ -544,6 +555,8 @@ export class Wod5eHud {
 
     event.preventDefault()
     event.stopPropagation()
+
+    if (action === 'open-sheet' || action === 'blood-check') this.#pulseTarget(element)
 
     if (!['search', 'close-search', 'search-result'].includes(action)) {
       this.#closeSearchIf(action)
@@ -560,6 +573,21 @@ export class Wod5eHud {
     event.preventDefault()
     event.stopPropagation()
     this.actor?.sheet?.render(true)
+  }
+
+  #onBloodCheckDoubleClick = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    this.#runQuickAction('rouse').catch((error) =>
+      console.error('[WOD5E HUD] blood check failed', error)
+    )
+  }
+
+  #pulseTarget(element) {
+    element.classList.remove('wod-clicked')
+    void element.offsetWidth
+    element.classList.add('wod-clicked')
+    setTimeout(() => element.classList.remove('wod-clicked'), 420)
   }
 
   #onGlobalKeyDown = (event) => {
@@ -800,7 +828,60 @@ export class Wod5eHud {
   }
 
   scheduleStatusUpdate() {
+    // While a roll is being presented, the HUD waits for the chat message and
+    // the Dice So Nice animation before showing the new values.
+    if (this._pendingRoll) {
+      this._statusQueued = true
+      return
+    }
     this._statusRefresh()
+  }
+
+  /**
+   * Resolves after the roll message is posted and, when Dice So Nice is
+   * enabled, after its animation completes.
+   */
+  #waitForRollPresentation(actor) {
+    return new Promise((resolve) => {
+      let settled = false
+      let messageId = null
+
+      const cleanup = () => {
+        clearTimeout(safety)
+        Hooks.off('createChatMessage', onCreate)
+        Hooks.off('diceSoNiceRollComplete', onDice)
+      }
+
+      const finish = () => {
+        if (settled) return
+        settled = true
+        cleanup()
+        resolve()
+      }
+
+      const onDice = (id) => {
+        if (id && messageId && id !== messageId) return
+        finish()
+      }
+
+      const onCreate = (message) => {
+        if (message.speaker?.actor !== actor.id) return
+        if (!message.rolls?.length) return
+        messageId = message.id
+        Hooks.off('createChatMessage', onCreate)
+
+        const dice3d = globalThis.game?.dice3d
+        const dsnActive =
+          Boolean(dice3d) &&
+          (typeof dice3d.isEnabled === 'function' ? dice3d.isEnabled() : true)
+
+        if (dsnActive) Hooks.once('diceSoNiceRollComplete', onDice)
+        else setTimeout(finish, 350)
+      }
+
+      const safety = setTimeout(finish, 6000)
+      Hooks.on('createChatMessage', onCreate)
+    })
   }
 
   destroy() {
