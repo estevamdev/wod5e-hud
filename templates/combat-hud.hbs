@@ -6,12 +6,6 @@
     data-tooltip="{{localize 'WOD5E_HUD.OpenSheetHint'}}"
     aria-label="{{name}}"
   >
-    <span
-      class="wod-health-ring"
-      style="--wod-health-ratio: {{health.percent}}%;"
-      data-tooltip="{{localize 'WOD5E_HUD.Health'}}"
-      aria-label="{{localize 'WOD5E_HUD.Health'}}"
-    ></span>
     <img class="wod-portrait" src="{{portrait}}" alt="{{name}}" draggable="false">
   </button>
 
@@ -67,11 +61,12 @@
     <div
       class="wod-combat-resource wod-resource wod-resource--{{resource.kind}}"
       style="--wod-fill: {{resource.fill}}%;"
+      data-action="blood-check"
+      data-tooltip="{{localize 'WOD5E_HUD.DoubleClickBloodCheck'}}"
+      data-tooltip-direction="UP"
+      aria-label="{{localize 'WOD5E_HUD.DoubleClickBloodCheck'}}"
     >
-      <div
-        class="wod-gauge {{#if resource.pulse}}is-pulsing{{/if}}"
-        data-tooltip="{{resource.label}} {{resource.value}}/{{resource.max}}"
-      >
+      <div class="wod-gauge {{#if resource.pulse}}is-pulsing{{/if}}">
         <span class="wod-gauge-base"></span>
         <span class="wod-gauge-fill"></span>
         <span class="wod-resource-count">{{resource.value}}</span>

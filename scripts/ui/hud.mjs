@@ -263,9 +263,6 @@ export class Wod5eHud {
       portrait.alt = context.name
     }
 
-    const ring = root.querySelector('.wod-health-ring')
-    ring?.style.setProperty('--wod-health-ratio', `${context.health.percent}%`)
-
     const resource = root.querySelector('.wod-combat-resource')
     if (Boolean(context.resource) !== Boolean(resource)) {
       this.renderCombat().catch((error) =>
@@ -378,6 +375,7 @@ export class Wod5eHud {
         this.#executeSearchResult(Number(element.dataset.index))
         break
       case 'open-sheet':
+      case 'blood-check':
         break
       case 'drawer':
         await this.openDrawer(element.dataset.drawer)
@@ -534,6 +532,9 @@ export class Wod5eHud {
       if (element.dataset.action === 'open-sheet') {
         element.addEventListener('dblclick', this.#onSheetDoubleClick)
       }
+      if (element.dataset.action === 'blood-check') {
+        element.addEventListener('dblclick', this.#onBloodCheckDoubleClick)
+      }
     })
   }
 
@@ -544,6 +545,8 @@ export class Wod5eHud {
 
     event.preventDefault()
     event.stopPropagation()
+
+    if (action === 'open-sheet' || action === 'blood-check') this.#pulseTarget(element)
 
     if (!['search', 'close-search', 'search-result'].includes(action)) {
       this.#closeSearchIf(action)
@@ -560,6 +563,21 @@ export class Wod5eHud {
     event.preventDefault()
     event.stopPropagation()
     this.actor?.sheet?.render(true)
+  }
+
+  #onBloodCheckDoubleClick = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    this.#runQuickAction('rouse').catch((error) =>
+      console.error('[WOD5E HUD] blood check failed', error)
+    )
+  }
+
+  #pulseTarget(element) {
+    element.classList.remove('wod-clicked')
+    void element.offsetWidth
+    element.classList.add('wod-clicked')
+    setTimeout(() => element.classList.remove('wod-clicked'), 420)
   }
 
   #onGlobalKeyDown = (event) => {

@@ -1,8 +1,8 @@
 # WOD5E HUD
 
 A compact HUD for **World of Darkness 5e** on Foundry VTT. It keeps the
-selected character's essentials on screen, so health, hunger and the most used
-rolls are always within reach.
+selected character's essentials on screen, so hunger and the most used rolls
+are always within reach.
 
 > **Status: in development and functional for vampire play.** This module is
 > made for the **wod5e** system (**VTM5e**) and is being tested with vampire
@@ -12,7 +12,7 @@ rolls are always within reach.
 ## What it is for
 
 - Follows the selected token and adapts to the creature type.
-- Shows portrait, vitality and hunger at a glance.
+- Shows portrait and hunger at a glance.
 - Gives quick access to the rolls used most during a session.
 - Keeps the actor sheet for reference instead of routine actions.
 
@@ -20,7 +20,7 @@ rolls are always within reach.
 
 ### Character bar
 
-- Portrait with the vitality ring around it. Double-click it to open the sheet.
+- Portrait with a red border. Double-click it to open the sheet.
 - Hunger indicator for vampires, at the end of the bar.
 - Menu buttons for Actions, Attributes, Skills and Powers.
 - Search palette for attributes, skills, disciplines, gifts, edges and features.
@@ -89,8 +89,8 @@ directory and enable it in the world.
 | `Alt+S`  | Open the settings window |
 
 - Double-click the portrait to open the actor sheet.
-- Hover the vitality ring for the “Health” hint and the portrait for the sheet
-  hint.
+- Double-click the hunger area to roll a Blood Check, the same action as the
+  menu button.
 - Click the gear to configure the HUD.
 - Hover the menu buttons and their entries to read the full label.
 

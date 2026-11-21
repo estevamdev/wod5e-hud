@@ -71,32 +71,8 @@
   user-select: none;
 }
 
-/* Same blood fill used by the hunger gauge, shaped as a ring. */
-.wod-health-ring {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  border-radius: 50%;
-  background: conic-gradient(
-    from -90deg,
-    #ef4444 0%,
-    #7f1d1d var(--wod-health-ratio, 100%),
-    rgba(161, 161, 170, 0.16) var(--wod-health-ratio, 100%)
-  );
-  filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.35));
-  -webkit-mask: radial-gradient(circle, transparent 82%, #000 84%);
-  mask: radial-gradient(circle, transparent 82%, #000 84%);
-  pointer-events: auto;
-  transition: background 220ms ease;
-  animation: wod-ring-breathe 3.2s ease-in-out infinite;
-}
-
 .wod-portrait:hover {
   filter: brightness(1.12) saturate(1.05);
-}
-
-.wod-health-ring:hover {
-  filter: drop-shadow(0 0 10px rgba(220, 38, 38, 0.55));
 }
 
 .wod-resource {
@@ -123,7 +99,7 @@
   border: 0;
   border-radius: 50%;
   background: none;
-  box-shadow: none;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--wod-accent) 55%, transparent);
   transform: translateY(-50%);
 }
 
@@ -133,7 +109,6 @@
   inset: 4px;
   border: 2px solid var(--wod-accent);
   border-radius: 50%;
-  box-shadow: 0 0 14px color-mix(in srgb, var(--wod-accent) 55%, transparent);
   pointer-events: none;
 }
 
@@ -1033,14 +1008,20 @@ body.wod-hide-hotbar #hotbar {
   }
 }
 
-@keyframes wod-ring-breathe {
-  0%,
+@keyframes wod-click-pulse {
+  0% {
+    scale: 1;
+  }
+  45% {
+    scale: 1.06;
+  }
   100% {
-    filter: drop-shadow(0 0 4px rgba(220, 38, 38, 0.28));
+    scale: 1;
   }
-  50% {
-    filter: drop-shadow(0 0 9px rgba(220, 38, 38, 0.5));
-  }
+}
+
+.wod-clicked {
+  animation: wod-click-pulse 420ms ease;
 }
 
 @keyframes wod-resource-pulse {
