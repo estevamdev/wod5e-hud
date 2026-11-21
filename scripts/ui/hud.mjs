@@ -235,7 +235,8 @@ export class Wod5eHud {
   positionCombat() {
     if (!this.combatRoot) return
 
-    const hotbarHidden = Boolean(document.body?.classList.contains('wod-hide-hotbar'))
+    const hotbarHidden = Boolean(getSetting('hideHotbar', false))
+    document.body?.classList.toggle('wod-hide-hotbar', hotbarHidden)
     this.#syncHotbarVisibility(hotbarHidden)
 
     // When the hotbar is hidden the combat bar takes its exact place.
