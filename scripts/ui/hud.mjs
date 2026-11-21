@@ -203,11 +203,18 @@ export class Wod5eHud {
     document.body?.classList.toggle('wod-hide-hotbar', hotbarHidden)
     this.#syncHotbarVisibility(hotbarHidden)
 
+    // The portrait/food medallions are taller than the bar, so the free space
+    // required below the bar is half of that overflow.
+    const barHeight = this.combatRoot.getBoundingClientRect().height
+    const medallionHeight =
+      this.combatRoot.querySelector('.wod-combat-portrait')?.getBoundingClientRect().height ?? 0
+    const overhang = Math.max(0, Math.ceil((medallionHeight - barHeight) / 2))
+
     // When the hotbar is hidden the combat bar takes its exact place.
     if (hotbarHidden) {
       const metrics = this._hotbarMetrics
       // Keeps room for the portrait that overflows the bar at the bottom edge.
-      const bottom = Math.max(metrics?.bottom ?? 16, 20)
+      const bottom = Math.max(metrics?.bottom ?? 16, overhang + 6)
       this.combatRoot.style.left = metrics ? `${metrics.center}px` : '50%'
       this.combatRoot.style.bottom = `${bottom}px`
       this.combatRoot.style.setProperty('--wod-hotbar-height', '0px')
@@ -230,11 +237,12 @@ export class Wod5eHud {
       return
     }
 
-    // Anchors the combat bar 5 px above the macro hotbar and centered on it.
+    // Anchors the combat bar above the macro hotbar, centered on it, leaving
+    // room for the portrait to overflow downwards without covering the hotbar.
     this.combatRoot.style.left = `${Math.round(rect.left + rect.width / 2)}px`
     this.combatRoot.style.bottom = `${Math.max(
       0,
-      Math.round(window.innerHeight - rect.top + 5)
+      Math.round(window.innerHeight - rect.top + 5 + overhang)
     )}px`
     this.combatRoot.style.setProperty('--wod-hotbar-height', `${Math.round(rect.height)}px`)
   }
