@@ -50,6 +50,8 @@ export class Wod5eHud {
     this._hotbarEl = null
     this._hotbarObserver = null
     this._hotbarMetrics = null
+    this._pendingRoll = false
+    this._statusQueued = false
   }
 
   async init() {
@@ -462,10 +464,18 @@ export class Wod5eHud {
           )
           if (!confirmed) return
           const { _onRouseCheck } = await this.#systemModule('actor/vtm/scripts/rouse.js')
-          await _onRouseCheck(actor, {
-            name: localize('WOD5E_HUD.Actions.Rouse', 'Rouse Check'),
-            system: { level: 1, cost: 1, discipline: '' }
-          })
+          this._pendingRoll = true
+          try {
+            const presented = this.#waitForRollPresentation(actor)
+            await _onRouseCheck(actor, {
+              name: localize('WOD5E_HUD.Actions.Rouse', 'Rouse Check'),
+              system: { level: 1, cost: 1, discipline: '' }
+            })
+            await presented
+          } finally {
+            this._pendingRoll = false
+            this._statusQueued = false
+          }
           break
         }
         case 'feeding': {
@@ -818,7 +828,60 @@ export class Wod5eHud {
   }
 
   scheduleStatusUpdate() {
+    // While a roll is being presented, the HUD waits for the chat message and
+    // the Dice So Nice animation before showing the new values.
+    if (this._pendingRoll) {
+      this._statusQueued = true
+      return
+    }
     this._statusRefresh()
+  }
+
+  /**
+   * Resolves after the roll message is posted and, when Dice So Nice is
+   * enabled, after its animation completes.
+   */
+  #waitForRollPresentation(actor) {
+    return new Promise((resolve) => {
+      let settled = false
+      let messageId = null
+
+      const cleanup = () => {
+        clearTimeout(safety)
+        Hooks.off('createChatMessage', onCreate)
+        Hooks.off('diceSoNiceRollComplete', onDice)
+      }
+
+      const finish = () => {
+        if (settled) return
+        settled = true
+        cleanup()
+        resolve()
+      }
+
+      const onDice = (id) => {
+        if (id && messageId && id !== messageId) return
+        finish()
+      }
+
+      const onCreate = (message) => {
+        if (message.speaker?.actor !== actor.id) return
+        if (!message.rolls?.length) return
+        messageId = message.id
+        Hooks.off('createChatMessage', onCreate)
+
+        const dice3d = globalThis.game?.dice3d
+        const dsnActive =
+          Boolean(dice3d) &&
+          (typeof dice3d.isEnabled === 'function' ? dice3d.isEnabled() : true)
+
+        if (dsnActive) Hooks.once('diceSoNiceRollComplete', onDice)
+        else setTimeout(finish, 350)
+      }
+
+      const safety = setTimeout(finish, 6000)
+      Hooks.on('createChatMessage', onCreate)
+    })
   }
 
   destroy() {
