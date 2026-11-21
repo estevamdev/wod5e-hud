@@ -120,10 +120,10 @@
   width: 72px;
   height: 72px;
   min-width: 0;
-  border: 2px solid var(--wod-accent);
+  border: 0;
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 35%, #1b1b22, #09090b 72%);
-  box-shadow: 0 0 14px color-mix(in srgb, var(--wod-accent) 55%, transparent);
+  background: none;
+  box-shadow: none;
   transform: translateY(-50%);
 }
 
@@ -424,22 +424,103 @@ body.wod-hide-hotbar #hotbar {
 }
 
 .wod-combat-bar {
+  --wod-end-radius: 36px;
+  --wod-band: 35px;
   position: relative;
   display: flex;
   align-items: center;
   gap: 4px;
   height: 74px;
   padding: 0 74px;
-  border: 1px solid #27272a;
-  border-color: color-mix(in srgb, var(--wod-accent) 42%, #27272a);
-  border-radius: 9999px;
-  background: linear-gradient(180deg, rgba(24, 24, 31, 0.94), rgba(9, 9, 11, 0.95));
-  box-shadow:
-    0 14px 38px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
   pointer-events: auto;
+}
+
+/* The silhouette is one shape: a thin band that swells into a circle at each
+   end. The border and the fill live in pseudo-elements so drawers are not
+   clipped by the mask. */
+.wod-combat-bar::before,
+.wod-combat-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image:
+    radial-gradient(
+      circle var(--wod-end-radius) at var(--wod-end-radius) 50%,
+      #000 98%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle var(--wod-end-radius) at calc(100% - var(--wod-end-radius)) 50%,
+      #000 98%,
+      transparent 100%
+    ),
+    linear-gradient(#000, #000);
+  -webkit-mask-size: 100% 100%, 100% 100%, 100% var(--wod-band);
+  -webkit-mask-position:
+    0 0,
+    0 0,
+    50% 50%;
+  -webkit-mask-repeat: no-repeat;
+  mask-image:
+    radial-gradient(
+      circle var(--wod-end-radius) at var(--wod-end-radius) 50%,
+      #000 98%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle var(--wod-end-radius) at calc(100% - var(--wod-end-radius)) 50%,
+      #000 98%,
+      transparent 100%
+    ),
+    linear-gradient(#000, #000);
+  mask-size: 100% 100%, 100% 100%, 100% var(--wod-band);
+  mask-position:
+    0 0,
+    0 0,
+    50% 50%;
+  mask-repeat: no-repeat;
+}
+
+.wod-combat-bar::before {
+  background: color-mix(in srgb, var(--wod-accent) 42%, #27272a);
+}
+
+.wod-combat-bar::after {
+  background: linear-gradient(180deg, rgba(24, 24, 31, 0.94), rgba(9, 9, 11, 0.95));
+  -webkit-mask-image:
+    radial-gradient(
+      circle calc(var(--wod-end-radius) - 1px) at var(--wod-end-radius) 50%,
+      #000 98%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle calc(var(--wod-end-radius) - 1px) at calc(100% - var(--wod-end-radius)) 50%,
+      #000 98%,
+      transparent 100%
+    ),
+    linear-gradient(#000, #000);
+  -webkit-mask-size: 100% 100%, 100% 100%, 100% calc(var(--wod-band) - 2px);
+  mask-image:
+    radial-gradient(
+      circle calc(var(--wod-end-radius) - 1px) at var(--wod-end-radius) 50%,
+      #000 98%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle calc(var(--wod-end-radius) - 1px) at calc(100% - var(--wod-end-radius)) 50%,
+      #000 98%,
+      transparent 100%
+    ),
+    linear-gradient(#000, #000);
+  mask-size: 100% 100%, 100% 100%, 100% calc(var(--wod-band) - 2px);
+}
+
+.wod-combat-btn,
+.wod-combat-xp {
+  position: relative;
+  z-index: 1;
 }
 
 .wod-combat-btn {
@@ -1033,6 +1114,7 @@ body.wod-hide-hotbar #hotbar {
   }
 
   .wod-combat-bar {
+    --wod-end-radius: 28px;
     height: 58px;
     padding-right: 58px;
     padding-left: 58px;
