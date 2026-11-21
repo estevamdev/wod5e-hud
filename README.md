@@ -30,7 +30,10 @@ used rolls and information into a small floating interface.
 
 ### Combat HUD
 
-- Optional bar positioned **5 px above the macro hotbar**.
+- Optional bar positioned **5 px above the macro hotbar** and horizontally
+  centered on it.
+- When the player enables **Hide the macro hotbar**, the bar is hidden and the
+  combat HUD takes its place at the bottom of the screen.
 - Contents: search (icon only), quick actions, attributes, skills (three
   columns) and disciplines/powers.
 - The **XP shortcut is currently hidden** while the experience flow is still
@@ -68,6 +71,8 @@ The gear opens a window with two tabs:
 - **Settings**
   - **Character HUD (mini HUD)** — show/hide the portrait, vitality and hunger.
   - **Combat HUD** — show/hide the action bar.
+  - **Hide the macro hotbar** — hides the macro bar and its page arrows; the
+    combat HUD takes its place. Stored per client.
   - **Reset position** — move the HUD back to the bottom-left corner.
 - **Game Master**
   - Allow players to toggle the character HUD.

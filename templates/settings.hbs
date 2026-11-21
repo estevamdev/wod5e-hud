@@ -46,6 +46,18 @@
       >
     </label>
 
+    <label class="wod-settings-row">
+      <span class="wod-settings-copy">
+        <strong>{{localize "WOD5E_HUD.Settings.HideHotbar"}}</strong>
+        <small>{{localize "WOD5E_HUD.Settings.HideHotbarHint"}}</small>
+      </span>
+      <input
+        type="checkbox"
+        data-setting="hideHotbar"
+        {{#if hideHotbar}}checked{{/if}}
+      >
+    </label>
+
     <button type="button" class="wod-settings-btn" data-action="reset-position">
       <i class="fa-solid fa-location-crosshairs"></i>
       {{localize "WOD5E_HUD.Settings.ResetPosition"}}

@@ -81,6 +81,8 @@
       "EnabledHint": "Shows the avatar, vitality and hunger. The combat HUD has its own option.",
       "CombatHud": "Combat HUD",
       "CombatHudHint": "Show the action bar above the hotbar.",
+      "HideHotbar": "Hide the macro hotbar",
+      "HideHotbarHint": "Hides the macro bar and its page arrows; the combat HUD takes its place.",
       "AllowHudToggle": "Allow players to toggle the character HUD",
       "AllowHudToggleHint": "When off, players cannot show or hide the character HUD.",
       "AllowCombatToggle": "Allow players to toggle the combat HUD",

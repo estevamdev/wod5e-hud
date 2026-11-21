@@ -29,6 +29,15 @@ export function registerSettings() {
     default: true
   })
 
+  game.settings.register(MODULE_ID, 'hideHotbar', {
+    name: 'WOD5E_HUD.Settings.HideHotbar',
+    hint: 'WOD5E_HUD.Settings.HideHotbarHint',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: false
+  })
+
   game.settings.register(MODULE_ID, 'allowPlayerHudToggle', {
     name: 'WOD5E_HUD.Settings.AllowHudToggle',
     hint: 'WOD5E_HUD.Settings.AllowHudToggleHint',

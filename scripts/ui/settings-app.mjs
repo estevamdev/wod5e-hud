@@ -66,6 +66,7 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       activeTab: this.activeTab,
       enabled: worldHudForced || Boolean(getSetting('enabled', true)),
       combatHud: worldCombatForced || Boolean(getSetting('combatHud', true)),
+      hideHotbar: Boolean(getSetting('hideHotbar', false)),
       allowHudToggle,
       allowCombatToggle,
       enableHudForAll: worldHudForced,

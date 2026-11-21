@@ -81,6 +81,8 @@
       "EnabledHint": "Muestra el avatar, la salud y el ansia. El HUD de combate tiene su propia opción.",
       "CombatHud": "HUD de combate",
       "CombatHudHint": "Muestra la barra de acciones sobre la barra de macros.",
+      "HideHotbar": "Ocultar la barra de macros",
+      "HideHotbarHint": "Oculta la barra de macros y sus flechas de página; el HUD de combate ocupa su lugar.",
       "AllowHudToggle": "Permitir que los jugadores activen/desactiven el HUD del personaje",
       "AllowHudToggleHint": "Si se desactiva, los jugadores no pueden mostrar u ocultar el HUD del personaje.",
       "AllowCombatToggle": "Permitir que los jugadores activen/desactiven el HUD de combate",

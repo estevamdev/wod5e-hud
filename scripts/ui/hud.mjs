@@ -68,6 +68,7 @@ export class Wod5eHud {
     this.root = root
 
     this.initCombat()
+    this.#applyHotbarVisibility()
     document.addEventListener('pointerdown', this.#onDocumentPointerDown, true)
     document.addEventListener('keydown', this.#onGlobalKeyDown, true)
     window.addEventListener('resize', this.#onResize)
@@ -197,23 +198,40 @@ export class Wod5eHud {
     }
   }
 
+  #applyHotbarVisibility() {
+    const hidden = Boolean(getSetting('hideHotbar', false))
+    document.body?.classList.toggle('wod-hide-hotbar', hidden)
+  }
+
   positionCombat() {
     if (!this.combatRoot) return
+
+    // When the hotbar is hidden the combat bar takes its place at the bottom.
+    if (document.body?.classList.contains('wod-hide-hotbar')) {
+      this.combatRoot.style.left = '50%'
+      this.combatRoot.style.bottom = '8px'
+      this.combatRoot.style.setProperty('--wod-hotbar-height', '0px')
+      return
+    }
+
     this.#observeHotbar()
 
     const element = this._hotbarEl ?? this.#hotbarElement()
     if (!element) {
+      this.combatRoot.style.left = '50%'
       this.combatRoot.style.bottom = '88px'
       return
     }
 
     const rect = element.getBoundingClientRect()
     if (!rect.height || rect.top >= window.innerHeight) {
+      this.combatRoot.style.left = '50%'
       this.combatRoot.style.bottom = '88px'
       return
     }
 
-    // Anchors the combat bar exactly 5 px above the macro hotbar.
+    // Anchors the combat bar 5 px above the macro hotbar and centered on it.
+    this.combatRoot.style.left = `${Math.round(rect.left + rect.width / 2)}px`
     this.combatRoot.style.bottom = `${Math.max(
       0,
       Math.round(window.innerHeight - rect.top + 5)
@@ -304,6 +322,7 @@ export class Wod5eHud {
 
   async applyPreferences() {
     this.combatVisible = Boolean(getSetting('combatHud', true))
+    this.#applyHotbarVisibility()
     await this.refresh({ animate: true })
   }
 

@@ -495,6 +495,11 @@
 /* Combat HUD (centered above the macro bar)                                  */
 /* ------------------------------------------------------------------------- */
 
+/* Player option: hide the macro hotbar; the combat HUD takes its place. */
+body.wod-hide-hotbar #hotbar {
+  display: none !important;
+}
+
 #wod-combat-root {
   position: fixed;
   bottom: calc(var(--wod-hotbar-height, 60px) + 5px);
