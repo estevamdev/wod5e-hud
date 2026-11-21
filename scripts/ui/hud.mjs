@@ -55,6 +55,7 @@ export class Wod5eHud {
     this.settingsApp = null
     this._hotbarEl = null
     this._hotbarObserver = null
+    this._hotbarMetrics = null
   }
 
   async init() {
@@ -181,8 +182,8 @@ export class Wod5eHud {
     if (element instanceof HTMLElement) return element
 
     return (
-      document.getElementById('hotbar') ??
-      document.querySelector('#action-bar') ??
+      document.querySelector('#hotbar:not(template)') ??
+      document.querySelector('#action-bar')?.closest('#hotbar') ??
       document.querySelector('.hotbar')
     )
   }
@@ -201,15 +202,47 @@ export class Wod5eHud {
   #applyHotbarVisibility() {
     const hidden = Boolean(getSetting('hideHotbar', false))
     document.body?.classList.toggle('wod-hide-hotbar', hidden)
+    this.#syncHotbarVisibility(hidden)
+  }
+
+  /**
+   * Hides or restores the macro hotbar directly on the element, so the option
+   * works even if the stylesheet is cached. While hiding, it records the bar's
+   * real bottom margin and center so the combat HUD can take its exact place.
+   */
+  #syncHotbarVisibility(hidden) {
+    const element = this.#hotbarElement()
+    if (!element) return
+
+    if (hidden) {
+      const rect = element.getBoundingClientRect()
+      if (rect.height > 0) {
+        this._hotbarMetrics = {
+          bottom: Math.max(0, Math.round(window.innerHeight - rect.bottom)),
+          center: Math.round(rect.left + rect.width / 2)
+        }
+      }
+      element.style.display = 'none'
+      element.classList.add('wod-hotbar-hidden')
+      return
+    }
+
+    element.style.display = ''
+    element.classList.remove('wod-hotbar-hidden')
+    this._hotbarMetrics = null
   }
 
   positionCombat() {
     if (!this.combatRoot) return
 
-    // When the hotbar is hidden the combat bar takes its place at the bottom.
-    if (document.body?.classList.contains('wod-hide-hotbar')) {
-      this.combatRoot.style.left = '50%'
-      this.combatRoot.style.bottom = '8px'
+    const hotbarHidden = Boolean(document.body?.classList.contains('wod-hide-hotbar'))
+    this.#syncHotbarVisibility(hotbarHidden)
+
+    // When the hotbar is hidden the combat bar takes its exact place.
+    if (hotbarHidden) {
+      const metrics = this._hotbarMetrics
+      this.combatRoot.style.left = metrics ? `${metrics.center}px` : '50%'
+      this.combatRoot.style.bottom = metrics ? `${metrics.bottom}px` : '16px'
       this.combatRoot.style.setProperty('--wod-hotbar-height', '0px')
       return
     }
