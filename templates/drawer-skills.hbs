@@ -2,11 +2,7 @@
   <header class="wod-drawer-header">
     <h3>{{localize "WOD5E_HUD.Drawer.Skills"}}</h3>
     <button class="wod-filter-btn" data-action="toggle-skills-filter">
-      {{#if trainedOnly}}
-        {{localize "WOD5E_HUD.SkillsFilter.Trained"}}
-      {{else}}
-        {{localize "WOD5E_HUD.SkillsFilter.All"}}
-      {{/if}}
+      {{localize toggleLabel}}
     </button>
     <button class="wod-icon-btn" data-action="close-drawer">
       <i class="fa-solid fa-xmark"></i>

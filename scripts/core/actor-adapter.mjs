@@ -416,9 +416,10 @@ export function buildAttributesDrawer(actor) {
 }
 
 export function buildSkillsDrawer(actor, filter) {
+  const trainedOnly = filter !== 'all'
   return {
     groups: buildSkills(actor, filter),
-    trainedOnly: filter !== 'all'
+    toggleLabel: trainedOnly ? 'WOD5E_HUD.SkillsFilter.All' : 'WOD5E_HUD.SkillsFilter.Trained'
   }
 }
 
