@@ -11,7 +11,7 @@
       <section class="wod-attr-group">
         <h4>{{this.label}}</h4>
         {{#each this.items}}
-          <button class="wod-row" data-action="roll-attribute" data-key="{{this.key}}">
+          <button class="wod-row" data-action="roll-attribute" data-key="{{this.key}}" data-tooltip="{{this.label}}">
             <span class="wod-row-name">{{this.label}}</span>
             <span class="wod-dots">
               {{#each this.dots}}<i class="{{#if this}}is-filled{{/if}}"></i>{{/each}}

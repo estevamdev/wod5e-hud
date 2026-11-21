@@ -1,20 +1,48 @@
 <div class="wod-combat-bar">
+  <button
+    type="button"
+    class="wod-combat-portrait"
+    data-action="open-sheet"
+    data-tooltip="{{localize 'WOD5E_HUD.OpenSheetHint'}}"
+    aria-label="{{name}}"
+  >
+    <span
+      class="wod-health-ring"
+      style="--wod-health-ratio: {{health.percent}}%;"
+      data-tooltip="{{localize 'WOD5E_HUD.Health'}}"
+      aria-label="{{localize 'WOD5E_HUD.Health'}}"
+    ></span>
+    <img class="wod-portrait" src="{{portrait}}" alt="{{name}}" draggable="false">
+  </button>
+
   <button type="button" class="wod-combat-btn wod-combat-btn--icon" data-action="search" title="{{localize 'WOD5E_HUD.Search.Title'}}" aria-label="{{localize 'WOD5E_HUD.Search.Title'}}">
     <i class="fa-solid fa-magnifying-glass"></i>
   </button>
-  <button type="button" class="wod-combat-btn" data-action="drawer" data-drawer="actions">
+  <button type="button" class="wod-combat-btn" data-action="drawer" data-drawer="actions"
+    data-tooltip="{{localize 'WOD5E_HUD.Drawer.Actions'}}"
+    data-tooltip-direction="UP"
+    aria-label="{{localize 'WOD5E_HUD.Drawer.Actions'}}">
     <i class="fa-solid fa-bolt"></i>
     <span>{{localize "WOD5E_HUD.Drawer.Actions"}}</span>
   </button>
-  <button type="button" class="wod-combat-btn" data-action="drawer" data-drawer="attributes">
+  <button type="button" class="wod-combat-btn" data-action="drawer" data-drawer="attributes"
+    data-tooltip="{{localize 'WOD5E_HUD.Drawer.Attributes'}}"
+    data-tooltip-direction="UP"
+    aria-label="{{localize 'WOD5E_HUD.Drawer.Attributes'}}">
     <i class="fa-solid fa-hand-fist"></i>
     <span>{{localize "WOD5E_HUD.Drawer.Attributes"}}</span>
   </button>
-  <button type="button" class="wod-combat-btn" data-action="drawer" data-drawer="skills">
+  <button type="button" class="wod-combat-btn" data-action="drawer" data-drawer="skills"
+    data-tooltip="{{localize 'WOD5E_HUD.Drawer.Skills'}}"
+    data-tooltip-direction="UP"
+    aria-label="{{localize 'WOD5E_HUD.Drawer.Skills'}}">
     <i class="fa-solid fa-dice-d20"></i>
     <span>{{localize "WOD5E_HUD.Drawer.Skills"}}</span>
   </button>
-  <button type="button" class="wod-combat-btn" data-action="drawer" data-drawer="powers">
+  <button type="button" class="wod-combat-btn" data-action="drawer" data-drawer="powers"
+    data-tooltip="{{localize 'WOD5E_HUD.Drawer.Powers'}}"
+    data-tooltip-direction="UP"
+    aria-label="{{localize 'WOD5E_HUD.Drawer.Powers'}}">
     <i class="fa-solid fa-wand-sparkles"></i>
     <span>{{localize "WOD5E_HUD.Drawer.Powers"}}</span>
   </button>
@@ -34,6 +62,22 @@
   >
     <i class="fa-solid fa-gear"></i>
   </button>
+
+  {{#if resource}}
+    <div
+      class="wod-combat-resource wod-resource wod-resource--{{resource.kind}}"
+      style="--wod-fill: {{resource.fill}}%;"
+    >
+      <div
+        class="wod-gauge {{#if resource.pulse}}is-pulsing{{/if}}"
+        data-tooltip="{{resource.label}} {{resource.value}}/{{resource.max}}"
+      >
+        <span class="wod-gauge-base"></span>
+        <span class="wod-gauge-fill"></span>
+        <span class="wod-resource-count">{{resource.value}}</span>
+      </div>
+    </div>
+  {{/if}}
 
   <div class="wod-drawer-slot"></div>
 </div>

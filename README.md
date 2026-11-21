@@ -6,52 +6,49 @@ used rolls and information into a small floating interface.
 
 ## Features
 
-The stable manifest URL is:
+### Combat HUD
 
-```text
-https://github.com/estevamdev/wod5e-hud/releases/latest/download/module.json
-```
+- Optional bar anchored **5 px above the macro hotbar** and horizontally
+  centered on it.
+- Starts with the **portrait**: vitality ring around it, “Health” tooltip and
+  double-click to open the actor sheet.
+- Then search (icon only), quick actions, attributes, skills (three columns),
+  disciplines/powers and the settings gear.
+- Ends with the **hunger indicator** (vampires only), using the same blood
+  palette as the vitality ring.
+- The **XP shortcut is currently hidden** while the experience flow is still
+  being worked on. Set `SHOW_XP` to `true` in `scripts/core/constants.mjs` to
+  re-enable it.
+- When the player enables **Hide the macro hotbar**, the macro bar and its page
+  arrows are hidden and the combat HUD takes their exact place, keeping the same
+  bottom margin.
 
-### Character HUD
+### Vitality ring
 
-- **Single compact row**: circular portrait, segmented vitality ring, hunger
-  indicator (vampires only) and the settings access.
-- **Vitality ring** uses the same blood-red palette as the hunger gauge. It
-  follows the system rule for superficial damage (half a health level per point)
+- Uses the same blood-red palette as the hunger gauge.
+- Follows the system rule for superficial damage (half a health level per point)
   and has no numeric counter.
-- **Hover hints**: the ring shows “Health”; the portrait shows “Double-click to
-  open the sheet”.
-- **Double-click the portrait** to open the actor sheet.
-- **Drag anywhere** on the HUD to move it. The position is saved per client.
-- The HUD is **transparent** by default; only the portrait, ring and hunger
-  indicator are drawn.
 
 ### Hunger indicator
 
-- Displayed **only for vampires** (blood drop).
+- Displayed **only for vampires** (blood drop), at the end of the combat bar.
 - Filled from the bottom with the same blood colors used by the system.
 - The numeric value is centered inside the icon, above the fill.
 - Empty area uses an obsidian base with a dark/red glow for readability on any
   scene background.
 
-### Combat HUD
-
-- Optional bar positioned **5 px above the macro hotbar**.
-- Contents: search (icon only), quick actions, attributes, skills (three
-  columns), disciplines/powers and XP (when greater than zero).
-- The **settings gear** lives at the end of the combat bar. When the combat HUD
-  is hidden, the gear moves to the character HUD, so settings remain accessible.
-
 ### Quick actions
 
-| Category      | Actions                                    |
-| ------------- | ------------------------------------------ |
-| **Vitae**     | Rouse Check (Blush of Life); Resist Frenzy |
-| **Willpower** | Willpower Test                             |
-| **Humanity**  | Remorse Test                               |
+| Category      | Actions                                                      |
+| ------------- | ------------------------------------------------------------ |
+| **Vitae**     | Rouse Check (Blood Check); Feeding (predator); Resist Frenzy |
+| **Willpower** | Willpower Test                                               |
+| **Humanity**  | Remorse Test                                                 |
 
-Rouse and Frenzy open a confirmation prompt before rolling. The quick actions
-use the native `wod5e` system flows (dialogs, rolls and actor updates).
+Rouse and Frenzy open a confirmation prompt before rolling. Feeding rolls the
+actor's predator type through the system roller, so it appears only for
+vampires that have a predator type with a dicepool. The quick actions use the
+native `wod5e` system flows (dialogs, rolls and actor updates).
 
 ### Search
 
@@ -66,13 +63,11 @@ use the native `wod5e` system flows (dialogs, rolls and actor updates).
 The gear opens a window with two tabs:
 
 - **Settings**
-  - **Character HUD (mini HUD)** — show/hide the portrait, vitality and hunger.
-  - **Combat HUD** — show/hide the action bar.
-  - **Reset position** — move the HUD back to the bottom-left corner.
+  - **Combat HUD** — show/hide the bar (portrait, vitality, hunger and actions).
+  - **Hide the macro hotbar** — hides the macro bar and its page arrows; the
+    combat HUD takes its place. Stored per client.
 - **Game Master**
-  - Allow players to toggle the character HUD.
   - Allow players to toggle the combat HUD.
-  - **Enable character HUD for all players** (overrides their local option).
   - **Enable combat HUD for all players** (overrides their local option).
 
 World permissions are stored as world settings and can also be edited from
@@ -113,13 +108,11 @@ Copy this folder to `Data/modules/wod5e-hud` and enable the module.
 
 | Shortcut | Action                   |
 | -------- | ------------------------ |
-| `Alt+H`  | Toggle the character HUD |
 | `Alt+C`  | Toggle the combat HUD    |
 | `Alt+F`  | Open the search palette  |
 | `Alt+S`  | Open the settings window |
 
-- Drag the character HUD anywhere on the screen.
-- Double-click the portrait to open the sheet.
+- Double-click the portrait to open the actor sheet.
 - Hover the ring for the “Health” tooltip and the portrait for the sheet hint.
 - Click the gear to configure the HUD.
 
@@ -153,13 +146,32 @@ The compiled `styles/wod5e-hud.css` is **committed** and required by Foundry.
 
 ### Release process
 
-1. Update `version` in `module.json` (and the README if needed) on `dev`.
-2. Merge `dev` into `main`.
-3. Create and push a tag `vX.Y.Z` (the tag must match `module.json.version`).
-4. GitHub Actions:
-   - builds the CSS with Tailwind;
-   - checks the version against the tag;
+1. Update `version` in `module.json` and write the release notes in
+   `RELEASE_NOTES.md` on `dev`.
+2. Run `npm run build` in `build/` and commit the compiled
+   `styles/wod5e-hud.css`.
+3. Run `build/publish-main.sh` from `dev` to copy the module files into `main`.
+   The toolchain stays on `dev`, so there is no branch merge.
+4. Create and push a tag `vX.Y.Z` on `dev` (the tag must match
+   `module.json.version`).
+5. GitHub Actions:
+   - builds the CSS with Tailwind,
+   - checks the version against the tag,
    - packages `module.zip` (module files at the root, excluding `build/` and
-     repository files);
-   - generates the release `module.json` with `url`, `manifest` and `download`;
-   - publishes the GitHub Release with `module.json` and `module.zip`.
+     repository files),
+   - generates the release `module.json` with `url`, `manifest` and `download`,
+   - publishes the GitHub Release using `RELEASE_NOTES.md` as the description.
+
+The stable manifest URL is:
+
+```text
+https://github.com/estevamdev/wod5e-hud/releases/latest/download/module.json
+```
+
+The `download` field in the release manifest points to the versioned zip:
+
+```text
+https://github.com/estevamdev/wod5e-hud/releases/download/vX.Y.Z/module.zip
+```
+
+No pre-release channel is used: every published release is production.

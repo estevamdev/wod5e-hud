@@ -6,16 +6,6 @@ let activeHud = null
 let api = null
 
 function registerKeybindings() {
-  game.keybindings.register(MODULE_ID, 'toggleHud', {
-    name: 'WOD5E_HUD.Toggle',
-    hint: 'WOD5E_HUD.ToggleHint',
-    editable: [{ key: 'KeyH', modifiers: ['Alt'] }],
-    onDown: () => {
-      api?.toggle()
-      return true
-    }
-  })
-
   game.keybindings.register(MODULE_ID, 'openSearch', {
     name: 'WOD5E_HUD.Search.Title',
     editable: [{ key: 'KeyF', modifiers: ['Alt'] }],
@@ -66,7 +56,6 @@ Hooks.once('ready', async () => {
 
     api = {
       hud,
-      toggle: (force) => hud.toggleEnabled(force),
       toggleCombat: (force) => hud.toggleCombatHud(force),
       refresh: () => hud.refresh({ animate: true }),
       openSearch: () => hud.openSearch(),
@@ -113,12 +102,10 @@ Hooks.once('ready', async () => {
     Hooks.on('updateSetting', (setting) => {
       if (!setting?.key?.startsWith(`${MODULE_ID}.`)) return
       const key = setting.key.slice(MODULE_ID.length + 1)
-      const keys = ['enabled', 'combatHud', 'enablePlayerHudForAll', 'enablePlayerCombatForAll']
+      const keys = ['combatHud', 'hideHotbar', 'enablePlayerCombatForAll']
       if (!keys.includes(key)) return
       hud.applyPreferences()
-      if (key === 'enablePlayerHudForAll' || key === 'enablePlayerCombatForAll') {
-        hud.refreshSettingsApp()
-      }
+      if (key === 'enablePlayerCombatForAll') hud.refreshSettingsApp()
     })
 
     console.log(`${MODULE_TITLE} | ready`)

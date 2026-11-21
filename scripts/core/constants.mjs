@@ -4,6 +4,9 @@ export const ROOT_ID = 'wod5e-hud-root'
 export const COMBAT_ID = 'wod-combat-root'
 export const SEARCH_ID = 'wod5e-hud-search'
 
+// The XP shortcut stays hidden until the experience flow is finished (see README).
+export const SHOW_XP = false
+
 export const CREATURE_INFO = {
   vampire: {
     key: 'vampire',

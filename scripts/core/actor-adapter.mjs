@@ -1,4 +1,4 @@
-import { CATEGORY_ICONS, CATEGORY_LABELS, CREATURE_INFO } from './constants.mjs'
+import { CATEGORY_ICONS, CATEGORY_LABELS, CREATURE_INFO, SHOW_XP } from './constants.mjs'
 import { clamp, isOwner, localize, normalizeText, tokenName, tokenPortrait } from './utils.mjs'
 
 const API = () => globalThis.WOD5E
@@ -100,7 +100,7 @@ function buildXP(actor) {
   const remaining = Number(derived?.remainingXP ?? legacy?.value ?? 0)
   return {
     remaining,
-    show: remaining > 0
+    show: SHOW_XP && remaining > 0
   }
 }
 
@@ -402,13 +402,6 @@ export function buildStatus(actor, token) {
   }
 }
 
-export function buildContext(actor, token, settings) {
-  return {
-    ...buildStatus(actor, token),
-    dock: settings.dock ?? 'bottom-left'
-  }
-}
-
 export function buildAttributesDrawer(actor) {
   return {
     groups: buildAttributes(actor)
@@ -416,9 +409,10 @@ export function buildAttributesDrawer(actor) {
 }
 
 export function buildSkillsDrawer(actor, filter) {
+  const trainedOnly = filter !== 'all'
   return {
     groups: buildSkills(actor, filter),
-    trainedOnly: filter !== 'all'
+    toggleLabel: trainedOnly ? 'WOD5E_HUD.SkillsFilter.All' : 'WOD5E_HUD.SkillsFilter.Trained'
   }
 }
 
@@ -442,24 +436,39 @@ export function buildActionsDrawer(actor) {
   const isVampire = type === 'vampire'
   const isGhoul = type === 'ghoul'
   const hasWillpower = Boolean(actor?.system?.willpower)
+  const predator = isVampire
+    ? actor?.items?.find?.((item) => item.type === 'predatorType')
+    : null
+  const canFeed = Boolean(predator?.system?.dicepool)
   const groups = []
 
   if (isVampire) {
+    const actions = [
+      {
+        id: 'rouse',
+        label: localize('WOD5E_HUD.Actions.Rouse', 'Rouse Check'),
+        icon: 'fa-solid fa-droplet'
+      }
+    ]
+
+    if (canFeed) {
+      actions.push({
+        id: 'feeding',
+        label: localize('WOD5E_HUD.Actions.Feeding', 'Feeding'),
+        icon: 'fa-solid fa-dice-d10'
+      })
+    }
+
+    actions.push({
+      id: 'frenzy',
+      label: localize('WOD5E_HUD.Actions.ResistFrenzy', 'Resist Frenzy'),
+      icon: 'fa-solid fa-fire'
+    })
+
     groups.push({
       id: 'vitae',
       label: localize('WOD5E_HUD.Actions.Vitae', 'Vitae'),
-      actions: [
-        {
-          id: 'rouse',
-          label: localize('WOD5E_HUD.Actions.Rouse', 'Rouse Check'),
-          icon: 'fa-solid fa-droplet'
-        },
-        {
-          id: 'frenzy',
-          label: localize('WOD5E_HUD.Actions.ResistFrenzy', 'Resist Frenzy'),
-          icon: 'fa-solid fa-fire'
-        }
-      ]
+      actions
     })
   }
 
