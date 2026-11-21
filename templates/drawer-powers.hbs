@@ -9,7 +9,7 @@
   <div class="wod-power-groups">
     {{#each groups}}
       <section class="wod-power-group {{#if this.open}}is-open{{/if}}">
-        <button class="wod-power-header" data-action="toggle-power-group" data-group="{{this.id}}">
+        <button class="wod-power-header" data-action="toggle-power-group" data-group="{{this.id}}" data-tooltip="{{this.label}}">
           <span class="wod-power-title">{{this.label}}</span>
           <span class="wod-dots">
             {{#each this.dots}}<i class="{{#if this}}is-filled{{/if}}"></i>{{/each}}
@@ -19,7 +19,7 @@
 
         <div class="wod-power-body">
           {{#each this.items}}
-            <button class="wod-power-row" data-action="use-item" data-item-id="{{this.id}}">
+            <button class="wod-power-row" data-action="use-item" data-item-id="{{this.id}}" data-tooltip="{{this.name}}">
               <img class="wod-power-icon" src="{{this.img}}" alt="">
               <span class="wod-power-name">{{this.name}}</span>
               <span class="wod-power-meta">

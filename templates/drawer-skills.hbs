@@ -14,7 +14,7 @@
       <section class="wod-skill-group">
         <h4>{{this.label}}</h4>
         {{#each this.items}}
-          <button class="wod-row wod-row--skill" data-action="roll-skill" data-key="{{this.key}}">
+          <button class="wod-row wod-row--skill" data-action="roll-skill" data-key="{{this.key}}" data-tooltip="{{this.label}}">
             <span class="wod-row-name">{{this.label}}</span>
             <span class="wod-row-value">{{this.value}}</span>
             <span class="wod-dots">
