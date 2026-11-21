@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   prefix: 'wod-',
-  important: '#wod5e-hud-root',
+  important: '#wod-combat-root',
   corePlugins: {
     preflight: false
   },

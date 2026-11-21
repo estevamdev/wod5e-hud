@@ -2,7 +2,6 @@ import { COMBAT_ID, ROOT_ID, SEARCH_ID } from '../core/constants.mjs'
 import {
   buildActionsDrawer,
   buildAttributesDrawer,
-  buildContext,
   buildPowersDrawer,
   buildSearchResults,
   buildSkillsDrawer,
@@ -94,13 +93,12 @@ export class Wod5eHud {
     this.actor = actor
     this.token = token
 
-    const context = buildContext(actor, token)
+    const context = buildStatus(actor, token)
     this.context = context
     if (this.combatVisible === null) {
       this.combatVisible = getSetting('combatHud', true)
     }
 
-    this.combatRoot.dataset.creature = context.creature.key
     this.combatRoot.style.setProperty('--wod-accent', context.accent)
 
     await this.renderCombat()

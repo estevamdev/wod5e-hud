@@ -87,4 +87,4 @@ jobs:
           files: |
             module.json
             module.zip
-          generate_release_notes: true
+          body_path: RELEASE_NOTES.md

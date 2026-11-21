@@ -163,16 +163,21 @@ The compiled `styles/wod5e-hud.css` is **committed** and required by Foundry.
 
 ### Release process
 
-1. Update `version` in `module.json` (and the README if needed) on `dev`.
-2. Merge `dev` into `main`.
-3. Create and push a tag `vX.Y.Z` (the tag must match `module.json.version`).
-4. GitHub Actions:
-   - builds the CSS with Tailwind;
-   - checks the version against the tag;
+1. Update `version` in `module.json` and write the release notes in
+   `RELEASE_NOTES.md` on `dev`.
+2. Run `npm run build` in `build/` and commit the compiled
+   `styles/wod5e-hud.css`.
+3. Run `build/publish-main.sh` from `dev` to copy the module files into `main`.
+   The toolchain stays on `dev`, so there is no branch merge.
+4. Create and push a tag `vX.Y.Z` on `dev` (the tag must match
+   `module.json.version`).
+5. GitHub Actions:
+   - builds the CSS with Tailwind,
+   - checks the version against the tag,
    - packages `module.zip` (module files at the root, excluding `build/` and
-     repository files);
-   - generates the release `module.json` with `url`, `manifest` and `download`;
-   - publishes the GitHub Release with `module.json` and `module.zip`.
+     repository files),
+   - generates the release `module.json` with `url`, `manifest` and `download`,
+   - publishes the GitHub Release using `RELEASE_NOTES.md` as the description.
 
 The stable manifest URL is:
 

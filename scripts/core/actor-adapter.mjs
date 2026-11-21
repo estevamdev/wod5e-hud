@@ -402,10 +402,6 @@ export function buildStatus(actor, token) {
   }
 }
 
-export function buildContext(actor, token) {
-  return buildStatus(actor, token)
-}
-
 export function buildAttributesDrawer(actor) {
   return {
     groups: buildAttributes(actor)
