@@ -1,7 +1,5 @@
 {
   "WOD5E_HUD": {
-    "Toggle": "Toggle WOD5E HUD",
-    "ToggleHint": "Show or hide the WOD5E HUD.",
     "Creature": {
       "Vampire": "Vampire",
       "Ghoul": "Ghoul",
@@ -77,24 +75,17 @@
     "Settings": {
       "Title": "WOD5E HUD Settings",
       "Subtitle": "Customize the HUD for this client.",
-      "Enabled": "Character HUD (mini HUD)",
-      "EnabledHint": "Shows the avatar, vitality and hunger. The combat HUD has its own option.",
       "CombatHud": "Combat HUD",
       "CombatHudHint": "Show the action bar above the hotbar.",
       "HideHotbar": "Hide the macro hotbar",
       "HideHotbarHint": "Hides the macro bar and its page arrows; the combat HUD takes its place.",
-      "AllowHudToggle": "Allow players to toggle the character HUD",
-      "AllowHudToggleHint": "When off, players cannot show or hide the character HUD.",
       "AllowCombatToggle": "Allow players to toggle the combat HUD",
       "AllowCombatToggleHint": "When off, players cannot show or hide the combat bar.",
       "Locked": "Locked by the GM.",
       "Unavailable": "Settings are unavailable.",
-      "ResetPosition": "Reset position",
       "TabPlayer": "Settings",
       "TabGM": "Game Master",
       "GMHint": "These permissions control what players can change in their HUD.",
-      "EnableHudForAll": "Enable character HUD for all players",
-      "EnableHudForAllHint": "Forces the character HUD on for every player, overriding their local option.",
       "EnableCombatForAll": "Enable combat HUD for all players",
       "EnableCombatForAllHint": "Forces the combat HUD on for every player, overriding their local option.",
       "ForcedByGM": "Enabled by the Game Master."

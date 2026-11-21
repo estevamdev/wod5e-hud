@@ -1,4 +1,20 @@
 <div class="wod-combat-bar">
+  <button
+    type="button"
+    class="wod-combat-portrait"
+    data-action="open-sheet"
+    data-tooltip="{{localize 'WOD5E_HUD.OpenSheetHint'}}"
+    aria-label="{{name}}"
+  >
+    <span
+      class="wod-health-ring"
+      style="--wod-health-ratio: {{health.percent}}%;"
+      data-tooltip="{{localize 'WOD5E_HUD.Health'}}"
+      aria-label="{{localize 'WOD5E_HUD.Health'}}"
+    ></span>
+    <img class="wod-portrait" src="{{portrait}}" alt="{{name}}" draggable="false">
+  </button>
+
   <button type="button" class="wod-combat-btn wod-combat-btn--icon" data-action="search" title="{{localize 'WOD5E_HUD.Search.Title'}}" aria-label="{{localize 'WOD5E_HUD.Search.Title'}}">
     <i class="fa-solid fa-magnifying-glass"></i>
   </button>
@@ -34,6 +50,22 @@
   >
     <i class="fa-solid fa-gear"></i>
   </button>
+
+  {{#if resource}}
+    <div
+      class="wod-combat-resource wod-resource wod-resource--{{resource.kind}}"
+      style="--wod-fill: {{resource.fill}}%;"
+    >
+      <div
+        class="wod-gauge {{#if resource.pulse}}is-pulsing{{/if}}"
+        data-tooltip="{{resource.label}} {{resource.value}}/{{resource.max}}"
+      >
+        <span class="wod-gauge-base"></span>
+        <span class="wod-gauge-fill"></span>
+        <span class="wod-resource-count">{{resource.value}}</span>
+      </div>
+    </div>
+  {{/if}}
 
   <div class="wod-drawer-slot"></div>
 </div>

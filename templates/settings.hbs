@@ -14,22 +14,6 @@
   </nav>
 
   <section class="wod-settings-panel" data-tab-panel="player">
-    <label class="wod-settings-row {{#unless canToggleHud}}is-locked{{/unless}}">
-      <span class="wod-settings-copy">
-        <strong>{{localize "WOD5E_HUD.Settings.Enabled"}}</strong>
-        <small>{{localize "WOD5E_HUD.Settings.EnabledHint"}}</small>
-        {{#unless canToggleHud}}
-          <small class="wod-settings-lock">{{localize "WOD5E_HUD.Settings.Locked"}}</small>
-        {{/unless}}
-      </span>
-      <input
-        type="checkbox"
-        data-setting="enabled"
-        {{#if enabled}}checked{{/if}}
-        {{#unless canToggleHud}}disabled{{/unless}}
-      >
-    </label>
-
     <label class="wod-settings-row {{#unless canToggleCombat}}is-locked{{/unless}}">
       <span class="wod-settings-copy">
         <strong>{{localize "WOD5E_HUD.Settings.CombatHud"}}</strong>
@@ -58,27 +42,11 @@
       >
     </label>
 
-    <button type="button" class="wod-settings-btn" data-action="reset-position">
-      <i class="fa-solid fa-location-crosshairs"></i>
-      {{localize "WOD5E_HUD.Settings.ResetPosition"}}
-    </button>
   </section>
 
   {{#if isGM}}
     <section class="wod-settings-panel" data-tab-panel="gm">
       <p class="wod-settings-note">{{localize "WOD5E_HUD.Settings.GMHint"}}</p>
-
-      <label class="wod-settings-row">
-        <span class="wod-settings-copy">
-          <strong>{{localize "WOD5E_HUD.Settings.EnableHudForAll"}}</strong>
-          <small>{{localize "WOD5E_HUD.Settings.EnableHudForAllHint"}}</small>
-        </span>
-        <input
-          type="checkbox"
-          data-world-setting="enablePlayerHudForAll"
-          {{#if enableHudForAll}}checked{{/if}}
-        >
-      </label>
 
       <label class="wod-settings-row">
         <span class="wod-settings-copy">
@@ -89,18 +57,6 @@
           type="checkbox"
           data-world-setting="enablePlayerCombatForAll"
           {{#if enableCombatForAll}}checked{{/if}}
-        >
-      </label>
-
-      <label class="wod-settings-row">
-        <span class="wod-settings-copy">
-          <strong>{{localize "WOD5E_HUD.Settings.AllowHudToggle"}}</strong>
-          <small>{{localize "WOD5E_HUD.Settings.AllowHudToggleHint"}}</small>
-        </span>
-        <input
-          type="checkbox"
-          data-world-setting="allowPlayerHudToggle"
-          {{#if allowHudToggle}}checked{{/if}}
         >
       </label>
 

@@ -402,11 +402,8 @@ export function buildStatus(actor, token) {
   }
 }
 
-export function buildContext(actor, token, settings) {
-  return {
-    ...buildStatus(actor, token),
-    dock: settings.dock ?? 'bottom-left'
-  }
+export function buildContext(actor, token) {
+  return buildStatus(actor, token)
 }
 
 export function buildAttributesDrawer(actor) {

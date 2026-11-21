@@ -8,7 +8,6 @@ import {
   buildSkillsDrawer,
   buildStatus
 } from '../core/actor-adapter.mjs'
-import { applyDock, enableDrag } from '../core/docking.mjs'
 import {
   clamp,
   debounce,
@@ -20,9 +19,7 @@ import {
 import { rollAttribute, rollItem, rollSkill, spendXP, useItem } from '../core/roll-helpers.mjs'
 
 const TEMPLATES = {
-  hud: 'modules/wod5e-hud/templates/hud.hbs',
   combatHud: 'modules/wod5e-hud/templates/combat-hud.hbs',
-  status: 'modules/wod5e-hud/templates/status-core.hbs',
   attributes: 'modules/wod5e-hud/templates/drawer-attributes.hbs',
   skills: 'modules/wod5e-hud/templates/drawer-skills.hbs',
   powers: 'modules/wod5e-hud/templates/drawer-powers.hbs',
@@ -38,7 +35,6 @@ async function render(template, context) {
 
 export class Wod5eHud {
   constructor() {
-    this.root = null
     this.combatRoot = null
     this.searchRoot = null
     this.actor = null
@@ -46,7 +42,6 @@ export class Wod5eHud {
     this.context = null
     this.combatDrawer = null
     this.searchState = { query: '', results: null, selected: 0 }
-    this.dragCleanup = null
     this._renderToken = null
     this._statusRefresh = debounce(() => this.updateStatus(), 80)
     this._animateTimer = null
@@ -59,14 +54,10 @@ export class Wod5eHud {
   }
 
   async init() {
+    // Remove leftovers from older versions that used a separate mini HUD.
     document.getElementById(ROOT_ID)?.remove()
     document.getElementById(COMBAT_ID)?.remove()
     document.getElementById(SEARCH_ID)?.remove()
-
-    const root = document.createElement('div')
-    root.id = ROOT_ID
-    document.body.append(root)
-    this.root = root
 
     this.initCombat()
     this.#applyHotbarVisibility()
@@ -103,57 +94,30 @@ export class Wod5eHud {
     this.actor = actor
     this.token = token
 
-    const settings = {
-      dock: getSetting('dock', 'bottom-left')
-    }
-    const context = buildContext(actor, token, settings)
+    const context = buildContext(actor, token)
     this.context = context
     if (this.combatVisible === null) {
       this.combatVisible = getSetting('combatHud', true)
     }
 
-    // The character HUD (mini HUD) has its own toggle; the combat HUD is independent.
-    this.root.style.display = this.#characterEnabled() ? '' : 'none'
-    this.root.dataset.creature = context.creature.key
-    this.root.style.setProperty('--wod-accent', context.accent)
-    applyDock(this.root, context.dock, getSetting('freePosition', {}))
+    this.combatRoot.dataset.creature = context.creature.key
+    this.combatRoot.style.setProperty('--wod-accent', context.accent)
 
-    this.root.innerHTML = await render(TEMPLATES.hud, context)
-    await this.#renderStatus()
-    this.#bindActions(this.root)
-    this.#bindDrag()
     await this.renderCombat()
     this.positionCombat()
     if (animate) this.#animate()
-  }
-
-  #canToggleHud() {
-    return Boolean(game.user?.isGM) || Boolean(getSetting('allowPlayerHudToggle', true))
   }
 
   #canToggleCombat() {
     return Boolean(game.user?.isGM) || Boolean(getSetting('allowPlayerCombatToggle', true))
   }
 
-  #worldHudForced() {
-    return Boolean(getSetting('enablePlayerHudForAll', false))
-  }
-
   #worldCombatForced() {
     return Boolean(getSetting('enablePlayerCombatForAll', false))
   }
 
-  #characterEnabled() {
-    return this.#worldHudForced() || Boolean(getSetting('enabled', true))
-  }
-
   #combatEnabled() {
     return this.#worldCombatForced() || (this.combatVisible ?? getSetting('combatHud', true))
-  }
-
-  #syncGearFallback() {
-    const combatShown = this.#combatEnabled() && Boolean(this.actor)
-    this.root?.classList.toggle('wod-combat-off', !combatShown)
   }
 
   async renderCombat() {
@@ -166,10 +130,10 @@ export class Wod5eHud {
     this.combatRoot.style.display = ''
     this.combatRoot.style.setProperty('--wod-accent', this.context?.accent ?? '#8a0303')
     this.combatRoot.innerHTML = await render(TEMPLATES.combatHud, {
+      ...this.context,
       xp: this.context?.xp ?? { show: false, remaining: 0 }
     })
     this.#bindActions(this.combatRoot)
-    this.#syncGearFallback()
     this.positionCombat()
     requestAnimationFrame(() => this.positionCombat())
 
@@ -276,7 +240,6 @@ export class Wod5eHud {
   hideCombat() {
     if (this.combatRoot) this.combatRoot.style.display = 'none'
     this.closeDrawer()
-    this.#syncGearFallback()
   }
 
   async updateStatus() {
@@ -284,48 +247,52 @@ export class Wod5eHud {
 
     const status = buildStatus(this.actor, this.token)
     this.context = { ...(this.context ?? {}), ...status }
-    await this.#renderStatus()
+    this.#renderStatus()
   }
 
-  async #renderStatus() {
-    const slot = this.root?.querySelector('.wod-status-slot')
-    if (!slot) return
-    slot.innerHTML = await render(TEMPLATES.status, this.context)
-    this.#bindActions(this.root)
+  #renderStatus() {
+    const root = this.combatRoot
+    const context = this.context
+    if (!root || !context) return
+
+    root.style.setProperty('--wod-accent', context.accent)
+
+    const portrait = root.querySelector('.wod-portrait')
+    if (portrait) {
+      if (portrait.getAttribute('src') !== context.portrait) portrait.src = context.portrait
+      portrait.alt = context.name
+    }
+
+    const ring = root.querySelector('.wod-health-ring')
+    ring?.style.setProperty('--wod-health-ratio', `${context.health.percent}%`)
+
+    const resource = root.querySelector('.wod-combat-resource')
+    if (Boolean(context.resource) !== Boolean(resource)) {
+      this.renderCombat().catch((error) =>
+        console.error('[WOD5E HUD] combat re-render failed', error)
+      )
+      return
+    }
+
+    if (resource && context.resource) {
+      resource.style.setProperty('--wod-fill', `${context.resource.fill}%`)
+      const gauge = resource.querySelector('.wod-gauge')
+      if (gauge) {
+        gauge.classList.toggle('is-pulsing', Boolean(context.resource.pulse))
+        gauge.dataset.tooltip = `${context.resource.label} ${context.resource.value}/${context.resource.max}`
+      }
+      const count = resource.querySelector('.wod-resource-count')
+      if (count) count.textContent = String(context.resource.value)
+    }
   }
 
   hide() {
-    if (this.root) this.root.style.display = 'none'
     this.hideCombat()
     this.closeSearch()
     this.actor = null
     this.token = null
     this.context = null
     this._renderToken = null
-  }
-
-  toggleEnabled(force) {
-    if (this.#worldHudForced() && typeof force !== 'boolean') {
-      ui.notifications?.info?.(
-        localize('WOD5E_HUD.Settings.ForcedByGM', 'Enabled by the Game Master.')
-      )
-      return true
-    }
-
-    if (typeof force !== 'boolean' && !this.#canToggleHud()) {
-      ui.notifications?.warn?.(localize('WOD5E_HUD.Settings.Locked', 'Locked by the GM.'))
-      return getSetting('enabled', true)
-    }
-
-    const next = typeof force === 'boolean' ? force : !getSetting('enabled', true)
-    if (this.root) this.root.style.display = next ? '' : 'none'
-    void setSetting('enabled', next)
-    if (next && this.actor) {
-      this.refresh({ animate: true }).catch((error) =>
-        console.error('[WOD5E HUD] refresh failed', error)
-      )
-    }
-    return next
   }
 
   toggleCombatHud(force) {
@@ -345,7 +312,7 @@ export class Wod5eHud {
     this.combatVisible = next
     if (next) {
       this.renderCombat().catch((error) =>
-        console.error('[EMO HUD] combat render failed', error)
+        console.error('[WOD5E HUD] combat render failed', error)
       )
     } else {
       this.hideCombat()
@@ -360,16 +327,6 @@ export class Wod5eHud {
     await this.refresh({ animate: true })
   }
 
-  async resetPosition() {
-    if (!this.root) return
-    this.root.classList.remove('wod-dock-free')
-    this.root.style.left = ''
-    this.root.style.top = ''
-    applyDock(this.root, 'bottom-left', { x: null, y: null })
-    void setSetting('dock', 'bottom-left')
-    void setSetting('freePosition', { x: null, y: null })
-  }
-
   refreshSettingsApp() {
     this.settingsApp?.render?.()
   }
@@ -379,8 +336,7 @@ export class Wod5eHud {
       try {
         const { Wod5eSettingsApp } = await import('./settings-app.mjs')
         this.settingsApp = new Wod5eSettingsApp({
-          onChange: () => this.applyPreferences(),
-          onResetPosition: () => this.resetPosition()
+          onChange: () => this.applyPreferences()
         })
       } catch (error) {
         console.error('[WOD5E HUD] failed to open settings', error)
@@ -395,32 +351,16 @@ export class Wod5eHud {
   }
 
   #animate() {
-    if (!this.root) return
+    const root = this.combatRoot
+    if (!root) return
     if (this._animateTimer) clearTimeout(this._animateTimer)
-    this.root.classList.remove('wod-animating')
-    void this.root.offsetWidth
-    this.root.classList.add('wod-animating')
+    root.classList.remove('wod-animating')
+    void root.offsetWidth
+    root.classList.add('wod-animating')
     this._animateTimer = setTimeout(() => {
-      this.root?.classList.remove('wod-animating')
+      root.classList.remove('wod-animating')
       this._animateTimer = null
     }, 260)
-  }
-
-  #bindDrag() {
-    this.dragCleanup?.()
-    this.dragCleanup = null
-    if (!this.root) return
-    const handle = this.root.querySelector('.wod-shell')
-    if (!handle) return
-    this.dragCleanup = enableDrag(
-      this.root,
-      handle,
-      (position) => {
-        setSetting('dock', 'free')
-        setSetting('freePosition', position)
-      },
-      { ignore: 'button' }
-    )
   }
 
   async #dispatchAction(action, element) {
@@ -597,14 +537,9 @@ export class Wod5eHud {
     })
   }
 
-  #wasDragged() {
-    const draggedAt = Number(this.root?.dataset.wodDraggedAt ?? 0)
-    return Boolean(draggedAt) && performance.now() - draggedAt < 350
-  }
-
   #onActionClick = async (event) => {
     const element = event.currentTarget
-    if (!element || this.#wasDragged()) return
+    if (!element) return
     const action = element.dataset.action
 
     event.preventDefault()
@@ -622,7 +557,6 @@ export class Wod5eHud {
   }
 
   #onSheetDoubleClick = (event) => {
-    if (this.#wasDragged()) return
     event.preventDefault()
     event.stopPropagation()
     this.actor?.sheet?.render(true)
@@ -637,7 +571,7 @@ export class Wod5eHud {
 
   #onDocumentPointerDown = (event) => {
     if (!this.combatDrawer) return
-    if (this.root?.contains(event.target) || this.combatRoot?.contains(event.target)) return
+    if (this.combatRoot?.contains(event.target)) return
     this.closeDrawer()
   }
 
@@ -874,16 +808,14 @@ export class Wod5eHud {
     this.closeDrawer()
     this.settingsApp?.close?.()
     this.settingsApp = null
-    this.dragCleanup?.()
-    this.dragCleanup = null
     this._hotbarObserver?.disconnect()
     this._hotbarObserver = null
     this._hotbarEl = null
+    this.#syncHotbarVisibility(false)
+    document.body?.classList.remove('wod-hide-hotbar')
     document.removeEventListener('pointerdown', this.#onDocumentPointerDown, true)
     document.removeEventListener('keydown', this.#onGlobalKeyDown, true)
     window.removeEventListener('resize', this.#onResize)
-    this.root?.remove()
-    this.root = null
     this.combatRoot?.remove()
     this.combatRoot = null
     this.actor = null

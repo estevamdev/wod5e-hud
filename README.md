@@ -6,41 +6,36 @@ used rolls and information into a small floating interface.
 
 ## Features
 
-### Character HUD
+### Combat HUD
 
-- **Single compact row**: circular portrait, segmented vitality ring, hunger
-  indicator (vampires only) and the settings access.
-- **Vitality ring** uses the same blood-red palette as the hunger gauge. It
-  follows the system rule for superficial damage (half a health level per point)
+- Optional bar anchored **5 px above the macro hotbar** and horizontally
+  centered on it.
+- Starts with the **portrait**: vitality ring around it, “Health” tooltip and
+  double-click to open the actor sheet.
+- Then search (icon only), quick actions, attributes, skills (three columns),
+  disciplines/powers and the settings gear.
+- Ends with the **hunger indicator** (vampires only), using the same blood
+  palette as the vitality ring.
+- The **XP shortcut is currently hidden** while the experience flow is still
+  being worked on. Set `SHOW_XP` to `true` in `scripts/core/constants.mjs` to
+  re-enable it.
+- When the player enables **Hide the macro hotbar**, the macro bar and its page
+  arrows are hidden and the combat HUD takes their exact place, keeping the same
+  bottom margin.
+
+### Vitality ring
+
+- Uses the same blood-red palette as the hunger gauge.
+- Follows the system rule for superficial damage (half a health level per point)
   and has no numeric counter.
-- **Hover hints**: the ring shows “Health”; the portrait shows “Double-click to
-  open the sheet”.
-- **Double-click the portrait** to open the actor sheet.
-- **Drag anywhere** on the HUD to move it. The position is saved per client.
-- The HUD is **transparent** by default; only the portrait, ring and hunger
-  indicator are drawn.
 
 ### Hunger indicator
 
-- Displayed **only for vampires** (blood drop).
+- Displayed **only for vampires** (blood drop), at the end of the combat bar.
 - Filled from the bottom with the same blood colors used by the system.
 - The numeric value is centered inside the icon, above the fill.
 - Empty area uses an obsidian base with a dark/red glow for readability on any
   scene background.
-
-### Combat HUD
-
-- Optional bar positioned **5 px above the macro hotbar** and horizontally
-  centered on it.
-- When the player enables **Hide the macro hotbar**, the bar is hidden and the
-  combat HUD takes its place at the bottom of the screen.
-- Contents: search (icon only), quick actions, attributes, skills (three
-  columns) and disciplines/powers.
-- The **XP shortcut is currently hidden** while the experience flow is still
-  being worked on. Set `SHOW_XP` to `true` in `scripts/core/constants.mjs` to
-  re-enable it.
-- The **settings gear** lives at the end of the combat bar. When the combat HUD
-  is hidden, the gear moves to the character HUD, so settings remain accessible.
 
 ### Quick actions
 
@@ -69,15 +64,11 @@ native `wod5e` system flows (dialogs, rolls and actor updates).
 The gear opens a window with two tabs:
 
 - **Settings**
-  - **Character HUD (mini HUD)** — show/hide the portrait, vitality and hunger.
-  - **Combat HUD** — show/hide the action bar.
+  - **Combat HUD** — show/hide the bar (portrait, vitality, hunger and actions).
   - **Hide the macro hotbar** — hides the macro bar and its page arrows; the
     combat HUD takes its place. Stored per client.
-  - **Reset position** — move the HUD back to the bottom-left corner.
 - **Game Master**
-  - Allow players to toggle the character HUD.
   - Allow players to toggle the combat HUD.
-  - **Enable character HUD for all players** (overrides their local option).
   - **Enable combat HUD for all players** (overrides their local option).
 
 World permissions are stored as world settings and can also be edited from
@@ -118,13 +109,11 @@ Copy this folder to `Data/modules/wod5e-hud` and enable the module.
 
 | Shortcut | Action                   |
 | -------- | ------------------------ |
-| `Alt+H`  | Toggle the character HUD |
 | `Alt+C`  | Toggle the combat HUD    |
 | `Alt+F`  | Open the search palette  |
 | `Alt+S`  | Open the settings window |
 
-- Drag the character HUD anywhere on the screen.
-- Double-click the portrait to open the sheet.
+- Double-click the portrait to open the actor sheet.
 - Hover the ring for the “Health” tooltip and the portrait for the sheet hint.
 - Click the gear to configure the HUD.
 

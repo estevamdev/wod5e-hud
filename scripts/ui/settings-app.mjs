@@ -30,18 +30,15 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
 
   activeTab = 'player'
 
-  constructor({ onChange, onResetPosition, ...options } = {}) {
+  constructor({ onChange, ...options } = {}) {
     super(options)
     this.onChange = onChange ?? (() => {})
-    this.onResetPosition = onResetPosition ?? (() => {})
   }
 
   async _prepareContext() {
     const data = await super._prepareContext()
     const isGM = Boolean(game.user?.isGM)
-    const worldHudForced = Boolean(getSetting('enablePlayerHudForAll', false))
     const worldCombatForced = Boolean(getSetting('enablePlayerCombatForAll', false))
-    const allowHudToggle = Boolean(getSetting('allowPlayerHudToggle', true))
     const allowCombatToggle = Boolean(getSetting('allowPlayerCombatToggle', true))
     const tabs = [
       {
@@ -64,14 +61,10 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       isGM,
       tabs,
       activeTab: this.activeTab,
-      enabled: worldHudForced || Boolean(getSetting('enabled', true)),
       combatHud: worldCombatForced || Boolean(getSetting('combatHud', true)),
       hideHotbar: Boolean(getSetting('hideHotbar', false)),
-      allowHudToggle,
       allowCombatToggle,
-      enableHudForAll: worldHudForced,
       enableCombatForAll: worldCombatForced,
-      canToggleHud: !worldHudForced && (isGM || allowHudToggle),
       canToggleCombat: !worldCombatForced && (isGM || allowCombatToggle)
     }
   }
@@ -103,13 +96,6 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
         this.render()
       })
     })
-
-    element
-      .querySelector('[data-action="reset-position"]')
-      ?.addEventListener('click', async (event) => {
-        event.preventDefault()
-        await this.onResetPosition()
-      })
 
     this.activateTab(this.activeTab)
   }

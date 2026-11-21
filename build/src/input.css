@@ -6,159 +6,50 @@
 /* Root & shell                                                              */
 /* ------------------------------------------------------------------------- */
 
-#wod5e-hud-root {
-  position: fixed;
-  z-index: calc(var(--z-index-window, 100) - 1);
-  top: auto;
-  right: auto;
-  bottom: auto;
-  left: auto;
-  --wod-accent: #8a0303;
-  pointer-events: auto;
-  color: #f4f4f5;
-  font-family: 'Inter', 'Signika', system-ui, sans-serif;
-}
-
-#wod5e-hud-root,
-#wod5e-hud-root *,
-#wod5e-hud-root *::before,
-#wod5e-hud-root *::after {
+#wod-combat-root,
+#wod-combat-root *,
+#wod-combat-root *::before,
+#wod-combat-root *::after {
   box-sizing: border-box;
 }
 
-#wod5e-hud-root button,
-#wod5e-hud-root input {
+#wod-combat-root {
+  color: #f4f4f5;
+  font-family: 'Inter', 'Signika', system-ui, sans-serif;
+  --wod-accent: #8a0303;
+}
+
+#wod-combat-root button,
+#wod-combat-root input {
   font: inherit;
   color: inherit;
 }
 
-#wod5e-hud-root button {
+#wod-combat-root button {
   border: 0;
   background: none;
   cursor: pointer;
 }
 
-#wod5e-hud-root button:focus-visible,
-#wod5e-hud-root input:focus-visible,
+#wod-combat-root button:focus-visible,
 #wod5e-hud-search button:focus-visible,
 #wod5e-hud-search input:focus-visible {
   outline: 2px solid #c8aa6e;
   outline-offset: 2px;
 }
 
-#wod5e-hud-root.wod-dock-top-left {
-  top: 96px;
-  left: 16px;
-}
-
-#wod5e-hud-root.wod-dock-top-right {
-  top: 96px;
-  right: 16px;
-}
-
-#wod5e-hud-root.wod-dock-bottom-left {
-  bottom: 84px;
-  left: 16px;
-}
-
-#wod5e-hud-root.wod-dock-bottom-right {
-  bottom: 84px;
-  right: 16px;
-}
-
-#wod5e-hud-root.wod-dock-free {
-  top: 120px;
-  left: 16px;
-}
-
-.wod-shell {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 6px;
-  width: max-content;
-  max-width: calc(100vw - 32px);
-  min-width: 0;
-  padding: 2px;
-  border: 0;
-  border-radius: 9999px;
-  background: transparent;
-  box-shadow: none;
-  cursor: grab;
-  pointer-events: auto;
-  touch-action: none;
-  user-select: none;
-  transition: filter 180ms ease;
-}
-
-.wod-shell:hover {
-  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--wod-accent) 45%, transparent));
-}
-
-.wod-gear-btn {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border: 1px solid rgba(161, 161, 170, 0.25);
-  border-radius: 50%;
-  background: rgba(9, 9, 11, 0.6);
-  color: #a1a1aa;
-  font-size: 0.66rem;
-  transition:
-    color 150ms ease,
-    background 150ms ease,
-    border-color 150ms ease,
-    box-shadow 150ms ease;
-}
-
-#wod5e-hud-root.wod-combat-off .wod-gear-btn {
-  display: inline-flex;
-}
-
-.wod-gear-btn i {
-  transition: transform 220ms ease;
-}
-
-.wod-gear-btn:hover {
-  border-color: color-mix(in srgb, var(--wod-accent) 55%, transparent);
-  background: rgba(220, 38, 38, 0.1);
-  box-shadow: 0 0 12px color-mix(in srgb, var(--wod-accent) 30%, transparent);
-  color: #fff;
-}
-
-.wod-gear-btn:hover i {
-  transform: rotate(45deg);
-}
-
-#wod5e-hud-root.wod-dragging .wod-shell {
-  cursor: grabbing;
-}
-
 /* ------------------------------------------------------------------------- */
-/* Compact HUD: portrait + vitality ring + hunger                            */
+/* Portrait + vitality ring + hunger (inside the combat bar)                 */
 /* ------------------------------------------------------------------------- */
 
-.wod-status-slot {
-  display: flex;
-  align-items: center;
-  flex: 0 0 auto;
-}
-
-.wod-hero {
-  display: flex;
-  align-items: center;
-  flex: 0 0 auto;
-}
-
-.wod-hero-portrait {
-  --wod-portrait-size: 72px;
+.wod-combat-portrait {
+  --wod-portrait-size: 30px;
   position: relative;
+  flex: 0 0 auto;
   width: var(--wod-portrait-size);
   height: var(--wod-portrait-size);
+  padding: 0;
+  border-radius: 50%;
   cursor: pointer;
 }
 
@@ -212,6 +103,19 @@
   align-items: center;
   justify-content: center;
   min-width: 34px;
+}
+
+.wod-combat-resource {
+  margin-left: 2px;
+}
+
+.wod-combat-resource .wod-gauge {
+  width: 30px;
+  height: 34px;
+}
+
+.wod-combat-resource .wod-resource-count {
+  font-size: 0.62rem;
 }
 
 .wod-gauge {
@@ -649,23 +553,6 @@ body.wod-hide-hotbar #hotbar {
   left: 0;
 }
 
-.wod-dock-bottom-right .wod-drawer[data-side='up'],
-.wod-dock-top-right .wod-drawer[data-side='down'] {
-  right: 0;
-  left: auto;
-}
-
-.wod-dock-free .wod-drawer[data-side='up'],
-.wod-dock-free .wod-drawer[data-side='down'] {
-  left: 50%;
-  transform: translateX(-50%) translateY(4px);
-}
-
-.wod-dock-free .wod-drawer[data-side='up'].is-open,
-.wod-dock-free .wod-drawer[data-side='down'].is-open {
-  transform: translateX(-50%) translateY(0);
-}
-
 .wod-drawer-header {
   display: flex;
   align-items: center;
@@ -1052,7 +939,7 @@ body.wod-hide-hotbar #hotbar {
 /* Animations                                                                */
 /* ------------------------------------------------------------------------- */
 
-.wod-animating .wod-shell {
+.wod-animating .wod-combat-bar {
   animation: wod-fade-slide 220ms ease;
 }
 
@@ -1093,19 +980,19 @@ body.wod-hide-hotbar #hotbar {
 /* Scrollbars, reduced motion & responsive                                   */
 /* ------------------------------------------------------------------------- */
 
-#wod5e-hud-root ::-webkit-scrollbar,
+#wod-combat-root ::-webkit-scrollbar,
 #wod5e-hud-search ::-webkit-scrollbar {
   width: 6px;
 }
 
-#wod5e-hud-root ::-webkit-scrollbar-thumb,
+#wod-combat-root ::-webkit-scrollbar-thumb,
 #wod5e-hud-search ::-webkit-scrollbar-thumb {
   border-radius: 9999px;
   background: #3f3f46;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #wod5e-hud-root *,
+  #wod-combat-root *,
   #wod5e-hud-search * {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
@@ -1114,11 +1001,6 @@ body.wod-hide-hotbar #hotbar {
 }
 
 @media (max-width: 720px) {
-  .wod-shell {
-    gap: 4px;
-    padding: 4px;
-  }
-
   .wod-combat-bar {
     max-width: calc(100vw - 12px);
   }
@@ -1131,8 +1013,8 @@ body.wod-hide-hotbar #hotbar {
     display: none;
   }
 
-  .wod-hero-portrait {
-    --wod-portrait-size: 64px;
+  .wod-combat-portrait {
+    --wod-portrait-size: 26px;
   }
 }
 
