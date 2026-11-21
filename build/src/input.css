@@ -45,14 +45,15 @@
 .wod-combat-portrait {
   --wod-portrait-size: 72px;
   position: absolute;
-  bottom: -1px;
-  left: -8px;
+  top: 50%;
+  left: 0;
   z-index: 3;
   width: var(--wod-portrait-size);
   height: var(--wod-portrait-size);
   padding: 0;
   border-radius: 50%;
   cursor: pointer;
+  transform: translateY(-50%);
 }
 
 .wod-portrait {
@@ -109,8 +110,8 @@
 
 .wod-combat-resource {
   position: absolute;
-  right: -8px;
-  bottom: -1px;
+  top: 50%;
+  right: 0;
   z-index: 3;
   display: flex;
   flex-direction: row;
@@ -123,6 +124,7 @@
   border-radius: 50%;
   background: radial-gradient(circle at 50% 35%, #1b1b22, #09090b 72%);
   box-shadow: 0 0 14px color-mix(in srgb, var(--wod-accent) 55%, transparent);
+  transform: translateY(-50%);
 }
 
 .wod-gauge {
@@ -426,7 +428,8 @@ body.wod-hide-hotbar #hotbar {
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 5px 62px;
+  height: 74px;
+  padding: 0 74px;
   border: 1px solid #27272a;
   border-color: color-mix(in srgb, var(--wod-accent) 42%, #27272a);
   border-radius: 9999px;
@@ -504,7 +507,7 @@ body.wod-hide-hotbar #hotbar {
 }
 
 #wod-combat-root .wod-drawer {
-  bottom: calc(100% + 44px);
+  bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%) translateY(4px);
   max-height: 440px;
@@ -1022,18 +1025,17 @@ body.wod-hide-hotbar #hotbar {
 
   .wod-combat-portrait {
     --wod-portrait-size: 56px;
-    left: -6px;
   }
 
   .wod-combat-resource {
-    right: -6px;
     width: 56px;
     height: 56px;
   }
 
   .wod-combat-bar {
-    padding-right: 50px;
-    padding-left: 50px;
+    height: 58px;
+    padding-right: 58px;
+    padding-left: 58px;
   }
 }
 
