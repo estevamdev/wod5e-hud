@@ -111,8 +111,19 @@
 .wod-combat-resource {
   position: absolute;
   top: 50%;
-  right: 4px;
+  right: -8px;
   z-index: 3;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  min-width: 0;
+  border: 2px solid var(--wod-accent);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, #1b1b22, #09090b 72%);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--wod-accent) 55%, transparent);
   transform: translateY(-50%);
 }
 
@@ -417,7 +428,7 @@ body.wod-hide-hotbar #hotbar {
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 5px 44px 5px 64px;
+  padding: 5px 62px;
   border: 1px solid #27272a;
   border-color: color-mix(in srgb, var(--wod-accent) 42%, #27272a);
   border-radius: 9999px;
@@ -1016,9 +1027,15 @@ body.wod-hide-hotbar #hotbar {
     left: -6px;
   }
 
+  .wod-combat-resource {
+    right: -6px;
+    width: 56px;
+    height: 56px;
+  }
+
   .wod-combat-bar {
-    padding-right: 40px;
-    padding-left: 54px;
+    padding-right: 50px;
+    padding-left: 50px;
   }
 }
 
