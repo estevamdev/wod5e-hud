@@ -21,8 +21,8 @@
 
 #wod-combat-root button,
 #wod-combat-root input {
-  font: inherit;
   color: inherit;
+  font-family: inherit;
 }
 
 #wod-combat-root button {
