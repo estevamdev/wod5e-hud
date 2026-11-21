@@ -206,8 +206,10 @@ export class Wod5eHud {
     // When the hotbar is hidden the combat bar takes its exact place.
     if (hotbarHidden) {
       const metrics = this._hotbarMetrics
+      // Keeps room for the portrait that overflows the bar at the bottom edge.
+      const bottom = Math.max(metrics?.bottom ?? 16, 20)
       this.combatRoot.style.left = metrics ? `${metrics.center}px` : '50%'
-      this.combatRoot.style.bottom = metrics ? `${metrics.bottom}px` : '16px'
+      this.combatRoot.style.bottom = `${bottom}px`
       this.combatRoot.style.setProperty('--wod-hotbar-height', '0px')
       return
     }
