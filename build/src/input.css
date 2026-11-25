@@ -323,7 +323,7 @@
   cursor: default;
 }
 
-.wod-scale-options {
+.wod-segmented {
   display: inline-flex;
   gap: 3px;
   padding: 3px;
@@ -332,7 +332,7 @@
   background: rgba(9, 9, 11, 0.6);
 }
 
-.wod-scale-option {
+.wod-segmented-option {
   padding: 4px 9px;
   font-family: inherit;
   border: 0;
@@ -349,20 +349,20 @@
     box-shadow 150ms ease;
 }
 
-.wod-scale-option:hover {
+.wod-segmented-option:hover {
   color: #fff;
 }
 
-.wod-scale-option:disabled {
+.wod-segmented-option:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
 
-.wod-scale-option:disabled:hover {
+.wod-segmented-option:disabled:hover {
   color: #a1a1aa;
 }
 
-.wod-scale-option.is-active {
+.wod-segmented-option.is-active {
   background: rgba(220, 38, 38, 0.2);
   box-shadow: 0 0 10px color-mix(in srgb, #dc2626 22%, transparent);
   color: #fff;

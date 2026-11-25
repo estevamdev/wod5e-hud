@@ -26,13 +26,13 @@
         {{/if}}
       </span>
       <div
-        class="wod-scale-options"
+        class="wod-segmented"
         role="group"
         aria-label="{{localize 'WOD5E_HUD.Settings.CombatHud'}}"
       >
         <button
           type="button"
-          class="wod-scale-option {{#if combatHud}}is-active{{/if}}"
+          class="wod-segmented-option {{#if combatHud}}is-active{{/if}}"
           data-setting-value="combatHud"
           data-value="true"
           {{#unless canToggleCombat}}disabled{{/unless}}
@@ -41,7 +41,7 @@
         </button>
         <button
           type="button"
-          class="wod-scale-option {{#unless combatHud}}is-active{{/unless}}"
+          class="wod-segmented-option {{#unless combatHud}}is-active{{/unless}}"
           data-setting-value="combatHud"
           data-value="false"
           {{#unless canToggleCombat}}disabled{{/unless}}
@@ -57,13 +57,13 @@
         <small>{{localize "WOD5E_HUD.Settings.MinimalActionsHint"}}</small>
       </span>
       <div
-        class="wod-scale-options"
+        class="wod-segmented"
         role="group"
         aria-label="{{localize 'WOD5E_HUD.Settings.MinimalActions'}}"
       >
         <button
           type="button"
-          class="wod-scale-option {{#if minimalActions}}is-active{{/if}}"
+          class="wod-segmented-option {{#if minimalActions}}is-active{{/if}}"
           data-setting-value="minimalActions"
           data-value="true"
         >
@@ -71,7 +71,7 @@
         </button>
         <button
           type="button"
-          class="wod-scale-option {{#unless minimalActions}}is-active{{/unless}}"
+          class="wod-segmented-option {{#unless minimalActions}}is-active{{/unless}}"
           data-setting-value="minimalActions"
           data-value="false"
         >
@@ -86,13 +86,13 @@
         <small>{{localize "WOD5E_HUD.Settings.HideHotbarHint"}}</small>
       </span>
       <div
-        class="wod-scale-options"
+        class="wod-segmented"
         role="group"
         aria-label="{{localize 'WOD5E_HUD.Settings.HideHotbar'}}"
       >
         <button
           type="button"
-          class="wod-scale-option {{#if hideHotbar}}is-active{{/if}}"
+          class="wod-segmented-option {{#if hideHotbar}}is-active{{/if}}"
           data-setting-value="hideHotbar"
           data-value="true"
         >
@@ -100,7 +100,7 @@
         </button>
         <button
           type="button"
-          class="wod-scale-option {{#unless hideHotbar}}is-active{{/unless}}"
+          class="wod-segmented-option {{#unless hideHotbar}}is-active{{/unless}}"
           data-setting-value="hideHotbar"
           data-value="false"
         >
@@ -114,9 +114,9 @@
         <strong>{{localize "WOD5E_HUD.Settings.UiScale"}}</strong>
         <small>{{localize "WOD5E_HUD.Settings.UiScaleHint"}}</small>
       </span>
-      <div class="wod-scale-options" role="group" aria-label="{{localize 'WOD5E_HUD.Settings.UiScale'}}">
+      <div class="wod-segmented" role="group" aria-label="{{localize 'WOD5E_HUD.Settings.UiScale'}}">
         {{#each scaleOptions}}
-          <button type="button" class="wod-scale-option {{#if this.active}}is-active{{/if}}" data-scale="{{this.id}}">
+          <button type="button" class="wod-segmented-option {{#if this.active}}is-active{{/if}}" data-scale="{{this.id}}">
             {{localize this.label}}
           </button>
         {{/each}}
@@ -139,14 +139,14 @@
           <small>{{localize "WOD5E_HUD.Settings.CombatForAllHint"}}</small>
         </span>
         <div
-          class="wod-scale-options"
+          class="wod-segmented"
           role="group"
           aria-label="{{localize 'WOD5E_HUD.Settings.CombatForAll'}}"
         >
           {{#each combatModeOptions}}
             <button
               type="button"
-              class="wod-scale-option {{#if this.active}}is-active{{/if}}"
+              class="wod-segmented-option {{#if this.active}}is-active{{/if}}"
               data-combat-mode="{{this.id}}"
             >
               {{localize this.label}}
@@ -161,13 +161,13 @@
           <small>{{localize "WOD5E_HUD.Settings.AllowCombatToggleHint"}}</small>
         </span>
         <div
-          class="wod-scale-options"
+          class="wod-segmented"
           role="group"
           aria-label="{{localize 'WOD5E_HUD.Settings.AllowCombatToggle'}}"
         >
           <button
             type="button"
-            class="wod-scale-option {{#if allowCombatToggle}}is-active{{/if}}"
+            class="wod-segmented-option {{#if allowCombatToggle}}is-active{{/if}}"
             data-world-setting-value="allowPlayerCombatToggle"
             data-value="true"
           >
@@ -175,7 +175,7 @@
           </button>
           <button
             type="button"
-            class="wod-scale-option {{#unless allowCombatToggle}}is-active{{/unless}}"
+            class="wod-segmented-option {{#unless allowCombatToggle}}is-active{{/unless}}"
             data-world-setting-value="allowPlayerCombatToggle"
             data-value="false"
           >
