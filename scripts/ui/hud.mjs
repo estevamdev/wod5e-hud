@@ -414,7 +414,7 @@ export class Wod5eHud {
   }
 
   refreshSettingsApp() {
-    this.settingsApp?.render?.()
+    this.settingsApp?.render?.(true)
   }
 
   async openSettings() {

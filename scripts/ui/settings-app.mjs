@@ -118,7 +118,7 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       input.addEventListener('change', async () => {
         await setSetting(input.dataset.setting, input.checked)
         await this.onChange()
-        this.render()
+        this.render(true)
       })
     })
 
@@ -129,7 +129,7 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
         const mode = button.dataset.combatMode
         await setSetting('enablePlayerCombatForAll', mode === 'enabled')
         await setSetting('disablePlayerCombatForAll', mode === 'disabled')
-        this.render()
+        this.render(true)
       })
     })
 
@@ -137,7 +137,7 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       input.addEventListener('change', async () => {
         if (!game.user?.isGM) return
         await setSetting(input.dataset.worldSetting, input.checked)
-        this.render()
+        this.render(true)
       })
     })
 
@@ -146,7 +146,7 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
         event.preventDefault()
         await setSetting('uiScale', button.dataset.scale)
         await this.onChange()
-        this.render()
+        this.render(true)
       })
     })
 
