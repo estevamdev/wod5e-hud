@@ -81,8 +81,23 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
         { id: 'large', label: 'WOD5E_HUD.Settings.ScaleLarge', active: uiScale === 'large' }
       ],
       allowCombatToggle,
-      enableCombatForAll: worldCombatForced,
-      disableCombatForAll: worldCombatDisabled,
+      combatModeOptions: [
+        {
+          id: 'default',
+          label: 'WOD5E_HUD.Settings.CombatModeDefault',
+          active: !worldCombatForced && !worldCombatDisabled
+        },
+        {
+          id: 'enabled',
+          label: 'WOD5E_HUD.Settings.CombatModeEnabled',
+          active: worldCombatForced
+        },
+        {
+          id: 'disabled',
+          label: 'WOD5E_HUD.Settings.CombatModeDisabled',
+          active: worldCombatDisabled
+        }
+      ],
       canToggleCombat: !worldCombatForced && !worldCombatDisabled && (isGM || allowCombatToggle)
     }
   }
@@ -107,17 +122,21 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       })
     })
 
+    element.querySelectorAll('[data-combat-mode]').forEach((button) => {
+      button.addEventListener('click', async (event) => {
+        event.preventDefault()
+        if (!game.user?.isGM) return
+        const mode = button.dataset.combatMode
+        await setSetting('enablePlayerCombatForAll', mode === 'enabled')
+        await setSetting('disablePlayerCombatForAll', mode === 'disabled')
+        this.render()
+      })
+    })
+
     element.querySelectorAll('[data-world-setting]').forEach((input) => {
       input.addEventListener('change', async () => {
         if (!game.user?.isGM) return
-        const key = input.dataset.worldSetting
-        await setSetting(key, input.checked)
-        if (input.checked && key === 'enablePlayerCombatForAll') {
-          await setSetting('disablePlayerCombatForAll', false)
-        }
-        if (input.checked && key === 'disablePlayerCombatForAll') {
-          await setSetting('enablePlayerCombatForAll', false)
-        }
+        await setSetting(input.dataset.worldSetting, input.checked)
         this.render()
       })
     })

@@ -78,29 +78,27 @@
     <section class="wod-settings-panel" data-tab-panel="gm">
       <p class="wod-settings-note">{{localize "WOD5E_HUD.Settings.GMHint"}}</p>
 
-      <label class="wod-settings-row">
+      <div class="wod-settings-row wod-settings-row--static">
         <span class="wod-settings-copy">
-          <strong>{{localize "WOD5E_HUD.Settings.EnableCombatForAll"}}</strong>
-          <small>{{localize "WOD5E_HUD.Settings.EnableCombatForAllHint"}}</small>
+          <strong>{{localize "WOD5E_HUD.Settings.CombatForAll"}}</strong>
+          <small>{{localize "WOD5E_HUD.Settings.CombatForAllHint"}}</small>
         </span>
-        <input
-          type="checkbox"
-          data-world-setting="enablePlayerCombatForAll"
-          {{#if enableCombatForAll}}checked{{/if}}
+        <div
+          class="wod-scale-options"
+          role="group"
+          aria-label="{{localize 'WOD5E_HUD.Settings.CombatForAll'}}"
         >
-      </label>
-
-      <label class="wod-settings-row">
-        <span class="wod-settings-copy">
-          <strong>{{localize "WOD5E_HUD.Settings.DisableCombatForAll"}}</strong>
-          <small>{{localize "WOD5E_HUD.Settings.DisableCombatForAllHint"}}</small>
-        </span>
-        <input
-          type="checkbox"
-          data-world-setting="disablePlayerCombatForAll"
-          {{#if disableCombatForAll}}checked{{/if}}
-        >
-      </label>
+          {{#each combatModeOptions}}
+            <button
+              type="button"
+              class="wod-scale-option {{#if this.active}}is-active{{/if}}"
+              data-combat-mode="{{this.id}}"
+            >
+              {{localize this.label}}
+            </button>
+          {{/each}}
+        </div>
+      </div>
 
       <label class="wod-settings-row">
         <span class="wod-settings-copy">

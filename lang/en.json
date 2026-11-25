@@ -73,18 +73,19 @@
       "TabPlayer": "Settings",
       "TabGM": "Game Master",
       "GMHint": "These permissions control what players can change in their HUD.",
-      "EnableCombatForAll": "Enable combat HUD for all players",
-      "EnableCombatForAllHint": "Forces the combat HUD on for every player, overriding their local option.",
       "ResetPosition": "Reset position",
       "UiScale": "Menu scale",
       "UiScaleHint": "Changes the size of the HUD menus.",
       "ScaleDefault": "Default",
       "ScaleMedium": "Medium",
       "ScaleLarge": "Large",
-      "DisableCombatForAll": "Disable combat HUD for all players",
-      "DisableCombatForAllHint": "Forces the combat HUD off for every player, overriding their local option.",
       "MinimalActions": "Minimalist action bar",
-      "MinimalActionsHint": "Shows only the icons. Hover a button to read its name."
+      "MinimalActionsHint": "Shows only the icons. Hover a button to read its name.",
+      "CombatForAll": "Combat HUD for all players",
+      "CombatForAllHint": "Choose whether the combat HUD is forced for everyone or each player decides.",
+      "CombatModeDefault": "Default",
+      "CombatModeEnabled": "On",
+      "CombatModeDisabled": "Off"
     },
     "HungerTooltip": "Hunger {value}/{max} — {remaining} to extreme hunger"
   }

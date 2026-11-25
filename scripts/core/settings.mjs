@@ -27,10 +27,10 @@ export function registerSettings() {
   })
 
   game.settings.register(MODULE_ID, 'disablePlayerCombatForAll', {
-    name: 'WOD5E_HUD.Settings.DisableCombatForAll',
-    hint: 'WOD5E_HUD.Settings.DisableCombatForAllHint',
+    name: 'WOD5E_HUD.Settings.CombatForAll',
+    hint: 'WOD5E_HUD.Settings.CombatForAllHint',
     scope: 'world',
-    config: true,
+    config: false,
     type: Boolean,
     default: false
   })
@@ -45,10 +45,10 @@ export function registerSettings() {
   })
 
   game.settings.register(MODULE_ID, 'enablePlayerCombatForAll', {
-    name: 'WOD5E_HUD.Settings.EnableCombatForAll',
-    hint: 'WOD5E_HUD.Settings.EnableCombatForAllHint',
+    name: 'WOD5E_HUD.Settings.CombatForAll',
+    hint: 'WOD5E_HUD.Settings.CombatForAllHint',
     scope: 'world',
-    config: true,
+    config: false,
     type: Boolean,
     default: false
   })
