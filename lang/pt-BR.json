@@ -82,12 +82,11 @@
       "MinimalActions": "Barra de ações minimalista",
       "MinimalActionsHint": "Mostra apenas os ícones. Passe o mouse para ler o nome.",
       "CombatForAll": "HUD de combate para todos",
-      "CombatForAllHint": "Escolha se o HUD de combate é forçado para todos ou se cada jogador decide.",
-      "CombatModeDefault": "Padrão",
+      "CombatForAllHint": "Ligado mantém o HUD disponível para todos. Desligado remove para todos. Jogadores só podem desligar se permitido.",
       "CombatModeEnabled": "Ligado",
       "CombatModeDisabled": "Desligado",
       "ForcedByGM": "Definido pelo mestre.",
-      "PermissionLocked": "Desativado pelo mestre."
+      "ControlledByGM": "Controlado pelo mestre."
     },
     "HungerTooltip": "Fome {value}/{max} — faltam {remaining} para fome extrema"
   }

@@ -107,31 +107,12 @@ Hooks.once('ready', async () => {
         'hideHotbar',
         'minimalActions',
         'allowPlayerCombatToggle',
-        'enablePlayerCombatForAll',
         'disablePlayerCombatForAll'
       ]
       if (!keys.includes(key)) return
 
-      // The force-on and force-off switches are mutually exclusive.
-      if (key === 'enablePlayerCombatForAll' && setting.value) {
-        if (game.settings.get(MODULE_ID, 'disablePlayerCombatForAll')) {
-          void game.settings.set(MODULE_ID, 'disablePlayerCombatForAll', false)
-        }
-      }
-      if (key === 'disablePlayerCombatForAll' && setting.value) {
-        if (game.settings.get(MODULE_ID, 'enablePlayerCombatForAll')) {
-          void game.settings.set(MODULE_ID, 'enablePlayerCombatForAll', false)
-        }
-      }
-
       hud.applyPreferences()
-      if (
-        [
-          'allowPlayerCombatToggle',
-          'enablePlayerCombatForAll',
-          'disablePlayerCombatForAll'
-        ].includes(key)
-      ) {
+      if (['allowPlayerCombatToggle', 'disablePlayerCombatForAll'].includes(key)) {
         hud.refreshSettingsApp()
       }
     })

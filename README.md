@@ -56,9 +56,8 @@ the system Resist/Give in dialog.
   on hover.
 - Drag the bar to move it. The position is saved per player and **Reset
   position** returns it above the hotbar.
-- Preferences are stored per player. The GM can allow players to toggle the HUD
-  and choose whether the combat HUD is forced on, forced off, or left to each
-  player.
+- Preferences are stored per player. The GM can enable or disable the combat
+  HUD for everyone and allow players to turn it off locally.
 
 ### Search and localization
 

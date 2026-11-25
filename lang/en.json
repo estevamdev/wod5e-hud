@@ -82,12 +82,11 @@
       "MinimalActions": "Minimalist action bar",
       "MinimalActionsHint": "Shows only the icons. Hover a button to read its name.",
       "CombatForAll": "Combat HUD for all players",
-      "CombatForAllHint": "Choose whether the combat HUD is forced for everyone or each player decides.",
-      "CombatModeDefault": "Default",
+      "CombatForAllHint": "On keeps the HUD available to all players. Off disables it for everyone. Players can only turn it off when allowed.",
       "CombatModeEnabled": "On",
       "CombatModeDisabled": "Off",
       "ForcedByGM": "Set by the Game Master.",
-      "PermissionLocked": "Disabled by the Game Master."
+      "ControlledByGM": "Controlled by the Game Master."
     },
     "HungerTooltip": "Hunger {value}/{max} — {remaining} to extreme hunger"
   }

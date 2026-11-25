@@ -40,7 +40,6 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
     const data = await super._prepareContext()
     const isGM = Boolean(game.user?.isGM)
     const uiScale = getSetting('uiScale', 'default')
-    const worldCombatForced = Boolean(getSetting('enablePlayerCombatForAll', false))
     const worldCombatDisabled = Boolean(getSetting('disablePlayerCombatForAll', false))
     const allowCombatToggle = Boolean(getSetting('allowPlayerCombatToggle', true))
     const tabs = [
@@ -64,10 +63,10 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       isGM,
       tabs,
       activeTab: this.activeTab,
-      combatHud: worldCombatForced
-        ? true
-        : worldCombatDisabled
-          ? false
+      combatHud: worldCombatDisabled
+        ? false
+        : !isGM && !allowCombatToggle
+          ? true
           : Boolean(getSetting('combatHud', true)),
       hideHotbar: Boolean(getSetting('hideHotbar', false)),
       minimalActions: Boolean(getSetting('minimalActions', false)),
@@ -83,14 +82,9 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       allowCombatToggle,
       combatModeOptions: [
         {
-          id: 'default',
-          label: 'WOD5E_HUD.Settings.CombatModeDefault',
-          active: !worldCombatForced && !worldCombatDisabled
-        },
-        {
           id: 'enabled',
           label: 'WOD5E_HUD.Settings.CombatModeEnabled',
-          active: worldCombatForced
+          active: !worldCombatDisabled
         },
         {
           id: 'disabled',
@@ -98,11 +92,9 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
           active: worldCombatDisabled
         }
       ],
-      canToggleCombat:
-        !worldCombatForced && !worldCombatDisabled && (isGM || allowCombatToggle),
-      combatLockedByForce: worldCombatForced || worldCombatDisabled,
-      combatLockedByPermission:
-        !worldCombatForced && !worldCombatDisabled && !isGM && !allowCombatToggle
+      canToggleCombat: !worldCombatDisabled && (isGM || allowCombatToggle),
+      combatLockedByForce: worldCombatDisabled,
+      combatLockedByPermission: !worldCombatDisabled && !isGM && !allowCombatToggle
     }
   }
 
@@ -131,7 +123,6 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
         event.preventDefault()
         if (!game.user?.isGM) return
         const mode = button.dataset.combatMode
-        await setSetting('enablePlayerCombatForAll', mode === 'enabled')
         await setSetting('disablePlayerCombatForAll', mode === 'disabled')
         this.render(true)
       })

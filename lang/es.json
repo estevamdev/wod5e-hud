@@ -82,12 +82,11 @@
       "MinimalActions": "Barra de acciones minimalista",
       "MinimalActionsHint": "Muestra solo los iconos. Pasa el cursor para leer el nombre.",
       "CombatForAll": "HUD de combate para todos",
-      "CombatForAllHint": "Elige si el HUD de combate se fuerza para todos o cada jugador decide.",
-      "CombatModeDefault": "Predeterminado",
+      "CombatForAllHint": "Activado mantiene el HUD disponible para todos. Desactivado lo quita para todos. Los jugadores solo pueden desactivarlo si se permite.",
       "CombatModeEnabled": "Activado",
       "CombatModeDisabled": "Desactivado",
       "ForcedByGM": "Definido por el Director de Juego.",
-      "PermissionLocked": "Desactivado por el Director de Juego."
+      "ControlledByGM": "Controlado por el Director de Juego."
     },
     "HungerTooltip": "Ansia {value}/{max} — faltan {remaining} para Ansia extrema"
   }

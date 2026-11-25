@@ -44,15 +44,6 @@ export function registerSettings() {
     default: true
   })
 
-  game.settings.register(MODULE_ID, 'enablePlayerCombatForAll', {
-    name: 'WOD5E_HUD.Settings.CombatForAll',
-    hint: 'WOD5E_HUD.Settings.CombatForAllHint',
-    scope: 'world',
-    config: false,
-    type: Boolean,
-    default: false
-  })
-
   game.settings.register(MODULE_ID, 'minimalActions', {
     name: 'WOD5E_HUD.Settings.MinimalActions',
     hint: 'WOD5E_HUD.Settings.MinimalActionsHint',

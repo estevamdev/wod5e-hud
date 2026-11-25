@@ -112,17 +112,15 @@ export class Wod5eHud {
     return Boolean(game.user?.isGM) || Boolean(getSetting('allowPlayerCombatToggle', true))
   }
 
-  #worldCombatForced() {
-    return Boolean(getSetting('enablePlayerCombatForAll', false))
-  }
-
   #worldCombatDisabled() {
     return Boolean(getSetting('disablePlayerCombatForAll', false))
   }
 
   #combatEnabled() {
     if (this.#worldCombatDisabled()) return false
-    return this.#worldCombatForced() || (this.combatVisible ?? getSetting('combatHud', true))
+    // With the global HUD on, players who cannot toggle keep it forced on.
+    if (!this.#canToggleCombat()) return true
+    return this.combatVisible ?? getSetting('combatHud', true)
   }
 
   async renderCombat() {
@@ -368,10 +366,7 @@ export class Wod5eHud {
   }
 
   toggleCombatHud(force) {
-    if (
-      (this.#worldCombatForced() || this.#worldCombatDisabled()) &&
-      typeof force !== 'boolean'
-    ) {
+    if (this.#worldCombatDisabled() && typeof force !== 'boolean') {
       ui.notifications?.info?.(localize('WOD5E_HUD.Settings.Locked', 'Locked by the GM.'))
       return this.#combatEnabled()
     }
