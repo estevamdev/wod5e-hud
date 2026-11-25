@@ -77,8 +77,8 @@
       "EnableCombatForAllHint": "Forces the combat HUD on for every player, overriding their local option.",
       "ForcedByGM": "Enabled by the Game Master.",
       "ResetPosition": "Reset position",
-      "UiScale": "Interface scale",
-      "UiScaleHint": "Changes the size of the HUD bar and its menus.",
+      "UiScale": "Menu scale",
+      "UiScaleHint": "Changes the size of the HUD menus.",
       "ScaleDefault": "Default",
       "ScaleMedium": "Medium",
       "ScaleLarge": "Large"

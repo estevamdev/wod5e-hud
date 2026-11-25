@@ -77,8 +77,8 @@
       "EnableCombatForAllHint": "Força o HUD de combate ligado para todos os jogadores, sobrepondo a opção local.",
       "ForcedByGM": "Ativado pelo mestre.",
       "ResetPosition": "Restaurar posição",
-      "UiScale": "Escala da interface",
-      "UiScaleHint": "Altera o tamanho da barra do HUD e dos menus.",
+      "UiScale": "Escala dos menus",
+      "UiScaleHint": "Altera o tamanho dos menus do HUD.",
       "ScaleDefault": "Padrão",
       "ScaleMedium": "Médio",
       "ScaleLarge": "Grande"

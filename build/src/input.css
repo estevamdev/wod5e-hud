@@ -457,7 +457,6 @@ body.wod-hide-hotbar #hotbar {
   gap: 4px;
   height: 74px;
   padding: 0 74px;
-  zoom: var(--wod5e-hud-scale, 1);
   cursor: grab;
   touch-action: none;
   user-select: none;
@@ -631,6 +630,8 @@ body.wod-hide-hotbar #hotbar {
 #wod-combat-root .wod-drawer {
   bottom: calc(100% + 8px);
   left: 50%;
+  zoom: var(--wod5e-hud-scale, 1);
+  max-width: calc((100vw - 24px) / var(--wod5e-hud-scale, 1));
   transform: translateX(-50%) translateY(4px);
   max-height: 440px;
 }
