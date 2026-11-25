@@ -319,6 +319,46 @@
   cursor: pointer;
 }
 
+.wod-settings-row--static {
+  cursor: default;
+}
+
+.wod-scale-options {
+  display: inline-flex;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid rgba(161, 161, 170, 0.25);
+  border-radius: 9999px;
+  background: rgba(9, 9, 11, 0.6);
+}
+
+.wod-scale-option {
+  padding: 4px 9px;
+  font-family: inherit;
+  border: 0;
+  border-radius: 9999px;
+  background: none;
+  color: #a1a1aa;
+  font-size: 0.58rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    background 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.wod-scale-option:hover {
+  color: #fff;
+}
+
+.wod-scale-option.is-active {
+  background: rgba(220, 38, 38, 0.2);
+  box-shadow: 0 0 10px color-mix(in srgb, #dc2626 22%, transparent);
+  color: #fff;
+}
+
 .wod-settings-row.is-locked {
   opacity: 0.55;
   cursor: not-allowed;
@@ -417,6 +457,7 @@ body.wod-hide-hotbar #hotbar {
   gap: 4px;
   height: 74px;
   padding: 0 74px;
+  zoom: var(--wod5e-hud-scale, 1);
   cursor: grab;
   touch-action: none;
   user-select: none;

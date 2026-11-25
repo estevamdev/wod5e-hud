@@ -60,6 +60,7 @@ export class Wod5eHud {
 
     this.initCombat()
     this.#applyHotbarVisibility()
+    this.#applyUiScale()
     document.addEventListener('pointerdown', this.#onDocumentPointerDown, true)
     document.addEventListener('keydown', this.#onGlobalKeyDown, true)
     window.addEventListener('resize', this.#onResize)
@@ -389,7 +390,14 @@ export class Wod5eHud {
   async applyPreferences() {
     this.combatVisible = Boolean(getSetting('combatHud', true))
     this.#applyHotbarVisibility()
+    this.#applyUiScale()
     await this.refresh({ animate: true })
+  }
+
+  #applyUiScale() {
+    const value = getSetting('uiScale', 'default')
+    const scale = value === 'large' ? 1.3 : value === 'medium' ? 1.15 : 1
+    document.documentElement.style.setProperty('--wod5e-hud-scale', String(scale))
   }
 
   refreshSettingsApp() {

@@ -39,6 +39,7 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
   async _prepareContext() {
     const data = await super._prepareContext()
     const isGM = Boolean(game.user?.isGM)
+    const uiScale = getSetting('uiScale', 'default')
     const worldCombatForced = Boolean(getSetting('enablePlayerCombatForAll', false))
     const allowCombatToggle = Boolean(getSetting('allowPlayerCombatToggle', true))
     const tabs = [
@@ -64,6 +65,15 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       activeTab: this.activeTab,
       combatHud: worldCombatForced || Boolean(getSetting('combatHud', true)),
       hideHotbar: Boolean(getSetting('hideHotbar', false)),
+      scaleOptions: [
+        {
+          id: 'default',
+          label: 'WOD5E_HUD.Settings.ScaleDefault',
+          active: uiScale === 'default'
+        },
+        { id: 'medium', label: 'WOD5E_HUD.Settings.ScaleMedium', active: uiScale === 'medium' },
+        { id: 'large', label: 'WOD5E_HUD.Settings.ScaleLarge', active: uiScale === 'large' }
+      ],
       allowCombatToggle,
       enableCombatForAll: worldCombatForced,
       canToggleCombat: !worldCombatForced && (isGM || allowCombatToggle)
@@ -94,6 +104,15 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       input.addEventListener('change', async () => {
         if (!game.user?.isGM) return
         await setSetting(input.dataset.worldSetting, input.checked)
+        this.render()
+      })
+    })
+
+    element.querySelectorAll('[data-scale]').forEach((button) => {
+      button.addEventListener('click', async (event) => {
+        event.preventDefault()
+        await setSetting('uiScale', button.dataset.scale)
+        await this.onChange()
         this.render()
       })
     })

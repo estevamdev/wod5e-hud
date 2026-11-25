@@ -49,6 +49,8 @@ the system Resist/Give in dialog.
 
 - Show or hide the combat bar.
 - Hide the macro hotbar, so the HUD uses that area instead.
+- Choose the interface scale, default, medium or large, to resize the bar and
+  its menus without changing the layout.
 - Drag the bar to move it. The position is saved per player and **Reset
   position** returns it above the hotbar.
 - Preferences are stored per player. The GM can allow players to toggle the HUD

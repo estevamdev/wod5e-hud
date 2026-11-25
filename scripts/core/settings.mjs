@@ -44,6 +44,13 @@ export function registerSettings() {
     default: false
   })
 
+  game.settings.register(MODULE_ID, 'uiScale', {
+    scope: 'client',
+    config: false,
+    type: String,
+    default: 'default'
+  })
+
   game.settings.register(MODULE_ID, 'freePosition', {
     scope: 'client',
     config: false,

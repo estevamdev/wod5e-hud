@@ -42,6 +42,20 @@
       >
     </label>
 
+    <div class="wod-settings-row wod-settings-row--static">
+      <span class="wod-settings-copy">
+        <strong>{{localize "WOD5E_HUD.Settings.UiScale"}}</strong>
+        <small>{{localize "WOD5E_HUD.Settings.UiScaleHint"}}</small>
+      </span>
+      <div class="wod-scale-options" role="group" aria-label="{{localize 'WOD5E_HUD.Settings.UiScale'}}">
+        {{#each scaleOptions}}
+          <button type="button" class="wod-scale-option {{#if this.active}}is-active{{/if}}" data-scale="{{this.id}}">
+            {{localize this.label}}
+          </button>
+        {{/each}}
+      </div>
+    </div>
+
     <button type="button" class="wod-settings-btn" data-action="reset-position">
       <i class="fa-solid fa-location-crosshairs"></i>
       {{localize "WOD5E_HUD.Settings.ResetPosition"}}
