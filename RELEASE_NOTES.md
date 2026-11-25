@@ -1,26 +1,21 @@
-# WOD5E HUD v0.7.6
+# WOD5E HUD v0.7.7
 
-All rolls trigger the sheet actions, the HUD only provides shortcuts.
+## New
 
-## Added
+- Menu scale with three levels (Default, Medium, Large), resizing only the HUD
+  drawers. The bar, portrait and hunger keep their size.
+- Minimalist action bar option, showing only the icons with the name on hover.
+- The hunger count now shows how many points remain until extreme hunger, with a
+  tooltip showing the current value and the remaining points.
+- The GM control for the combat HUD now has a simple On and Off switch.
+  - On: available to everyone, with players able to turn it off when the
+    permission is enabled.
+  - Off: disabled for everyone.
+- When the GM disables the HUD for everyone, the player sees a clear message
+  explaining the block.
+- All settings checkboxes were replaced by two-state controls, On and Off for
+  HUD visibility and Enabled and Disabled for features and permissions.
+- Combat permissions and the settings window update live for every connected
+  client.
 
-- Drag the bar to move it. The position is saved per client and clamped to the
-  viewport.
-- Reset position in the settings window returns the bar above the hotbar.
-
-## Changed
-
-- All rolls trigger the sheet actions, the HUD only provides shortcuts.
-- The HUD follows the system actor update timing.
-
-## Removed
-
-- Unused status fields, the old mini HUD id cleanup, empty action cases and the
-  unused skill filter choices.
-- Unused creature labels and redundant keys from the language files.
-
-## Notes
-
-- Foundry VTT v13+ with the wod5e system.
-- No settings or data migration needed.
-- The experience shortcut remains hidden.
+Also includes some fixes and internal cleanups.
