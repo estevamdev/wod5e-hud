@@ -14,33 +14,114 @@
   </nav>
 
   <section class="wod-settings-panel" data-tab-panel="player">
-    <label class="wod-settings-row {{#unless canToggleCombat}}is-locked{{/unless}}">
+    <div class="wod-settings-row wod-settings-row--static {{#unless canToggleCombat}}is-locked{{/unless}}">
       <span class="wod-settings-copy">
         <strong>{{localize "WOD5E_HUD.Settings.CombatHud"}}</strong>
         <small>{{localize "WOD5E_HUD.Settings.CombatHudHint"}}</small>
-        {{#unless canToggleCombat}}
-          <small class="wod-settings-lock">{{localize "WOD5E_HUD.Settings.Locked"}}</small>
-        {{/unless}}
+        {{#if combatLockedByForce}}
+          <small class="wod-settings-lock">{{localize "WOD5E_HUD.Settings.CombatDisabledByGM"}}</small>
+        {{/if}}
+        {{#if combatLockedByPermission}}
+          <small class="wod-settings-lock">{{localize "WOD5E_HUD.Settings.CombatControlledByGM"}}</small>
+        {{/if}}
       </span>
-      <input
-        type="checkbox"
-        data-setting="combatHud"
-        {{#if combatHud}}checked{{/if}}
-        {{#unless canToggleCombat}}disabled{{/unless}}
+      <div
+        class="wod-segmented"
+        role="group"
+        aria-label="{{localize 'WOD5E_HUD.Settings.CombatHud'}}"
       >
-    </label>
+        <button
+          type="button"
+          class="wod-segmented-option {{#if combatHud}}is-active{{/if}}"
+          data-setting-value="combatHud"
+          data-value="true"
+          {{#unless canToggleCombat}}disabled{{/unless}}
+        >
+          {{localize "WOD5E_HUD.Settings.StateOn"}}
+        </button>
+        <button
+          type="button"
+          class="wod-segmented-option {{#unless combatHud}}is-active{{/unless}}"
+          data-setting-value="combatHud"
+          data-value="false"
+          {{#unless canToggleCombat}}disabled{{/unless}}
+        >
+          {{localize "WOD5E_HUD.Settings.StateOff"}}
+        </button>
+      </div>
+    </div>
 
-    <label class="wod-settings-row">
+    <div class="wod-settings-row wod-settings-row--static">
+      <span class="wod-settings-copy">
+        <strong>{{localize "WOD5E_HUD.Settings.MinimalActions"}}</strong>
+        <small>{{localize "WOD5E_HUD.Settings.MinimalActionsHint"}}</small>
+      </span>
+      <div
+        class="wod-segmented"
+        role="group"
+        aria-label="{{localize 'WOD5E_HUD.Settings.MinimalActions'}}"
+      >
+        <button
+          type="button"
+          class="wod-segmented-option {{#if minimalActions}}is-active{{/if}}"
+          data-setting-value="minimalActions"
+          data-value="true"
+        >
+          {{localize "WOD5E_HUD.Settings.StateEnabled"}}
+        </button>
+        <button
+          type="button"
+          class="wod-segmented-option {{#unless minimalActions}}is-active{{/unless}}"
+          data-setting-value="minimalActions"
+          data-value="false"
+        >
+          {{localize "WOD5E_HUD.Settings.StateDisabled"}}
+        </button>
+      </div>
+    </div>
+
+    <div class="wod-settings-row wod-settings-row--static">
       <span class="wod-settings-copy">
         <strong>{{localize "WOD5E_HUD.Settings.HideHotbar"}}</strong>
         <small>{{localize "WOD5E_HUD.Settings.HideHotbarHint"}}</small>
       </span>
-      <input
-        type="checkbox"
-        data-setting="hideHotbar"
-        {{#if hideHotbar}}checked{{/if}}
+      <div
+        class="wod-segmented"
+        role="group"
+        aria-label="{{localize 'WOD5E_HUD.Settings.HideHotbar'}}"
       >
-    </label>
+        <button
+          type="button"
+          class="wod-segmented-option {{#if hideHotbar}}is-active{{/if}}"
+          data-setting-value="hideHotbar"
+          data-value="true"
+        >
+          {{localize "WOD5E_HUD.Settings.StateEnabled"}}
+        </button>
+        <button
+          type="button"
+          class="wod-segmented-option {{#unless hideHotbar}}is-active{{/unless}}"
+          data-setting-value="hideHotbar"
+          data-value="false"
+        >
+          {{localize "WOD5E_HUD.Settings.StateDisabled"}}
+        </button>
+      </div>
+    </div>
+
+    <div class="wod-settings-row wod-settings-row--static">
+      <span class="wod-settings-copy">
+        <strong>{{localize "WOD5E_HUD.Settings.UiScale"}}</strong>
+        <small>{{localize "WOD5E_HUD.Settings.UiScaleHint"}}</small>
+      </span>
+      <div class="wod-segmented" role="group" aria-label="{{localize 'WOD5E_HUD.Settings.UiScale'}}">
+        {{#each scaleOptions}}
+          <button type="button" class="wod-segmented-option {{#if this.active}}is-active{{/if}}" data-scale="{{this.id}}">
+            {{localize this.label}}
+          </button>
+        {{/each}}
+      </div>
+    </div>
 
     <button type="button" class="wod-settings-btn" data-action="reset-position">
       <i class="fa-solid fa-location-crosshairs"></i>
@@ -52,29 +133,56 @@
     <section class="wod-settings-panel" data-tab-panel="gm">
       <p class="wod-settings-note">{{localize "WOD5E_HUD.Settings.GMHint"}}</p>
 
-      <label class="wod-settings-row">
+      <div class="wod-settings-row wod-settings-row--static">
         <span class="wod-settings-copy">
-          <strong>{{localize "WOD5E_HUD.Settings.EnableCombatForAll"}}</strong>
-          <small>{{localize "WOD5E_HUD.Settings.EnableCombatForAllHint"}}</small>
+          <strong>{{localize "WOD5E_HUD.Settings.CombatForAll"}}</strong>
+          <small>{{localize "WOD5E_HUD.Settings.CombatForAllHint"}}</small>
         </span>
-        <input
-          type="checkbox"
-          data-world-setting="enablePlayerCombatForAll"
-          {{#if enableCombatForAll}}checked{{/if}}
+        <div
+          class="wod-segmented"
+          role="group"
+          aria-label="{{localize 'WOD5E_HUD.Settings.CombatForAll'}}"
         >
-      </label>
+          {{#each combatModeOptions}}
+            <button
+              type="button"
+              class="wod-segmented-option {{#if this.active}}is-active{{/if}}"
+              data-combat-mode="{{this.id}}"
+            >
+              {{localize this.label}}
+            </button>
+          {{/each}}
+        </div>
+      </div>
 
-      <label class="wod-settings-row">
+      <div class="wod-settings-row wod-settings-row--static">
         <span class="wod-settings-copy">
           <strong>{{localize "WOD5E_HUD.Settings.AllowCombatToggle"}}</strong>
           <small>{{localize "WOD5E_HUD.Settings.AllowCombatToggleHint"}}</small>
         </span>
-        <input
-          type="checkbox"
-          data-world-setting="allowPlayerCombatToggle"
-          {{#if allowCombatToggle}}checked{{/if}}
+        <div
+          class="wod-segmented"
+          role="group"
+          aria-label="{{localize 'WOD5E_HUD.Settings.AllowCombatToggle'}}"
         >
-      </label>
+          <button
+            type="button"
+            class="wod-segmented-option {{#if allowCombatToggle}}is-active{{/if}}"
+            data-world-setting-value="allowPlayerCombatToggle"
+            data-value="true"
+          >
+            {{localize "WOD5E_HUD.Settings.StateEnabled"}}
+          </button>
+          <button
+            type="button"
+            class="wod-segmented-option {{#unless allowCombatToggle}}is-active{{/unless}}"
+            data-world-setting-value="allowPlayerCombatToggle"
+            data-value="false"
+          >
+            {{localize "WOD5E_HUD.Settings.StateDisabled"}}
+          </button>
+        </div>
+      </div>
     </section>
   {{/if}}
 </div>

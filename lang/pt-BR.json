@@ -68,15 +68,27 @@
       "HideHotbarHint": "Oculta a barra de macros e as setas de página; o HUD de combate ocupa o lugar dela.",
       "AllowCombatToggle": "Permitir que jogadores liguem/desliguem o HUD de combate",
       "AllowCombatToggleHint": "Quando desligado, os jogadores não podem mostrar ou ocultar a barra de combate.",
-      "Locked": "Bloqueado pelo mestre.",
       "Unavailable": "As configurações não estão disponíveis.",
       "TabPlayer": "Configurações",
       "TabGM": "Mestre",
       "GMHint": "Estas permissões controlam o que os jogadores podem alterar no HUD.",
-      "EnableCombatForAll": "Habilitar HUD de combate para todos",
-      "EnableCombatForAllHint": "Força o HUD de combate ligado para todos os jogadores, sobrepondo a opção local.",
-      "ForcedByGM": "Ativado pelo mestre.",
-      "ResetPosition": "Restaurar posição"
-    }
+      "ResetPosition": "Restaurar posição",
+      "UiScale": "Escala dos menus",
+      "UiScaleHint": "Altera o tamanho dos menus do HUD.",
+      "ScaleDefault": "Padrão",
+      "ScaleMedium": "Médio",
+      "ScaleLarge": "Grande",
+      "MinimalActions": "Barra de ações minimalista",
+      "MinimalActionsHint": "Mostra apenas os ícones. Passe o mouse para ler o nome.",
+      "CombatForAll": "HUD de combate para todos",
+      "CombatForAllHint": "Ligado mantém o HUD disponível para todos. Desligado remove para todos. Jogadores só podem desligar se permitido.",
+      "StateOn": "Ligado",
+      "StateOff": "Desligado",
+      "StateEnabled": "Habilitado",
+      "StateDisabled": "Desabilitado",
+      "CombatDisabledByGM": "O mestre desativou o HUD para todos.",
+      "CombatControlledByGM": "O mestre controla esta opção."
+    },
+    "HungerTooltip": "Fome {value}/{max} — faltam {remaining} para fome extrema"
   }
 }

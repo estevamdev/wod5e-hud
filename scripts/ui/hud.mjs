@@ -60,6 +60,8 @@ export class Wod5eHud {
 
     this.initCombat()
     this.#applyHotbarVisibility()
+    this.#applyUiScale()
+    this.#applyMinimalActions()
     document.addEventListener('pointerdown', this.#onDocumentPointerDown, true)
     document.addEventListener('keydown', this.#onGlobalKeyDown, true)
     window.addEventListener('resize', this.#onResize)
@@ -110,12 +112,15 @@ export class Wod5eHud {
     return Boolean(game.user?.isGM) || Boolean(getSetting('allowPlayerCombatToggle', true))
   }
 
-  #worldCombatForced() {
-    return Boolean(getSetting('enablePlayerCombatForAll', false))
+  #worldCombatDisabled() {
+    return Boolean(getSetting('disablePlayerCombatForAll', false))
   }
 
   #combatEnabled() {
-    return this.#worldCombatForced() || (this.combatVisible ?? getSetting('combatHud', true))
+    if (this.#worldCombatDisabled()) return false
+    // With the global HUD on, players who cannot toggle keep it forced on.
+    if (!this.#canToggleCombat()) return true
+    return this.combatVisible ?? getSetting('combatHud', true)
   }
 
   async renderCombat() {
@@ -344,10 +349,10 @@ export class Wod5eHud {
       const gauge = resource.querySelector('.wod-gauge')
       if (gauge) {
         gauge.classList.toggle('is-pulsing', Boolean(context.resource.pulse))
-        gauge.dataset.tooltip = `${context.resource.label} ${context.resource.value}/${context.resource.max}`
+        gauge.dataset.tooltip = context.resource.tooltip
       }
       const count = resource.querySelector('.wod-resource-count')
-      if (count) count.textContent = String(context.resource.value)
+      if (count) count.textContent = String(context.resource.remaining)
     }
   }
 
@@ -361,15 +366,20 @@ export class Wod5eHud {
   }
 
   toggleCombatHud(force) {
-    if (this.#worldCombatForced() && typeof force !== 'boolean') {
+    if (this.#worldCombatDisabled() && typeof force !== 'boolean') {
       ui.notifications?.info?.(
-        localize('WOD5E_HUD.Settings.ForcedByGM', 'Enabled by the Game Master.')
+        localize(
+          'WOD5E_HUD.Settings.CombatDisabledByGM',
+          'The GM disabled the HUD for everyone.'
+        )
       )
-      return true
+      return false
     }
 
     if (typeof force !== 'boolean' && !this.#canToggleCombat()) {
-      ui.notifications?.warn?.(localize('WOD5E_HUD.Settings.Locked', 'Locked by the GM.'))
+      ui.notifications?.warn?.(
+        localize('WOD5E_HUD.Settings.CombatControlledByGM', 'The GM controls this option.')
+      )
       return this.#combatEnabled()
     }
 
@@ -389,11 +399,24 @@ export class Wod5eHud {
   async applyPreferences() {
     this.combatVisible = Boolean(getSetting('combatHud', true))
     this.#applyHotbarVisibility()
+    this.#applyUiScale()
+    this.#applyMinimalActions()
     await this.refresh({ animate: true })
   }
 
+  #applyMinimalActions() {
+    const minimal = Boolean(getSetting('minimalActions', false))
+    this.combatRoot?.classList.toggle('wod-minimal-actions', minimal)
+  }
+
+  #applyUiScale() {
+    const value = getSetting('uiScale', 'default')
+    const scale = value === 'large' ? 1.3 : value === 'medium' ? 1.15 : 1
+    document.documentElement.style.setProperty('--wod5e-hud-scale', String(scale))
+  }
+
   refreshSettingsApp() {
-    this.settingsApp?.render?.()
+    this.settingsApp?.render?.(true)
   }
 
   async openSettings() {

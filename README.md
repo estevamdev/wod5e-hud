@@ -21,7 +21,8 @@ are always within reach.
 ### Character bar
 
 - Portrait with a red border. Double-click it to open the sheet.
-- Hunger indicator for vampires, at the end of the bar.
+- Hunger indicator for vampires, at the end of the bar. The count shows how
+  many points remain until extreme hunger.
 - Menu buttons for Actions, Attributes, Skills and Powers.
 - Search palette for attributes, skills, disciplines, gifts, edges and features.
 - Hover hints on the menu buttons and on every menu entry.
@@ -49,10 +50,14 @@ the system Resist/Give in dialog.
 
 - Show or hide the combat bar.
 - Hide the macro hotbar, so the HUD uses that area instead.
+- Choose the menu scale, default, medium or large, to resize the HUD drawers
+  without changing the bar, the portrait or the hunger area.
+- Enable a **minimalist action bar** to show only the menu icons, with the name
+  on hover.
 - Drag the bar to move it. The position is saved per player and **Reset
   position** returns it above the hotbar.
-- Preferences are stored per player. The GM can allow players to toggle the HUD
-  or enable it for everyone.
+- Preferences are stored per player. The GM can enable or disable the combat
+  HUD for everyone and allow players to turn it off locally.
 
 ### Search and localization
 

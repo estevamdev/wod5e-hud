@@ -53,15 +53,22 @@ function buildResource(actor, creature) {
   const data = actor?.system?.hunger ?? {}
   const max = Math.max(1, Number(data.max) || 5)
   const value = clamp(Number(data.value) || 0, 0, max)
+  const remaining = Math.max(0, max - value)
+  const label = localize('WOD5E_HUD.Hunger', 'Hunger')
+  const tooltip = game.i18n?.format
+    ? game.i18n.format('WOD5E_HUD.HungerTooltip', { value, max, remaining })
+    : `${label} ${value}/${max}`
 
   return {
     kind: 'blood',
     source: 'hunger',
-    label: localize('WOD5E_HUD.Hunger', 'Hunger'),
+    label,
     value,
     max,
-    fill: ((max - value) / max) * 100,
-    ratio: (max - value) / max,
+    remaining,
+    tooltip,
+    fill: (remaining / max) * 100,
+    ratio: remaining / max,
     pulse: value >= 4,
     editable: true
   }

@@ -2,7 +2,8 @@ import { MODULE_ID } from './constants.mjs'
 
 export function getSetting(key, fallback = undefined) {
   try {
-    return game.settings.get(MODULE_ID, key)
+    const value = game.settings.get(MODULE_ID, key)
+    return value === undefined ? fallback : value
   } catch {
     return fallback
   }

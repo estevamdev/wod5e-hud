@@ -102,10 +102,19 @@ Hooks.once('ready', async () => {
     Hooks.on('updateSetting', (setting) => {
       if (!setting?.key?.startsWith(`${MODULE_ID}.`)) return
       const key = setting.key.slice(MODULE_ID.length + 1)
-      const keys = ['combatHud', 'hideHotbar', 'enablePlayerCombatForAll']
+      const keys = [
+        'combatHud',
+        'hideHotbar',
+        'minimalActions',
+        'allowPlayerCombatToggle',
+        'disablePlayerCombatForAll'
+      ]
       if (!keys.includes(key)) return
+
       hud.applyPreferences()
-      if (key === 'enablePlayerCombatForAll') hud.refreshSettingsApp()
+      if (['allowPlayerCombatToggle', 'disablePlayerCombatForAll'].includes(key)) {
+        hud.refreshSettingsApp()
+      }
     })
 
     console.log(`${MODULE_TITLE} | ready`)
