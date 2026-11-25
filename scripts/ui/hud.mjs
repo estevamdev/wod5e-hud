@@ -61,6 +61,7 @@ export class Wod5eHud {
     this.initCombat()
     this.#applyHotbarVisibility()
     this.#applyUiScale()
+    this.#applyMinimalActions()
     document.addEventListener('pointerdown', this.#onDocumentPointerDown, true)
     document.addEventListener('keydown', this.#onGlobalKeyDown, true)
     window.addEventListener('resize', this.#onResize)
@@ -350,10 +351,10 @@ export class Wod5eHud {
       const gauge = resource.querySelector('.wod-gauge')
       if (gauge) {
         gauge.classList.toggle('is-pulsing', Boolean(context.resource.pulse))
-        gauge.dataset.tooltip = `${context.resource.label} ${context.resource.value}/${context.resource.max}`
+        gauge.dataset.tooltip = context.resource.tooltip
       }
       const count = resource.querySelector('.wod-resource-count')
-      if (count) count.textContent = String(context.resource.value)
+      if (count) count.textContent = String(context.resource.remaining)
     }
   }
 
@@ -397,7 +398,13 @@ export class Wod5eHud {
     this.combatVisible = Boolean(getSetting('combatHud', true))
     this.#applyHotbarVisibility()
     this.#applyUiScale()
+    this.#applyMinimalActions()
     await this.refresh({ animate: true })
+  }
+
+  #applyMinimalActions() {
+    const minimal = Boolean(getSetting('minimalActions', false))
+    this.combatRoot?.classList.toggle('wod-minimal-actions', minimal)
   }
 
   #applyUiScale() {

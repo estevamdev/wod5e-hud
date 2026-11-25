@@ -82,7 +82,10 @@
       "ScaleMedium": "Medium",
       "ScaleLarge": "Large",
       "DisableCombatForAll": "Disable combat HUD for all players",
-      "DisableCombatForAllHint": "Forces the combat HUD off for every player, overriding their local option."
-    }
+      "DisableCombatForAllHint": "Forces the combat HUD off for every player, overriding their local option.",
+      "MinimalActions": "Minimalist action bar",
+      "MinimalActionsHint": "Shows only the icons. Hover a button to read its name."
+    },
+    "HungerTooltip": "Hunger {value}/{max} — {remaining} to extreme hunger"
   }
 }

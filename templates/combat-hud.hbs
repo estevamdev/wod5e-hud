@@ -66,10 +66,13 @@
       data-tooltip-direction="UP"
       aria-label="{{localize 'WOD5E_HUD.DoubleClickBloodCheck'}}"
     >
-      <div class="wod-gauge {{#if resource.pulse}}is-pulsing{{/if}}">
+      <div
+        class="wod-gauge {{#if resource.pulse}}is-pulsing{{/if}}"
+        data-tooltip="{{resource.tooltip}}"
+      >
         <span class="wod-gauge-base"></span>
         <span class="wod-gauge-fill"></span>
-        <span class="wod-resource-count">{{resource.value}}</span>
+        <span class="wod-resource-count">{{resource.remaining}}</span>
       </div>
     </div>
   {{/if}}

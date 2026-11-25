@@ -70,6 +70,7 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
           ? false
           : Boolean(getSetting('combatHud', true)),
       hideHotbar: Boolean(getSetting('hideHotbar', false)),
+      minimalActions: Boolean(getSetting('minimalActions', false)),
       scaleOptions: [
         {
           id: 'default',

@@ -82,7 +82,10 @@
       "ScaleMedium": "Medio",
       "ScaleLarge": "Grande",
       "DisableCombatForAll": "Desactivar HUD de combate para todos",
-      "DisableCombatForAllHint": "Fuerza el HUD de combate desactivado para todos los jugadores, anulando su opción local."
-    }
+      "DisableCombatForAllHint": "Fuerza el HUD de combate desactivado para todos los jugadores, anulando su opción local.",
+      "MinimalActions": "Barra de acciones minimalista",
+      "MinimalActionsHint": "Muestra solo los iconos. Pasa el cursor para leer el nombre."
+    },
+    "HungerTooltip": "Ansia {value}/{max} — faltan {remaining} para Ansia extrema"
   }
 }

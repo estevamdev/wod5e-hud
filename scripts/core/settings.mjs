@@ -53,6 +53,15 @@ export function registerSettings() {
     default: false
   })
 
+  game.settings.register(MODULE_ID, 'minimalActions', {
+    name: 'WOD5E_HUD.Settings.MinimalActions',
+    hint: 'WOD5E_HUD.Settings.MinimalActionsHint',
+    scope: 'client',
+    config: true,
+    type: Boolean,
+    default: false
+  })
+
   game.settings.register(MODULE_ID, 'uiScale', {
     scope: 'client',
     config: false,

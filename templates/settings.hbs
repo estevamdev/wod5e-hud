@@ -32,6 +32,18 @@
 
     <label class="wod-settings-row">
       <span class="wod-settings-copy">
+        <strong>{{localize "WOD5E_HUD.Settings.MinimalActions"}}</strong>
+        <small>{{localize "WOD5E_HUD.Settings.MinimalActionsHint"}}</small>
+      </span>
+      <input
+        type="checkbox"
+        data-setting="minimalActions"
+        {{#if minimalActions}}checked{{/if}}
+      >
+    </label>
+
+    <label class="wod-settings-row">
+      <span class="wod-settings-copy">
         <strong>{{localize "WOD5E_HUD.Settings.HideHotbar"}}</strong>
         <small>{{localize "WOD5E_HUD.Settings.HideHotbarHint"}}</small>
       </span>

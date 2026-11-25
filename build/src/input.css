@@ -467,6 +467,18 @@ body.wod-hide-hotbar #hotbar {
   cursor: grabbing;
 }
 
+#wod-combat-root.wod-minimal-actions .wod-combat-btn {
+  padding: 4px 7px;
+}
+
+#wod-combat-root.wod-minimal-actions .wod-combat-btn span {
+  display: none;
+}
+
+#wod-combat-root.wod-minimal-actions .wod-combat-btn:hover {
+  transform: scale(1.06);
+}
+
 /* The silhouette is one shape: a thin band that swells into a circle at each
    end. The border and the fill live in pseudo-elements so drawers are not
    clipped by the mask. */
@@ -578,7 +590,8 @@ body.wod-hide-hotbar #hotbar {
     color 150ms ease,
     background 150ms ease,
     border-color 150ms ease,
-    box-shadow 150ms ease;
+    box-shadow 150ms ease,
+    transform 120ms ease;
 }
 
 .wod-combat-btn i {

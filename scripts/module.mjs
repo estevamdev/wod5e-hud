@@ -105,6 +105,7 @@ Hooks.once('ready', async () => {
       const keys = [
         'combatHud',
         'hideHotbar',
+        'minimalActions',
         'allowPlayerCombatToggle',
         'enablePlayerCombatForAll',
         'disablePlayerCombatForAll'

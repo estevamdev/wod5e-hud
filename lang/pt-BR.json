@@ -82,7 +82,10 @@
       "ScaleMedium": "Médio",
       "ScaleLarge": "Grande",
       "DisableCombatForAll": "Desabilitar HUD de combate para todos",
-      "DisableCombatForAllHint": "Força o HUD de combate desligado para todos os jogadores, sobrepondo a opção local."
-    }
+      "DisableCombatForAllHint": "Força o HUD de combate desligado para todos os jogadores, sobrepondo a opção local.",
+      "MinimalActions": "Barra de ações minimalista",
+      "MinimalActionsHint": "Mostra apenas os ícones. Passe o mouse para ler o nome."
+    },
+    "HungerTooltip": "Fome {value}/{max} — faltam {remaining} para fome extrema"
   }
 }
