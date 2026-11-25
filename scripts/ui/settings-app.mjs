@@ -41,6 +41,7 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
     const isGM = Boolean(game.user?.isGM)
     const uiScale = getSetting('uiScale', 'default')
     const worldCombatForced = Boolean(getSetting('enablePlayerCombatForAll', false))
+    const worldCombatDisabled = Boolean(getSetting('disablePlayerCombatForAll', false))
     const allowCombatToggle = Boolean(getSetting('allowPlayerCombatToggle', true))
     const tabs = [
       {
@@ -63,7 +64,11 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       isGM,
       tabs,
       activeTab: this.activeTab,
-      combatHud: worldCombatForced || Boolean(getSetting('combatHud', true)),
+      combatHud: worldCombatForced
+        ? true
+        : worldCombatDisabled
+          ? false
+          : Boolean(getSetting('combatHud', true)),
       hideHotbar: Boolean(getSetting('hideHotbar', false)),
       scaleOptions: [
         {
@@ -76,7 +81,8 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       ],
       allowCombatToggle,
       enableCombatForAll: worldCombatForced,
-      canToggleCombat: !worldCombatForced && (isGM || allowCombatToggle)
+      disableCombatForAll: worldCombatDisabled,
+      canToggleCombat: !worldCombatForced && !worldCombatDisabled && (isGM || allowCombatToggle)
     }
   }
 
@@ -103,7 +109,14 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
     element.querySelectorAll('[data-world-setting]').forEach((input) => {
       input.addEventListener('change', async () => {
         if (!game.user?.isGM) return
-        await setSetting(input.dataset.worldSetting, input.checked)
+        const key = input.dataset.worldSetting
+        await setSetting(key, input.checked)
+        if (input.checked && key === 'enablePlayerCombatForAll') {
+          await setSetting('disablePlayerCombatForAll', false)
+        }
+        if (input.checked && key === 'disablePlayerCombatForAll') {
+          await setSetting('enablePlayerCombatForAll', false)
+        }
         this.render()
       })
     })

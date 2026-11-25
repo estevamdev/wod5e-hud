@@ -115,7 +115,12 @@ export class Wod5eHud {
     return Boolean(getSetting('enablePlayerCombatForAll', false))
   }
 
+  #worldCombatDisabled() {
+    return Boolean(getSetting('disablePlayerCombatForAll', false))
+  }
+
   #combatEnabled() {
+    if (this.#worldCombatDisabled()) return false
     return this.#worldCombatForced() || (this.combatVisible ?? getSetting('combatHud', true))
   }
 
@@ -362,11 +367,12 @@ export class Wod5eHud {
   }
 
   toggleCombatHud(force) {
-    if (this.#worldCombatForced() && typeof force !== 'boolean') {
-      ui.notifications?.info?.(
-        localize('WOD5E_HUD.Settings.ForcedByGM', 'Enabled by the Game Master.')
-      )
-      return true
+    if (
+      (this.#worldCombatForced() || this.#worldCombatDisabled()) &&
+      typeof force !== 'boolean'
+    ) {
+      ui.notifications?.info?.(localize('WOD5E_HUD.Settings.Locked', 'Locked by the GM.'))
+      return this.#combatEnabled()
     }
 
     if (typeof force !== 'boolean' && !this.#canToggleCombat()) {

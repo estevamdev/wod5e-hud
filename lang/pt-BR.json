@@ -75,13 +75,14 @@
       "GMHint": "Estas permissões controlam o que os jogadores podem alterar no HUD.",
       "EnableCombatForAll": "Habilitar HUD de combate para todos",
       "EnableCombatForAllHint": "Força o HUD de combate ligado para todos os jogadores, sobrepondo a opção local.",
-      "ForcedByGM": "Ativado pelo mestre.",
       "ResetPosition": "Restaurar posição",
       "UiScale": "Escala dos menus",
       "UiScaleHint": "Altera o tamanho dos menus do HUD.",
       "ScaleDefault": "Padrão",
       "ScaleMedium": "Médio",
-      "ScaleLarge": "Grande"
+      "ScaleLarge": "Grande",
+      "DisableCombatForAll": "Desabilitar HUD de combate para todos",
+      "DisableCombatForAllHint": "Força o HUD de combate desligado para todos os jogadores, sobrepondo a opção local."
     }
   }
 }

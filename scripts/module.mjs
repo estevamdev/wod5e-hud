@@ -102,10 +102,37 @@ Hooks.once('ready', async () => {
     Hooks.on('updateSetting', (setting) => {
       if (!setting?.key?.startsWith(`${MODULE_ID}.`)) return
       const key = setting.key.slice(MODULE_ID.length + 1)
-      const keys = ['combatHud', 'hideHotbar', 'enablePlayerCombatForAll']
+      const keys = [
+        'combatHud',
+        'hideHotbar',
+        'allowPlayerCombatToggle',
+        'enablePlayerCombatForAll',
+        'disablePlayerCombatForAll'
+      ]
       if (!keys.includes(key)) return
+
+      // The force-on and force-off switches are mutually exclusive.
+      if (key === 'enablePlayerCombatForAll' && setting.value) {
+        if (game.settings.get(MODULE_ID, 'disablePlayerCombatForAll')) {
+          void game.settings.set(MODULE_ID, 'disablePlayerCombatForAll', false)
+        }
+      }
+      if (key === 'disablePlayerCombatForAll' && setting.value) {
+        if (game.settings.get(MODULE_ID, 'enablePlayerCombatForAll')) {
+          void game.settings.set(MODULE_ID, 'enablePlayerCombatForAll', false)
+        }
+      }
+
       hud.applyPreferences()
-      if (key === 'enablePlayerCombatForAll') hud.refreshSettingsApp()
+      if (
+        [
+          'allowPlayerCombatToggle',
+          'enablePlayerCombatForAll',
+          'disablePlayerCombatForAll'
+        ].includes(key)
+      ) {
+        hud.refreshSettingsApp()
+      }
     })
 
     console.log(`${MODULE_TITLE} | ready`)

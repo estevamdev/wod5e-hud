@@ -26,6 +26,15 @@ export function registerSettings() {
     default: false
   })
 
+  game.settings.register(MODULE_ID, 'disablePlayerCombatForAll', {
+    name: 'WOD5E_HUD.Settings.DisableCombatForAll',
+    hint: 'WOD5E_HUD.Settings.DisableCombatForAllHint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false
+  })
+
   game.settings.register(MODULE_ID, 'allowPlayerCombatToggle', {
     name: 'WOD5E_HUD.Settings.AllowCombatToggle',
     hint: 'WOD5E_HUD.Settings.AllowCombatToggleHint',

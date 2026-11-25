@@ -53,8 +53,8 @@ the system Resist/Give in dialog.
   without changing the bar, the portrait or the hunger area.
 - Drag the bar to move it. The position is saved per player and **Reset
   position** returns it above the hotbar.
-- Preferences are stored per player. The GM can allow players to toggle the HUD
-  or enable it for everyone.
+- Preferences are stored per player. The GM can allow players to toggle the HUD,
+  force it on for everyone or force it off for everyone.
 
 ### Search and localization
 

@@ -80,6 +80,18 @@
 
       <label class="wod-settings-row">
         <span class="wod-settings-copy">
+          <strong>{{localize "WOD5E_HUD.Settings.DisableCombatForAll"}}</strong>
+          <small>{{localize "WOD5E_HUD.Settings.DisableCombatForAllHint"}}</small>
+        </span>
+        <input
+          type="checkbox"
+          data-world-setting="disablePlayerCombatForAll"
+          {{#if disableCombatForAll}}checked{{/if}}
+        >
+      </label>
+
+      <label class="wod-settings-row">
+        <span class="wod-settings-copy">
           <strong>{{localize "WOD5E_HUD.Settings.AllowCombatToggle"}}</strong>
           <small>{{localize "WOD5E_HUD.Settings.AllowCombatToggleHint"}}</small>
         </span>
