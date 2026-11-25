@@ -46,7 +46,11 @@ export function enableDrag(element, { ignore, onDrag, onEnd } = {}) {
     if (!drag.moved) {
       if (Math.hypot(dx, dy) < DRAG_THRESHOLD) return
       drag.moved = true
-      element.setPointerCapture?.(drag.pointerId)
+      try {
+        element.setPointerCapture?.(drag.pointerId)
+      } catch {
+        // Synthetic pointers and some browsers do not support capture here.
+      }
       element.classList.add('wod-dragging')
     }
 
@@ -67,7 +71,11 @@ export function enableDrag(element, { ignore, onDrag, onEnd } = {}) {
     const moved = drag.moved
     const last = drag.last
     drag = null
-    element.releasePointerCapture?.(event.pointerId)
+    try {
+      element.releasePointerCapture?.(event.pointerId)
+    } catch {
+      // Ignore a missing capture.
+    }
     element.classList.remove('wod-dragging')
 
     if (moved && last) onEnd?.(last)
