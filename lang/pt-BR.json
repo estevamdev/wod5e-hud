@@ -85,7 +85,9 @@
       "CombatForAllHint": "Escolha se o HUD de combate é forçado para todos ou se cada jogador decide.",
       "CombatModeDefault": "Padrão",
       "CombatModeEnabled": "Ligado",
-      "CombatModeDisabled": "Desligado"
+      "CombatModeDisabled": "Desligado",
+      "ForcedByGM": "Definido pelo mestre.",
+      "PermissionLocked": "Desativado pelo mestre."
     },
     "HungerTooltip": "Fome {value}/{max} — faltam {remaining} para fome extrema"
   }

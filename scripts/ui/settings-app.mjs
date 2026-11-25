@@ -98,7 +98,11 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
           active: worldCombatDisabled
         }
       ],
-      canToggleCombat: !worldCombatForced && !worldCombatDisabled && (isGM || allowCombatToggle)
+      canToggleCombat:
+        !worldCombatForced && !worldCombatDisabled && (isGM || allowCombatToggle),
+      combatLockedByForce: worldCombatForced || worldCombatDisabled,
+      combatLockedByPermission:
+        !worldCombatForced && !worldCombatDisabled && !isGM && !allowCombatToggle
     }
   }
 

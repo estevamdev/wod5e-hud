@@ -85,7 +85,9 @@
       "CombatForAllHint": "Choose whether the combat HUD is forced for everyone or each player decides.",
       "CombatModeDefault": "Default",
       "CombatModeEnabled": "On",
-      "CombatModeDisabled": "Off"
+      "CombatModeDisabled": "Off",
+      "ForcedByGM": "Set by the Game Master.",
+      "PermissionLocked": "Disabled by the Game Master."
     },
     "HungerTooltip": "Hunger {value}/{max} — {remaining} to extreme hunger"
   }

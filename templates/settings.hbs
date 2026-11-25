@@ -18,9 +18,12 @@
       <span class="wod-settings-copy">
         <strong>{{localize "WOD5E_HUD.Settings.CombatHud"}}</strong>
         <small>{{localize "WOD5E_HUD.Settings.CombatHudHint"}}</small>
-        {{#unless canToggleCombat}}
-          <small class="wod-settings-lock">{{localize "WOD5E_HUD.Settings.Locked"}}</small>
-        {{/unless}}
+        {{#if combatLockedByForce}}
+          <small class="wod-settings-lock">{{localize "WOD5E_HUD.Settings.ForcedByGM"}}</small>
+        {{/if}}
+        {{#if combatLockedByPermission}}
+          <small class="wod-settings-lock">{{localize "WOD5E_HUD.Settings.PermissionLocked"}}</small>
+        {{/if}}
       </span>
       <input
         type="checkbox"

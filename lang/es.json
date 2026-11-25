@@ -85,7 +85,9 @@
       "CombatForAllHint": "Elige si el HUD de combate se fuerza para todos o cada jugador decide.",
       "CombatModeDefault": "Predeterminado",
       "CombatModeEnabled": "Activado",
-      "CombatModeDisabled": "Desactivado"
+      "CombatModeDisabled": "Desactivado",
+      "ForcedByGM": "Definido por el Director de Juego.",
+      "PermissionLocked": "Desactivado por el Director de Juego."
     },
     "HungerTooltip": "Ansia {value}/{max} — faltan {remaining} para Ansia extrema"
   }
