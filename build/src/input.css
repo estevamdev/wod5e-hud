@@ -353,6 +353,15 @@
   color: #fff;
 }
 
+.wod-scale-option:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.wod-scale-option:disabled:hover {
+  color: #a1a1aa;
+}
+
 .wod-scale-option.is-active {
   background: rgba(220, 38, 38, 0.2);
   box-shadow: 0 0 10px color-mix(in srgb, #dc2626 22%, transparent);

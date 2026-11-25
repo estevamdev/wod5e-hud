@@ -83,10 +83,12 @@
       "MinimalActionsHint": "Shows only the icons. Hover a button to read its name.",
       "CombatForAll": "Combat HUD for all players",
       "CombatForAllHint": "On keeps the HUD available to all players. Off disables it for everyone. Players can only turn it off when allowed.",
-      "CombatModeEnabled": "On",
-      "CombatModeDisabled": "Off",
       "ForcedByGM": "Set by the Game Master.",
-      "ControlledByGM": "Controlled by the Game Master."
+      "ControlledByGM": "Controlled by the Game Master.",
+      "StateOn": "On",
+      "StateOff": "Off",
+      "StateEnabled": "Enabled",
+      "StateDisabled": "Disabled"
     },
     "HungerTooltip": "Hunger {value}/{max} — {remaining} to extreme hunger"
   }

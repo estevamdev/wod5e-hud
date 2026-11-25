@@ -83,12 +83,12 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       combatModeOptions: [
         {
           id: 'enabled',
-          label: 'WOD5E_HUD.Settings.CombatModeEnabled',
+          label: 'WOD5E_HUD.Settings.StateOn',
           active: !worldCombatDisabled
         },
         {
           id: 'disabled',
-          label: 'WOD5E_HUD.Settings.CombatModeDisabled',
+          label: 'WOD5E_HUD.Settings.StateOff',
           active: worldCombatDisabled
         }
       ],
@@ -110,9 +110,11 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       })
     })
 
-    element.querySelectorAll('[data-setting]').forEach((input) => {
-      input.addEventListener('change', async () => {
-        await setSetting(input.dataset.setting, input.checked)
+    element.querySelectorAll('[data-setting-value]').forEach((button) => {
+      button.addEventListener('click', async (event) => {
+        event.preventDefault()
+        if (button.disabled) return
+        await setSetting(button.dataset.settingValue, button.dataset.value === 'true')
         await this.onChange()
         this.render(true)
       })
@@ -128,10 +130,12 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       })
     })
 
-    element.querySelectorAll('[data-world-setting]').forEach((input) => {
-      input.addEventListener('change', async () => {
-        if (!game.user?.isGM) return
-        await setSetting(input.dataset.worldSetting, input.checked)
+    element.querySelectorAll('[data-world-setting-value]').forEach((button) => {
+      button.addEventListener('click', async (event) => {
+        event.preventDefault()
+        if (!game.user?.isGM || button.disabled) return
+        await setSetting(button.dataset.worldSettingValue, button.dataset.value === 'true')
+        await this.onChange()
         this.render(true)
       })
     })

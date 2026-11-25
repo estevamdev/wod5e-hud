@@ -12,7 +12,7 @@ export function registerSettings() {
     name: 'WOD5E_HUD.Settings.CombatHud',
     hint: 'WOD5E_HUD.Settings.CombatHudHint',
     scope: 'client',
-    config: true,
+    config: false,
     type: Boolean,
     default: true
   })
@@ -21,7 +21,7 @@ export function registerSettings() {
     name: 'WOD5E_HUD.Settings.HideHotbar',
     hint: 'WOD5E_HUD.Settings.HideHotbarHint',
     scope: 'client',
-    config: true,
+    config: false,
     type: Boolean,
     default: false
   })
@@ -39,7 +39,7 @@ export function registerSettings() {
     name: 'WOD5E_HUD.Settings.AllowCombatToggle',
     hint: 'WOD5E_HUD.Settings.AllowCombatToggleHint',
     scope: 'world',
-    config: true,
+    config: false,
     type: Boolean,
     default: true
   })
@@ -48,7 +48,7 @@ export function registerSettings() {
     name: 'WOD5E_HUD.Settings.MinimalActions',
     hint: 'WOD5E_HUD.Settings.MinimalActionsHint',
     scope: 'client',
-    config: true,
+    config: false,
     type: Boolean,
     default: false
   })
