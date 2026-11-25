@@ -1,14 +1,5 @@
 {
   "WOD5E_HUD": {
-    "Creature": {
-      "Vampire": "Vampire",
-      "Ghoul": "Ghoul",
-      "Mortal": "Mortal",
-      "Hunter": "Hunter",
-      "Werewolf": "Werewolf",
-      "Spc": "SPC",
-      "Group": "Group"
-    },
     "Hunger": "Hunger",
     "XPShort": "XP",
     "Drawer": {
@@ -84,7 +75,8 @@
       "GMHint": "These permissions control what players can change in their HUD.",
       "EnableCombatForAll": "Enable combat HUD for all players",
       "EnableCombatForAllHint": "Forces the combat HUD on for every player, overriding their local option.",
-      "ForcedByGM": "Enabled by the Game Master."
+      "ForcedByGM": "Enabled by the Game Master.",
+      "ResetPosition": "Reset position"
     }
   }
 }

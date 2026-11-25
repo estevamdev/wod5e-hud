@@ -1,4 +1,4 @@
-import { COMBAT_ID, ROOT_ID, SEARCH_ID } from '../core/constants.mjs'
+import { COMBAT_ID, SEARCH_ID } from '../core/constants.mjs'
 import {
   buildActionsDrawer,
   buildAttributesDrawer,
@@ -7,6 +7,7 @@ import {
   buildSkillsDrawer,
   buildStatus
 } from '../core/actor-adapter.mjs'
+import { clampToViewport, enableDrag } from '../core/dragging.mjs'
 import {
   clamp,
   debounce,
@@ -41,6 +42,7 @@ export class Wod5eHud {
     this.context = null
     this.combatDrawer = null
     this.searchState = { query: '', results: null, selected: 0 }
+    this.dragCleanup = null
     this._renderToken = null
     this._statusRefresh = debounce(() => this.updateStatus(), 80)
     this._animateTimer = null
@@ -53,8 +55,6 @@ export class Wod5eHud {
   }
 
   async init() {
-    // Remove leftovers from older versions that used a separate mini HUD.
-    document.getElementById(ROOT_ID)?.remove()
     document.getElementById(COMBAT_ID)?.remove()
     document.getElementById(SEARCH_ID)?.remove()
 
@@ -132,6 +132,7 @@ export class Wod5eHud {
       xp: this.context?.xp ?? { show: false, remaining: 0 }
     })
     this.#bindActions(this.combatRoot)
+    this.#bindCombatDrag()
     this.positionCombat()
     requestAnimationFrame(() => this.positionCombat())
 
@@ -197,9 +198,37 @@ export class Wod5eHud {
   positionCombat() {
     if (!this.combatRoot) return
 
+    // Do not fight the pointer while the player is dragging.
+    if (this.combatRoot.querySelector('.wod-combat-bar')?.classList.contains('wod-dragging')) {
+      return
+    }
+
     const hotbarHidden = Boolean(getSetting('hideHotbar', false))
     document.body?.classList.toggle('wod-hide-hotbar', hotbarHidden)
     this.#syncHotbarVisibility(hotbarHidden)
+
+    // A player-moved HUD keeps its saved position, clamped to the viewport.
+    const free = getSetting('freePosition', null)
+    const freeX = Number(free?.x)
+    const freeY = Number(free?.y)
+    if (
+      free?.x != null &&
+      free?.y != null &&
+      Number.isFinite(freeX) &&
+      Number.isFinite(freeY)
+    ) {
+      const rect = this.combatRoot.getBoundingClientRect()
+      const next = clampToViewport(
+        freeX,
+        freeY,
+        rect.width || this.combatRoot.offsetWidth,
+        rect.height || this.combatRoot.offsetHeight
+      )
+      this.#applyFreePosition(next.x, next.y)
+      return
+    }
+
+    this.#clearFreePosition()
 
     // When the hotbar is hidden the combat bar takes its exact place.
     if (hotbarHidden) {
@@ -235,6 +264,45 @@ export class Wod5eHud {
       Math.round(window.innerHeight - rect.top + 5)
     )}px`
     this.combatRoot.style.setProperty('--wod-hotbar-height', `${Math.round(rect.height)}px`)
+  }
+
+  #bindCombatDrag() {
+    this.dragCleanup?.()
+    this.dragCleanup = null
+
+    const bar = this.combatRoot?.querySelector('.wod-combat-bar')
+    if (!bar) return
+
+    this.dragCleanup = enableDrag(bar, {
+      ignore: 'button, input, select, textarea, a',
+      onDrag: ({ x, y }) => this.#applyFreePosition(x, y),
+      onEnd: ({ x, y }) => {
+        this.#applyFreePosition(x, y)
+        void setSetting('freePosition', { x, y })
+      }
+    })
+  }
+
+  #applyFreePosition(x, y) {
+    const root = this.combatRoot
+    if (!root) return
+    root.style.left = `${Math.round(x)}px`
+    root.style.top = `${Math.round(y)}px`
+    root.style.bottom = 'auto'
+    root.style.transform = 'none'
+  }
+
+  #clearFreePosition() {
+    const root = this.combatRoot
+    if (!root) return
+    root.style.top = ''
+    root.style.transform = ''
+  }
+
+  async resetPosition() {
+    await setSetting('freePosition', { x: null, y: null })
+    this.#clearFreePosition()
+    this.positionCombat()
   }
 
   hideCombat() {
@@ -333,7 +401,8 @@ export class Wod5eHud {
       try {
         const { Wod5eSettingsApp } = await import('./settings-app.mjs')
         this.settingsApp = new Wod5eSettingsApp({
-          onChange: () => this.applyPreferences()
+          onChange: () => this.applyPreferences(),
+          onResetPosition: () => this.resetPosition()
         })
       } catch (error) {
         console.error('[WOD5E HUD] failed to open settings', error)
@@ -373,9 +442,6 @@ export class Wod5eHud {
         break
       case 'search-result':
         this.#executeSearchResult(Number(element.dataset.index))
-        break
-      case 'open-sheet':
-      case 'blood-check':
         break
       case 'drawer':
         await this.openDrawer(element.dataset.drawer)
@@ -792,6 +858,8 @@ export class Wod5eHud {
   }
 
   destroy() {
+    this.dragCleanup?.()
+    this.dragCleanup = null
     this.closeSearch()
     this.closeDrawer()
     this.settingsApp?.close?.()

@@ -359,6 +359,36 @@
   box-shadow: 0 0 12px color-mix(in srgb, #dc2626 12%, transparent);
 }
 
+.wod-settings-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid rgba(161, 161, 170, 0.25);
+  border-radius: 8px;
+  background: rgba(9, 9, 11, 0.6);
+  color: #d4d4d8;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    background 150ms ease,
+    box-shadow 150ms ease,
+    color 150ms ease;
+}
+
+.wod-settings-btn:hover {
+  border-color: color-mix(in srgb, #dc2626 50%, transparent);
+  background: rgba(220, 38, 38, 0.1);
+  box-shadow: 0 0 14px color-mix(in srgb, #dc2626 20%, transparent);
+  color: #fff;
+}
+
+.wod-settings-btn i {
+  color: #dc2626;
+}
+
 /* ------------------------------------------------------------------------- */
 /* Combat HUD (centered above the macro bar)                                  */
 /* ------------------------------------------------------------------------- */
@@ -387,7 +417,14 @@ body.wod-hide-hotbar #hotbar {
   gap: 4px;
   height: 74px;
   padding: 0 74px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
   pointer-events: auto;
+}
+
+.wod-combat-bar.wod-dragging {
+  cursor: grabbing;
 }
 
 /* The silhouette is one shape: a thin band that swells into a circle at each

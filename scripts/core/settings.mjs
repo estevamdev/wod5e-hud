@@ -1,5 +1,11 @@
 import { MODULE_ID } from './constants.mjs'
-import { localize } from './utils.mjs'
+
+const ObjectField = foundry?.data?.fields?.ObjectField
+
+function freePositionType() {
+  if (ObjectField) return new ObjectField({ initial: { x: null, y: null } })
+  return Object
+}
 
 export function registerSettings() {
   game.settings.register(MODULE_ID, 'combatHud', {
@@ -38,15 +44,17 @@ export function registerSettings() {
     default: false
   })
 
+  game.settings.register(MODULE_ID, 'freePosition', {
+    scope: 'client',
+    config: false,
+    type: freePositionType(),
+    default: { x: null, y: null }
+  })
+
   game.settings.register(MODULE_ID, 'skillsFilter', {
-    name: 'WOD5E_HUD.Drawer.Skills',
     scope: 'client',
     config: false,
     type: String,
-    choices: {
-      trained: localize('WOD5E_HUD.SkillsFilter.Trained', 'Trained only'),
-      all: localize('WOD5E_HUD.SkillsFilter.All', 'Show all')
-    },
     default: 'trained'
   })
 }
