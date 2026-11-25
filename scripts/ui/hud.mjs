@@ -50,9 +50,6 @@ export class Wod5eHud {
     this._hotbarEl = null
     this._hotbarObserver = null
     this._hotbarMetrics = null
-    this._pendingRoll = false
-    this._pendingRollTracker = null
-    this._statusQueued = false
   }
 
   async init() {
@@ -423,9 +420,6 @@ export class Wod5eHud {
     const actor = this.actor
     if (!actor || !id) return
 
-    // A cancelled dialog may leave a presentation pending, release it first.
-    this.#finishPendingRoll()
-
     const event = { preventDefault() {}, stopPropagation() {} }
 
     try {
@@ -439,7 +433,6 @@ export class Wod5eHud {
             )
             return
           }
-          this.#startRollPresentation(actor)
           await rollFromDataset({
             dataset: {
               label: localize('WOD5E.VTM.RousingBlood', 'Rousing Blood'),
@@ -451,7 +444,7 @@ export class Wod5eHud {
             },
             actor
           })
-          return
+          break
         }
         case 'feeding': {
           const predator = actor.items?.find?.((item) => item.type === 'predatorType')
@@ -795,93 +788,10 @@ export class Wod5eHud {
   }
 
   scheduleStatusUpdate() {
-    // While a roll is being presented, the HUD waits for the chat message and
-    // the Dice So Nice animation before showing the new values.
-    if (this._pendingRoll) {
-      this._statusQueued = true
-      return
-    }
     this._statusRefresh()
   }
 
-  #startRollPresentation(actor) {
-    this._pendingRoll = true
-    const tracker = this.#trackRollPresentation(actor)
-    this._pendingRollTracker = tracker
-
-    tracker.wait().finally(() => {
-      if (this._pendingRollTracker !== tracker) return
-      this._pendingRollTracker = null
-      this._pendingRoll = false
-      this._statusQueued = false
-      this.updateStatus()
-    })
-  }
-
-  #finishPendingRoll() {
-    const tracker = this._pendingRollTracker
-    if (!tracker) return
-    this._pendingRollTracker = null
-    tracker.cancel()
-    this._pendingRoll = false
-    this._statusQueued = false
-  }
-
-  /**
-   * Tracks a system roll so the HUD only refreshes after the chat message and
-   * the Dice So Nice animation. It does not change the roll itself.
-   */
-  #trackRollPresentation(actor) {
-    let messageId = null
-    let messageSeen = false
-    let dsnActive = false
-    let settle
-    const presented = new Promise((resolve) => {
-      settle = resolve
-    })
-
-    const onDice = (id) => {
-      if (id && messageId && id !== messageId) return
-      settle()
-    }
-
-    const onCreate = (message) => {
-      if (message.speaker?.actor !== actor.id) return
-      if (!message.rolls?.length) return
-      messageSeen = true
-      messageId = message.id
-      Hooks.off('createChatMessage', onCreate)
-
-      const dice3d = globalThis.game?.dice3d
-      dsnActive =
-        Boolean(dice3d) && (typeof dice3d.isEnabled === 'function' ? dice3d.isEnabled() : true)
-
-      if (dsnActive) Hooks.once('diceSoNiceRollComplete', onDice)
-      else settle()
-    }
-
-    Hooks.on('createChatMessage', onCreate)
-
-    return {
-      async wait() {
-        if (!messageSeen) {
-          // The system roll dialog may be open, wait for its confirmation.
-          await Promise.race([presented, new Promise((resolve) => setTimeout(resolve, 20000))])
-          if (!messageSeen) return
-        }
-        if (!dsnActive) return
-        await Promise.race([presented, new Promise((resolve) => setTimeout(resolve, 8000))])
-      },
-      cancel() {
-        Hooks.off('createChatMessage', onCreate)
-        Hooks.off('diceSoNiceRollComplete', onDice)
-        settle()
-      }
-    }
-  }
-
   destroy() {
-    this.#finishPendingRoll()
     this.closeSearch()
     this.closeDrawer()
     this.settingsApp?.close?.()
