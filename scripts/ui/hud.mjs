@@ -51,6 +51,7 @@ export class Wod5eHud {
     this._hotbarObserver = null
     this._hotbarMetrics = null
     this._pendingRoll = false
+    this._pendingRollTracker = null
     this._statusQueued = false
   }
 
@@ -418,65 +419,39 @@ export class Wod5eHud {
     return import(`/systems/${systemId}/system/${path}`)
   }
 
-  async #confirmQuickAction(title, content) {
-    const DialogV2 = foundry.applications?.api?.DialogV2
-    if (!DialogV2?.confirm) return true
-
-    try {
-      return Boolean(
-        await DialogV2.confirm({
-          window: { title },
-          modal: true,
-          rejectClose: false,
-          content: `<p>${content}</p>`,
-          yes: {
-            label: localize('WOD5E_HUD.Actions.Roll', 'Roll'),
-            icon: 'fa-solid fa-dice-d20',
-            default: true,
-            callback: () => true
-          },
-          no: {
-            label: localize('WOD5E_HUD.Actions.Cancel', 'Cancel'),
-            icon: 'fa-solid fa-xmark',
-            default: false,
-            callback: () => false
-          }
-        })
-      )
-    } catch (error) {
-      console.error('[WOD5E HUD] action confirmation failed', error)
-      return false
-    }
-  }
-
   async #runQuickAction(id) {
     const actor = this.actor
     if (!actor || !id) return
+
+    // A cancelled dialog may leave a presentation pending, release it first.
+    this.#finishPendingRoll()
 
     const event = { preventDefault() {}, stopPropagation() {} }
 
     try {
       switch (id) {
         case 'rouse': {
-          const confirmed = await this.#confirmQuickAction(
-            localize('WOD5E_HUD.Actions.Rouse', 'Rouse Check'),
-            localize('WOD5E_HUD.Actions.ConfirmRouse', 'Do you want to roll the Rouse check?')
-          )
-          if (!confirmed) return
-          const { _onRouseCheck } = await this.#systemModule('actor/vtm/scripts/rouse.js')
-          this._pendingRoll = true
-          try {
-            const presented = this.#waitForRollPresentation(actor)
-            await _onRouseCheck(actor, {
-              name: localize('WOD5E_HUD.Actions.Rouse', 'Rouse Check'),
-              system: { level: 1, cost: 1, discipline: '' }
-            })
-            await presented
-          } finally {
-            this._pendingRoll = false
-            this._statusQueued = false
+          // Same dataset as the sheet's Rouse Check button.
+          const rollFromDataset = globalThis.WOD5E?.api?.RollFromDataset
+          if (typeof rollFromDataset !== 'function') {
+            ui.notifications?.error?.(
+              localize('WOD5E_HUD.Actions.Failed', 'The action could not be performed.')
+            )
+            return
           }
-          break
+          this.#startRollPresentation(actor)
+          await rollFromDataset({
+            dataset: {
+              label: localize('WOD5E.VTM.RousingBlood', 'Rousing Blood'),
+              disableBasicDice: true,
+              useAbsoluteValue: true,
+              absoluteValue: 1,
+              increaseHunger: true,
+              difficulty: 1
+            },
+            actor
+          })
+          return
         }
         case 'feeding': {
           const predator = actor.items?.find?.((item) => item.type === 'predatorType')
@@ -490,14 +465,6 @@ export class Wod5eHud {
           break
         }
         case 'frenzy': {
-          const confirmed = await this.#confirmQuickAction(
-            localize('WOD5E_HUD.Actions.ResistFrenzy', 'Resist Frenzy'),
-            localize(
-              'WOD5E_HUD.Actions.ConfirmFrenzy',
-              'Do you want to roll the test to resist Frenzy?'
-            )
-          )
-          if (!confirmed) return
           const { _onFrenzyRoll } = await this.#systemModule('actor/vtm/scripts/frenzy-roll.js')
           await _onFrenzyRoll.call({ actor }, event)
           break
@@ -837,54 +804,84 @@ export class Wod5eHud {
     this._statusRefresh()
   }
 
-  /**
-   * Resolves after the roll message is posted and, when Dice So Nice is
-   * enabled, after its animation completes.
-   */
-  #waitForRollPresentation(actor) {
-    return new Promise((resolve) => {
-      let settled = false
-      let messageId = null
+  #startRollPresentation(actor) {
+    this._pendingRoll = true
+    const tracker = this.#trackRollPresentation(actor)
+    this._pendingRollTracker = tracker
 
-      const cleanup = () => {
-        clearTimeout(safety)
-        Hooks.off('createChatMessage', onCreate)
-        Hooks.off('diceSoNiceRollComplete', onDice)
-      }
-
-      const finish = () => {
-        if (settled) return
-        settled = true
-        cleanup()
-        resolve()
-      }
-
-      const onDice = (id) => {
-        if (id && messageId && id !== messageId) return
-        finish()
-      }
-
-      const onCreate = (message) => {
-        if (message.speaker?.actor !== actor.id) return
-        if (!message.rolls?.length) return
-        messageId = message.id
-        Hooks.off('createChatMessage', onCreate)
-
-        const dice3d = globalThis.game?.dice3d
-        const dsnActive =
-          Boolean(dice3d) &&
-          (typeof dice3d.isEnabled === 'function' ? dice3d.isEnabled() : true)
-
-        if (dsnActive) Hooks.once('diceSoNiceRollComplete', onDice)
-        else setTimeout(finish, 350)
-      }
-
-      const safety = setTimeout(finish, 6000)
-      Hooks.on('createChatMessage', onCreate)
+    tracker.wait().finally(() => {
+      if (this._pendingRollTracker !== tracker) return
+      this._pendingRollTracker = null
+      this._pendingRoll = false
+      this._statusQueued = false
+      this.updateStatus()
     })
   }
 
+  #finishPendingRoll() {
+    const tracker = this._pendingRollTracker
+    if (!tracker) return
+    this._pendingRollTracker = null
+    tracker.cancel()
+    this._pendingRoll = false
+    this._statusQueued = false
+  }
+
+  /**
+   * Tracks a system roll so the HUD only refreshes after the chat message and
+   * the Dice So Nice animation. It does not change the roll itself.
+   */
+  #trackRollPresentation(actor) {
+    let messageId = null
+    let messageSeen = false
+    let dsnActive = false
+    let settle
+    const presented = new Promise((resolve) => {
+      settle = resolve
+    })
+
+    const onDice = (id) => {
+      if (id && messageId && id !== messageId) return
+      settle()
+    }
+
+    const onCreate = (message) => {
+      if (message.speaker?.actor !== actor.id) return
+      if (!message.rolls?.length) return
+      messageSeen = true
+      messageId = message.id
+      Hooks.off('createChatMessage', onCreate)
+
+      const dice3d = globalThis.game?.dice3d
+      dsnActive =
+        Boolean(dice3d) && (typeof dice3d.isEnabled === 'function' ? dice3d.isEnabled() : true)
+
+      if (dsnActive) Hooks.once('diceSoNiceRollComplete', onDice)
+      else settle()
+    }
+
+    Hooks.on('createChatMessage', onCreate)
+
+    return {
+      async wait() {
+        if (!messageSeen) {
+          // The system roll dialog may be open, wait for its confirmation.
+          await Promise.race([presented, new Promise((resolve) => setTimeout(resolve, 20000))])
+          if (!messageSeen) return
+        }
+        if (!dsnActive) return
+        await Promise.race([presented, new Promise((resolve) => setTimeout(resolve, 8000))])
+      },
+      cancel() {
+        Hooks.off('createChatMessage', onCreate)
+        Hooks.off('diceSoNiceRollComplete', onDice)
+        settle()
+      }
+    }
+  }
+
   destroy() {
+    this.#finishPendingRoll()
     this.closeSearch()
     this.closeDrawer()
     this.settingsApp?.close?.()

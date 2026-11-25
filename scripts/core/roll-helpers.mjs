@@ -2,55 +2,28 @@ import { localize } from './utils.mjs'
 
 export function rollAttribute(actor, key) {
   if (!actor || !key) return
+  // Same dataset as the sheet's attribute label.
   return globalThis.WOD5E?.api?.RollFromDataset?.({
-    dataset: { selectDialog: true, attribute: key },
+    dataset: {
+      valuePaths: `attributes.${key}.value`,
+      selectDialog: true,
+      attribute: key
+    },
     actor
   })
 }
 
 export function rollSkill(actor, key) {
   if (!actor || !key) return
-  return globalThis.WOD5E?.api?.RollFromDataset?.({
-    dataset: { selectDialog: true, skill: key },
-    actor
-  })
-}
-
-function fallbackItemRoll(actor, item) {
-  const dicepool = item?.system?.dicepool ?? {}
-  const valuePaths = []
-  const selectors = new Set()
-
-  for (const entry of Object.values(dicepool)) {
-    const path = entry?.path
-    if (!path) continue
-    valuePaths.push(`${path}.value`)
-    for (const part of path.split('.')) selectors.add(part)
-    selectors.add(path)
-  }
-
-  if (item.type === 'power') {
-    selectors.add('disciplines')
-    selectors.add(`disciplines.${item.system?.discipline}`)
-  }
-  if (item.type === 'gift') {
-    selectors.add('gifts')
-    selectors.add(`gifts.${item.system?.giftType}`)
-  }
-  if (item.type === 'perk' || item.type === 'edgepool') {
-    selectors.add('edges')
-    selectors.add(`edges.${item.system?.edge}`)
-  }
-  if (item.type === 'predatorType') selectors.add('feeding')
-
+  // Same dataset as the sheet's skill label.
   return globalThis.WOD5E?.api?.RollFromDataset?.({
     dataset: {
-      itemId: item.id,
-      valuePaths: valuePaths.join(' '),
-      selectors: [...selectors].filter(Boolean).join(' '),
-      label: item.name,
-      flatMod: Number(item.system?.modifier) || 0,
-      quickRoll: false
+      valuePaths: `skills.${key}.value`,
+      selectDialog: true,
+      skill: key,
+      useFlavorPath: true,
+      flavorPath: `skills.${key}.description`,
+      macroid: actor.system?.skills?.[key]?.macroid ?? ''
     },
     actor
   })
@@ -59,17 +32,8 @@ function fallbackItemRoll(actor, item) {
 /** Roll an item through the system's own roller when available. */
 export async function rollItem(actor, item) {
   if (!actor || !item) return
-
-  try {
-    const roller = await import('/systems/wod5e/system/actor/scripts/item-roll.js')
-    if (typeof roller._rollItem === 'function') {
-      return roller._rollItem(actor, item)
-    }
-  } catch (error) {
-    console.warn('WOD5E HUD | system item roller unavailable, using fallback', error)
-  }
-
-  return fallbackItemRoll(actor, item)
+  const roller = await import('/systems/wod5e/system/actor/scripts/item-roll.js')
+  return roller._rollItem(actor, item)
 }
 
 export function openItemChat(item) {

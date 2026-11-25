@@ -31,10 +31,6 @@
       "Willpower": "Teste de Força de Vontade",
       "Humanity": "Humanidade",
       "Remorse": "Teste de Remorso",
-      "ConfirmRouse": "Deseja rolar a Checagem de Sangue?",
-      "ConfirmFrenzy": "Deseja rolar o teste para Resistir ao Frenesi?",
-      "Roll": "Rolar",
-      "Cancel": "Cancelar",
       "NoPredator": "Nenhum tipo de predador encontrado para este ator.",
       "Failed": "Não foi possível executar a ação."
     },

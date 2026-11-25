@@ -34,8 +34,9 @@ are always within reach.
 | **Willpower** | Willpower test                                               |
 | **Humanity**  | Remorse test                                                 |
 
-All quick actions use the native **wod5e** rolls and dialogs. Blood Check and
-Resist Frenzy ask for confirmation before rolling.
+All quick actions use the native **wod5e** rolls and dialogs, exactly like their
+sheet buttons. Blood Check opens the system roll dialog and Resist Frenzy opens
+the system Resist/Give in dialog.
 
 ### Menus
 

@@ -31,10 +31,6 @@
       "Willpower": "Willpower Test",
       "Humanity": "Humanity",
       "Remorse": "Remorse Test",
-      "ConfirmRouse": "Do you want to roll the Rouse check?",
-      "ConfirmFrenzy": "Do you want to roll the test to resist Frenzy?",
-      "Roll": "Roll",
-      "Cancel": "Cancel",
       "NoPredator": "No predator type found for this actor.",
       "Failed": "The action could not be performed."
     },
