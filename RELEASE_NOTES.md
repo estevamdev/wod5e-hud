@@ -1,30 +1,26 @@
-# WOD5E HUD v0.7.5
+# WOD5E HUD v0.7.6
 
-Hotfix for the single-bar HUD.
+All rolls trigger the sheet actions, the HUD only provides shortcuts.
+
+## Added
+
+- Drag the bar to move it. The position is saved per client and clamped to the
+  viewport.
+- Reset position in the settings window returns the bar above the hotbar.
 
 ## Changed
 
-- The vitality ring was removed from the portrait, the vitality system is no
-  longer part of the HUD. The red border around the portrait is kept.
-- The hunger area now carries the same glow as the portrait, and its red ring
-  is unchanged.
-- Clicking the portrait or the hunger area now plays a short pulse effect.
-- Double-clicking the hunger area rolls a Blood Check with the same
-  confirmation as the menu action. A hover hint explains the shortcut.
-- The HUD now waits for the chat message and the Dice So Nice animation before
-  updating the hunger value, matching the system timing.
+- All rolls trigger the sheet actions, the HUD only provides shortcuts.
+- The HUD follows the system actor update timing.
 
-## Fixed
+## Removed
 
-- The hunger value no longer changes before the roll result is presented.
-- The menu hint on the hunger area is no longer hidden by the value tooltip.
-
-## Documentation
-
-- README rewritten for players, with the development status, vampire focus and
-  the wod5e system requirement.
+- Unused status fields, the old mini HUD id cleanup, empty action cases and the
+  unused skill filter choices.
+- Unused creature labels and redundant keys from the language files.
 
 ## Notes
 
 - Foundry VTT v13+ with the wod5e system.
 - No settings or data migration needed.
+- The experience shortcut remains hidden.
