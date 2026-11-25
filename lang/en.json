@@ -1,14 +1,5 @@
 {
   "WOD5E_HUD": {
-    "Creature": {
-      "Vampire": "Vampire",
-      "Ghoul": "Ghoul",
-      "Mortal": "Mortal",
-      "Hunter": "Hunter",
-      "Werewolf": "Werewolf",
-      "Spc": "SPC",
-      "Group": "Group"
-    },
     "Hunger": "Hunger",
     "XPShort": "XP",
     "Drawer": {
@@ -31,10 +22,6 @@
       "Willpower": "Willpower Test",
       "Humanity": "Humanity",
       "Remorse": "Remorse Test",
-      "ConfirmRouse": "Do you want to roll the Rouse check?",
-      "ConfirmFrenzy": "Do you want to roll the test to resist Frenzy?",
-      "Roll": "Roll",
-      "Cancel": "Cancel",
       "NoPredator": "No predator type found for this actor.",
       "Failed": "The action could not be performed."
     },
@@ -88,7 +75,8 @@
       "GMHint": "These permissions control what players can change in their HUD.",
       "EnableCombatForAll": "Enable combat HUD for all players",
       "EnableCombatForAllHint": "Forces the combat HUD on for every player, overriding their local option.",
-      "ForcedByGM": "Enabled by the Game Master."
+      "ForcedByGM": "Enabled by the Game Master.",
+      "ResetPosition": "Reset position"
     }
   }
 }

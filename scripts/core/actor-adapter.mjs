@@ -1,5 +1,5 @@
 import { CATEGORY_ICONS, CATEGORY_LABELS, CREATURE_INFO, SHOW_XP } from './constants.mjs'
-import { clamp, isOwner, localize, normalizeText, tokenName, tokenPortrait } from './utils.mjs'
+import { clamp, localize, normalizeText, tokenName, tokenPortrait } from './utils.mjs'
 
 const API = () => globalThis.WOD5E
 
@@ -35,16 +35,14 @@ function getCreature(actor) {
     if (spcType && CREATURE_INFO[spcType] && spcType !== 'spc') {
       info = {
         ...CREATURE_INFO[spcType],
-        key: 'spc',
-        label: 'WOD5E_HUD.Creature.Spc'
+        key: 'spc'
       }
     }
   }
 
   return {
     ...info,
-    key: type,
-    labelText: localize(info.label, type)
+    key: type
   }
 }
 
@@ -363,16 +361,11 @@ function buildSearchIndex(actor) {
 export function buildStatus(actor, token) {
   const creature = getCreature(actor)
   return {
-    actorId: actor.id,
-    tokenId: token?.id ?? null,
     name: tokenName(token, actor),
     portrait: tokenPortrait(token, actor),
     accent: creature.accent,
-    creature,
-    creatureLabel: creature.labelText,
     resource: buildResource(actor, creature),
-    xp: buildXP(actor),
-    canEdit: isOwner(actor)
+    xp: buildXP(actor)
   }
 }
 

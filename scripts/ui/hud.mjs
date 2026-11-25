@@ -1,4 +1,4 @@
-import { COMBAT_ID, ROOT_ID, SEARCH_ID } from '../core/constants.mjs'
+import { COMBAT_ID, SEARCH_ID } from '../core/constants.mjs'
 import {
   buildActionsDrawer,
   buildAttributesDrawer,
@@ -7,6 +7,7 @@ import {
   buildSkillsDrawer,
   buildStatus
 } from '../core/actor-adapter.mjs'
+import { clampToViewport, enableDrag } from '../core/dragging.mjs'
 import {
   clamp,
   debounce,
@@ -41,6 +42,7 @@ export class Wod5eHud {
     this.context = null
     this.combatDrawer = null
     this.searchState = { query: '', results: null, selected: 0 }
+    this.dragCleanup = null
     this._renderToken = null
     this._statusRefresh = debounce(() => this.updateStatus(), 80)
     this._animateTimer = null
@@ -50,13 +52,9 @@ export class Wod5eHud {
     this._hotbarEl = null
     this._hotbarObserver = null
     this._hotbarMetrics = null
-    this._pendingRoll = false
-    this._statusQueued = false
   }
 
   async init() {
-    // Remove leftovers from older versions that used a separate mini HUD.
-    document.getElementById(ROOT_ID)?.remove()
     document.getElementById(COMBAT_ID)?.remove()
     document.getElementById(SEARCH_ID)?.remove()
 
@@ -134,6 +132,7 @@ export class Wod5eHud {
       xp: this.context?.xp ?? { show: false, remaining: 0 }
     })
     this.#bindActions(this.combatRoot)
+    this.#bindCombatDrag()
     this.positionCombat()
     requestAnimationFrame(() => this.positionCombat())
 
@@ -199,9 +198,37 @@ export class Wod5eHud {
   positionCombat() {
     if (!this.combatRoot) return
 
+    // Do not fight the pointer while the player is dragging.
+    if (this.combatRoot.querySelector('.wod-combat-bar')?.classList.contains('wod-dragging')) {
+      return
+    }
+
     const hotbarHidden = Boolean(getSetting('hideHotbar', false))
     document.body?.classList.toggle('wod-hide-hotbar', hotbarHidden)
     this.#syncHotbarVisibility(hotbarHidden)
+
+    // A player-moved HUD keeps its saved position, clamped to the viewport.
+    const free = getSetting('freePosition', null)
+    const freeX = Number(free?.x)
+    const freeY = Number(free?.y)
+    if (
+      free?.x != null &&
+      free?.y != null &&
+      Number.isFinite(freeX) &&
+      Number.isFinite(freeY)
+    ) {
+      const rect = this.combatRoot.getBoundingClientRect()
+      const next = clampToViewport(
+        freeX,
+        freeY,
+        rect.width || this.combatRoot.offsetWidth,
+        rect.height || this.combatRoot.offsetHeight
+      )
+      this.#applyFreePosition(next.x, next.y)
+      return
+    }
+
+    this.#clearFreePosition()
 
     // When the hotbar is hidden the combat bar takes its exact place.
     if (hotbarHidden) {
@@ -237,6 +264,45 @@ export class Wod5eHud {
       Math.round(window.innerHeight - rect.top + 5)
     )}px`
     this.combatRoot.style.setProperty('--wod-hotbar-height', `${Math.round(rect.height)}px`)
+  }
+
+  #bindCombatDrag() {
+    this.dragCleanup?.()
+    this.dragCleanup = null
+
+    const bar = this.combatRoot?.querySelector('.wod-combat-bar')
+    if (!bar) return
+
+    this.dragCleanup = enableDrag(bar, {
+      ignore: 'button, input, select, textarea, a',
+      onDrag: ({ x, y }) => this.#applyFreePosition(x, y),
+      onEnd: ({ x, y }) => {
+        this.#applyFreePosition(x, y)
+        void setSetting('freePosition', { x, y })
+      }
+    })
+  }
+
+  #applyFreePosition(x, y) {
+    const root = this.combatRoot
+    if (!root) return
+    root.style.left = `${Math.round(x)}px`
+    root.style.top = `${Math.round(y)}px`
+    root.style.bottom = 'auto'
+    root.style.transform = 'none'
+  }
+
+  #clearFreePosition() {
+    const root = this.combatRoot
+    if (!root) return
+    root.style.top = ''
+    root.style.transform = ''
+  }
+
+  async resetPosition() {
+    await setSetting('freePosition', { x: null, y: null })
+    this.#clearFreePosition()
+    this.positionCombat()
   }
 
   hideCombat() {
@@ -335,7 +401,8 @@ export class Wod5eHud {
       try {
         const { Wod5eSettingsApp } = await import('./settings-app.mjs')
         this.settingsApp = new Wod5eSettingsApp({
-          onChange: () => this.applyPreferences()
+          onChange: () => this.applyPreferences(),
+          onResetPosition: () => this.resetPosition()
         })
       } catch (error) {
         console.error('[WOD5E HUD] failed to open settings', error)
@@ -376,9 +443,6 @@ export class Wod5eHud {
       case 'search-result':
         this.#executeSearchResult(Number(element.dataset.index))
         break
-      case 'open-sheet':
-      case 'blood-check':
-        break
       case 'drawer':
         await this.openDrawer(element.dataset.drawer)
         break
@@ -418,37 +482,6 @@ export class Wod5eHud {
     return import(`/systems/${systemId}/system/${path}`)
   }
 
-  async #confirmQuickAction(title, content) {
-    const DialogV2 = foundry.applications?.api?.DialogV2
-    if (!DialogV2?.confirm) return true
-
-    try {
-      return Boolean(
-        await DialogV2.confirm({
-          window: { title },
-          modal: true,
-          rejectClose: false,
-          content: `<p>${content}</p>`,
-          yes: {
-            label: localize('WOD5E_HUD.Actions.Roll', 'Roll'),
-            icon: 'fa-solid fa-dice-d20',
-            default: true,
-            callback: () => true
-          },
-          no: {
-            label: localize('WOD5E_HUD.Actions.Cancel', 'Cancel'),
-            icon: 'fa-solid fa-xmark',
-            default: false,
-            callback: () => false
-          }
-        })
-      )
-    } catch (error) {
-      console.error('[WOD5E HUD] action confirmation failed', error)
-      return false
-    }
-  }
-
   async #runQuickAction(id) {
     const actor = this.actor
     if (!actor || !id) return
@@ -458,24 +491,25 @@ export class Wod5eHud {
     try {
       switch (id) {
         case 'rouse': {
-          const confirmed = await this.#confirmQuickAction(
-            localize('WOD5E_HUD.Actions.Rouse', 'Rouse Check'),
-            localize('WOD5E_HUD.Actions.ConfirmRouse', 'Do you want to roll the Rouse check?')
-          )
-          if (!confirmed) return
-          const { _onRouseCheck } = await this.#systemModule('actor/vtm/scripts/rouse.js')
-          this._pendingRoll = true
-          try {
-            const presented = this.#waitForRollPresentation(actor)
-            await _onRouseCheck(actor, {
-              name: localize('WOD5E_HUD.Actions.Rouse', 'Rouse Check'),
-              system: { level: 1, cost: 1, discipline: '' }
-            })
-            await presented
-          } finally {
-            this._pendingRoll = false
-            this._statusQueued = false
+          // Same dataset as the sheet's Rouse Check button.
+          const rollFromDataset = globalThis.WOD5E?.api?.RollFromDataset
+          if (typeof rollFromDataset !== 'function') {
+            ui.notifications?.error?.(
+              localize('WOD5E_HUD.Actions.Failed', 'The action could not be performed.')
+            )
+            return
           }
+          await rollFromDataset({
+            dataset: {
+              label: localize('WOD5E.VTM.RousingBlood', 'Rousing Blood'),
+              disableBasicDice: true,
+              useAbsoluteValue: true,
+              absoluteValue: 1,
+              increaseHunger: true,
+              difficulty: 1
+            },
+            actor
+          })
           break
         }
         case 'feeding': {
@@ -490,14 +524,6 @@ export class Wod5eHud {
           break
         }
         case 'frenzy': {
-          const confirmed = await this.#confirmQuickAction(
-            localize('WOD5E_HUD.Actions.ResistFrenzy', 'Resist Frenzy'),
-            localize(
-              'WOD5E_HUD.Actions.ConfirmFrenzy',
-              'Do you want to roll the test to resist Frenzy?'
-            )
-          )
-          if (!confirmed) return
           const { _onFrenzyRoll } = await this.#systemModule('actor/vtm/scripts/frenzy-roll.js')
           await _onFrenzyRoll.call({ actor }, event)
           break
@@ -828,63 +854,12 @@ export class Wod5eHud {
   }
 
   scheduleStatusUpdate() {
-    // While a roll is being presented, the HUD waits for the chat message and
-    // the Dice So Nice animation before showing the new values.
-    if (this._pendingRoll) {
-      this._statusQueued = true
-      return
-    }
     this._statusRefresh()
   }
 
-  /**
-   * Resolves after the roll message is posted and, when Dice So Nice is
-   * enabled, after its animation completes.
-   */
-  #waitForRollPresentation(actor) {
-    return new Promise((resolve) => {
-      let settled = false
-      let messageId = null
-
-      const cleanup = () => {
-        clearTimeout(safety)
-        Hooks.off('createChatMessage', onCreate)
-        Hooks.off('diceSoNiceRollComplete', onDice)
-      }
-
-      const finish = () => {
-        if (settled) return
-        settled = true
-        cleanup()
-        resolve()
-      }
-
-      const onDice = (id) => {
-        if (id && messageId && id !== messageId) return
-        finish()
-      }
-
-      const onCreate = (message) => {
-        if (message.speaker?.actor !== actor.id) return
-        if (!message.rolls?.length) return
-        messageId = message.id
-        Hooks.off('createChatMessage', onCreate)
-
-        const dice3d = globalThis.game?.dice3d
-        const dsnActive =
-          Boolean(dice3d) &&
-          (typeof dice3d.isEnabled === 'function' ? dice3d.isEnabled() : true)
-
-        if (dsnActive) Hooks.once('diceSoNiceRollComplete', onDice)
-        else setTimeout(finish, 350)
-      }
-
-      const safety = setTimeout(finish, 6000)
-      Hooks.on('createChatMessage', onCreate)
-    })
-  }
-
   destroy() {
+    this.dragCleanup?.()
+    this.dragCleanup = null
     this.closeSearch()
     this.closeDrawer()
     this.settingsApp?.close?.()

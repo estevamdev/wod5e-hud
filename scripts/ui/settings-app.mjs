@@ -30,9 +30,10 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
 
   activeTab = 'player'
 
-  constructor({ onChange, ...options } = {}) {
+  constructor({ onChange, onResetPosition, ...options } = {}) {
     super(options)
     this.onChange = onChange ?? (() => {})
+    this.onResetPosition = onResetPosition ?? (() => {})
   }
 
   async _prepareContext() {
@@ -96,6 +97,13 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
         this.render()
       })
     })
+
+    element
+      .querySelector('[data-action="reset-position"]')
+      ?.addEventListener('click', async (event) => {
+        event.preventDefault()
+        await this.onResetPosition()
+      })
 
     this.activateTab(this.activeTab)
   }

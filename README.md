@@ -34,8 +34,9 @@ are always within reach.
 | **Willpower** | Willpower test                                               |
 | **Humanity**  | Remorse test                                                 |
 
-All quick actions use the native **wod5e** rolls and dialogs. Blood Check and
-Resist Frenzy ask for confirmation before rolling.
+All quick actions use the native **wod5e** rolls and dialogs, exactly like their
+sheet buttons. Blood Check opens the system roll dialog and Resist Frenzy opens
+the system Resist/Give in dialog.
 
 ### Menus
 
@@ -48,6 +49,8 @@ Resist Frenzy ask for confirmation before rolling.
 
 - Show or hide the combat bar.
 - Hide the macro hotbar, so the HUD uses that area instead.
+- Drag the bar to move it. The position is saved per player and **Reset
+  position** returns it above the hotbar.
 - Preferences are stored per player. The GM can allow players to toggle the HUD
   or enable it for everyone.
 
@@ -91,6 +94,8 @@ directory and enable it in the world.
 - Double-click the portrait to open the actor sheet.
 - Double-click the hunger area to roll a Blood Check, the same action as the
   menu button.
+- Drag the bar background to move it. **Reset position** in the settings window
+  returns it above the hotbar.
 - Click the gear to configure the HUD.
 - Hover the menu buttons and their entries to read the full label.
 
