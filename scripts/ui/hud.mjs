@@ -367,12 +367,19 @@ export class Wod5eHud {
 
   toggleCombatHud(force) {
     if (this.#worldCombatDisabled() && typeof force !== 'boolean') {
-      ui.notifications?.info?.(localize('WOD5E_HUD.Settings.Locked', 'Locked by the GM.'))
-      return this.#combatEnabled()
+      ui.notifications?.info?.(
+        localize(
+          'WOD5E_HUD.Settings.CombatDisabledByGM',
+          'The GM disabled the HUD for everyone.'
+        )
+      )
+      return false
     }
 
     if (typeof force !== 'boolean' && !this.#canToggleCombat()) {
-      ui.notifications?.warn?.(localize('WOD5E_HUD.Settings.Locked', 'Locked by the GM.'))
+      ui.notifications?.warn?.(
+        localize('WOD5E_HUD.Settings.CombatControlledByGM', 'The GM controls this option.')
+      )
       return this.#combatEnabled()
     }
 

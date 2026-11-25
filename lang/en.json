@@ -68,7 +68,6 @@
       "HideHotbarHint": "Hides the macro bar and its page arrows; the combat HUD takes its place.",
       "AllowCombatToggle": "Allow players to toggle the combat HUD",
       "AllowCombatToggleHint": "When off, players cannot show or hide the combat bar.",
-      "Locked": "Locked by the GM.",
       "Unavailable": "Settings are unavailable.",
       "TabPlayer": "Settings",
       "TabGM": "Game Master",
@@ -83,12 +82,12 @@
       "MinimalActionsHint": "Shows only the icons. Hover a button to read its name.",
       "CombatForAll": "Combat HUD for all players",
       "CombatForAllHint": "On keeps the HUD available to all players. Off disables it for everyone. Players can only turn it off when allowed.",
-      "ForcedByGM": "Set by the Game Master.",
-      "ControlledByGM": "Controlled by the Game Master.",
       "StateOn": "On",
       "StateOff": "Off",
       "StateEnabled": "Enabled",
-      "StateDisabled": "Disabled"
+      "StateDisabled": "Disabled",
+      "CombatDisabledByGM": "The GM disabled the HUD for everyone.",
+      "CombatControlledByGM": "The GM controls this option."
     },
     "HungerTooltip": "Hunger {value}/{max} — {remaining} to extreme hunger"
   }

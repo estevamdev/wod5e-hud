@@ -68,7 +68,6 @@
       "HideHotbarHint": "Oculta la barra de macros y sus flechas de página; el HUD de combate ocupa su lugar.",
       "AllowCombatToggle": "Permitir que los jugadores activen/desactiven el HUD de combate",
       "AllowCombatToggleHint": "Si se desactiva, los jugadores no pueden mostrar u ocultar la barra de combate.",
-      "Locked": "Bloqueado por el Director de Juego.",
       "Unavailable": "La configuración no está disponible.",
       "TabPlayer": "Configuración",
       "TabGM": "Director de Juego",
@@ -83,12 +82,12 @@
       "MinimalActionsHint": "Muestra solo los iconos. Pasa el cursor para leer el nombre.",
       "CombatForAll": "HUD de combate para todos",
       "CombatForAllHint": "Activado mantiene el HUD disponible para todos. Desactivado lo quita para todos. Los jugadores solo pueden desactivarlo si se permite.",
-      "ForcedByGM": "Definido por el Director de Juego.",
-      "ControlledByGM": "Controlado por el Director de Juego.",
       "StateOn": "Activado",
       "StateOff": "Desactivado",
       "StateEnabled": "Habilitado",
-      "StateDisabled": "Deshabilitado"
+      "StateDisabled": "Deshabilitado",
+      "CombatDisabledByGM": "El Director de Juego desactivó el HUD para todos.",
+      "CombatControlledByGM": "El Director de Juego controla esta opción."
     },
     "HungerTooltip": "Ansia {value}/{max} — faltan {remaining} para Ansia extrema"
   }

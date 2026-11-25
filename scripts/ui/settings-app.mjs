@@ -1,4 +1,4 @@
-import { getSetting, setSetting } from '../core/utils.mjs'
+import { getSetting, localize, setSetting } from '../core/utils.mjs'
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 
@@ -114,7 +114,32 @@ export class Wod5eSettingsApp extends HandlebarsApplicationMixin(ApplicationV2) 
       button.addEventListener('click', async (event) => {
         event.preventDefault()
         if (button.disabled) return
-        await setSetting(button.dataset.settingValue, button.dataset.value === 'true')
+        const key = button.dataset.settingValue
+
+        if (key === 'combatHud') {
+          if (getSetting('disablePlayerCombatForAll', false)) {
+            ui.notifications?.warn?.(
+              localize(
+                'WOD5E_HUD.Settings.CombatDisabledByGM',
+                'The GM disabled the HUD for everyone.'
+              )
+            )
+            this.render(true)
+            return
+          }
+          if (!game.user?.isGM && !getSetting('allowPlayerCombatToggle', true)) {
+            ui.notifications?.warn?.(
+              localize(
+                'WOD5E_HUD.Settings.CombatControlledByGM',
+                'The GM controls this option.'
+              )
+            )
+            this.render(true)
+            return
+          }
+        }
+
+        await setSetting(key, button.dataset.value === 'true')
         await this.onChange()
         this.render(true)
       })
